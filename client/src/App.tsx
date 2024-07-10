@@ -7,6 +7,7 @@ import RegisterPage from './components/pages/RegisterPage';
 import LoginPage from './components/pages/LoginPage';
 import Layout from './components/Layout';
 import HomePage from './components/pages/HomePage';
+import LocationPage from './components/pages/LocationPage';
 
 
 function App(): JSX.Element {
@@ -26,6 +27,10 @@ function App(): JSX.Element {
         {
           path: "/",
           element: <HomePage />,
+        },
+        {
+          path: 'location',
+          element: <LocationPage />
         },
         {
           element: <PrivateRouter isAllowed={user.status !== 'logged'} redirect="/" />,

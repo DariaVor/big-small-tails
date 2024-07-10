@@ -32,6 +32,14 @@ export default function NavBar(): JSX.Element {
             </li>
           ) : (
             <>
+            <li>
+            <Link
+              to="/location"
+              className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
+            >
+              Локация
+            </Link>
+          </li>
               <li>
                 <Link
                   to="/login"
