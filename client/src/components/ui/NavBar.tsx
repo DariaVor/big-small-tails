@@ -14,24 +14,44 @@ export default function NavBar(): JSX.Element {
   };
 
   return (
-    <ul>
-      <li>
-        <Link to="/">Главная</Link>
-      </li>
-      {user.status === 'logged' ? (
-        <li>
-            <button type='button' onClick={handleLogout}>Logout</button>
-          </li>
-      ) : (
-        <>
-          <li>
-            <Link to="/login">Логин</Link>
-          </li>
-          <li>
-            <Link to="/register">Регистрация</Link>
-          </li>
-        </>
-      )}
-    </ul>
+    <nav className="bg-gray-800 text-white p-4">
+      <ul className="flex justify-between items-center">
+        <li className="font-bold text-lg">
+          <Link to="/">Главная</Link>
+        </li>
+        <ul className="flex space-x-4">
+          {user.status === 'logged' ? (
+            <li>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
+                >
+                  Логин
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 rounded-md bg-green-500 hover:bg-green-600"
+                >
+                  Регистрация
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </ul>
+    </nav>
   );
 }

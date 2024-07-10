@@ -4,13 +4,13 @@ import NavBar from './ui/NavBar';
 
 export default function Layout(): JSX.Element {
   return (
-    <>
-      <header>
+    <div className="bg-gray-100 min-h-screen">
+      <header className="bg-white shadow-md">
         <NavBar />
       </header>
-      <main>
+      <main className="container mx-auto p-4">
         <Outlet />
       </main>
-    </>
+    </div>
   );
 }
