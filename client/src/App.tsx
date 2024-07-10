@@ -12,6 +12,7 @@ import HomePage from './components/pages/HomePage';
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector((store) => store.auth.user);
+  
 
   useEffect(() => {
     void dispatch(checkUserThunk());
@@ -26,17 +27,8 @@ function App(): JSX.Element {
           path: "/",
           element: <HomePage />,
         },
-        // {
-        //   element: <PrivateRouter isAllowed={user.status === 'logged'} redirect="/login" />,
-        //   children: [
-        //     {
-        //       path: '/',
-        //       element: <GamePage />,
-        //     },
-        //   ],
-        // },
         {
-          element: <PrivateRouter isAllowed={user.status !== 'logged'} redirect="/game" />,
+          element: <PrivateRouter isAllowed={user.status !== 'logged'} redirect="/" />,
           children: [
             {
               path: '/register',

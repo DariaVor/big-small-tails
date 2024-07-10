@@ -32,7 +32,11 @@ export const loginThunk = createAsyncThunk(
   },
 );
 
-export const logoutThunk = createAsyncThunk('auth/logout', () => authService.logout());
+export const logoutThunk = createAsyncThunk('auth/logout', async () => {
+  await authService.logout();
+  return {};
+});
+
 
 export const checkUserThunk = createAsyncThunk('auth/checkUser', async () => {
   const data = await authService.check();
