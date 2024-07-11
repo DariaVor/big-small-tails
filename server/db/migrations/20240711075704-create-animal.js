@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       requestStatusId: {
         type: Sequelize.INTEGER,

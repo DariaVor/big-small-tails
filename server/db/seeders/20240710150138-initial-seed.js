@@ -63,7 +63,6 @@ module.exports = {
       {},
     );
 
-
     await queryInterface.bulkInsert(
       'Colors',
       [
@@ -131,19 +130,36 @@ module.exports = {
       'Animals',
       [
         {
-          name: 'Басик', 
+          name: 'Басик',
           animalStatusId: 1,
           categoryId: 2,
           colorId: 1,
-          description: "Помогите найти",
-          location: '55.706570,37.597090'
-          image: 
+          description: 'Помогите найти',
+          location: '55.706570,37.597090',
+          image: 'басик.webp',
+          hasCollar: true,
+          contactInfo: '+7(999)-999-99-99',
+          date: '2024-07-11',
+          requestStatusId: 1,
+          userId: 2,
         },
-        { role: 'admin' },
+        {
+          name: 'Бобик',
+          animalStatusId: 2,
+          categoryId: 2,
+          colorId: 2,
+          description: 'Нашел кота',
+          location: '55.706570,37.597090',
+          image: 'бобик.webp',
+          hasCollar: false,
+          contactInfo: '+7(999)-999-99-99',
+          date: '2024-06-11',
+          requestStatusId: 1,
+          userId: 2,
+        },
       ],
       {},
     );
-
   },
 
   async down(queryInterface, Sequelize) {
