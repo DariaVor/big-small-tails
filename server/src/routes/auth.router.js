@@ -4,10 +4,15 @@ const { User } = require('../../db/models');
 const generateTokens = require('../utils/generateTokens');
 const cookieConfig = require('../configs/cookie.config');
 
+const { emailSchema, passwordSchema } = require('../middlewares/validationSchemas');
+
 authRouter.post('/register', async (req, res) => {
   const { email, username, password } = req.body;
 
   try {
+    emailSchema.parse(email);
+    passwordSchema.parse(password);
+
     const [user, created] = await User.findOrCreate({
       where: { email },
       defaults: { username, password: await bcrypt.hash(password, 10) },
@@ -26,6 +31,10 @@ authRouter.post('/register', async (req, res) => {
       .cookie('refreshToken', refreshToken, cookieConfig.refresh)
       .json({ user: plainUser, accessToken });
   } catch (error) {
+    if (error.errors) {
+      const errorMessage = error.errors.map((err) => err.message).join(', ');
+      return res.status(400).json({ message: errorMessage });
+    }
     console.log(error);
     res.status(500).json({ error: 'Server error' });
   }
@@ -55,6 +64,11 @@ authRouter.post('/login', async (req, res) => {
       .cookie('refreshToken', refreshToken, cookieConfig.refresh)
       .json({ user: plainUser, accessToken });
   } catch (error) {
+    if (error.errors) {
+      // Zod validation error handling
+      const errorMessage = error.errors.map((err) => err.message).join(', ');
+      return res.status(400).json({ message: errorMessage });
+    }
     console.log(error);
     res.status(500).json({ error: 'Server error' });
   }
