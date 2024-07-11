@@ -8,6 +8,8 @@ import LoginPage from './components/pages/LoginPage';
 import Layout from './components/Layout';
 import HomePage from './components/pages/HomePage';
 import LocationPage from './components/pages/LocationPage';
+import FoundPetPage from './components/pages/FoundPetPage';
+import LostPetPage from './components/pages/LostPetPage';
 
 
 function App(): JSX.Element {
@@ -31,6 +33,14 @@ function App(): JSX.Element {
         {
           path: 'location',
           element: <LocationPage />
+        },
+        {
+          path: '/pets/found',
+          element: <FoundPetPage />,
+        },
+        {
+          path: '/pets/lost',
+          element: <LostPetPage />,
         },
         {
           element: <PrivateRouter isAllowed={user.status !== 'logged'} redirect="/" />,

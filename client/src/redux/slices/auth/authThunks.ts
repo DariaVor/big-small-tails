@@ -13,7 +13,7 @@ export const registerThunk = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       thunkApi.dispatch(setNotify({ type: 'error', message: err.message }));
-      thunkApi.rejectWithValue(err.message);
+      return thunkApi.rejectWithValue(err.message);
     }
   },
 );
@@ -27,7 +27,7 @@ export const loginThunk = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       thunkApi.dispatch(setNotify({ type: 'error', message: err.message }));
-      thunkApi.rejectWithValue(err.message);
+      return thunkApi.rejectWithValue(err.message);
     }
   },
 );
@@ -36,7 +36,6 @@ export const logoutThunk = createAsyncThunk('auth/logout', async () => {
   await authService.logout();
   return {};
 });
-
 
 export const checkUserThunk = createAsyncThunk('auth/checkUser', async () => {
   const data = await authService.check();

@@ -9,7 +9,7 @@ export default function NavBar(): JSX.Element {
   const user = useAppSelector((state) => state.auth.user);
 
   const handleLogout = async (): Promise<void> => {
-    await dispatch(logoutThunk());
+    void dispatch(logoutThunk());
     navigate('/login');
   };
 
@@ -20,11 +20,27 @@ export default function NavBar(): JSX.Element {
           <Link to="/">Главная</Link>
         </li>
         <ul className="flex space-x-4">
+          <li>
+            <Link
+              to="/pets/found"
+              className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
+            >
+              Найденные Животные
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/pets/lost"
+              className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
+            >
+              Пропавшие Животные
+            </Link>
+          </li>
           {user.status === 'logged' ? (
             <li>
               <button
                 type="button"
-                onClick={handleLogout}
+                onClick={() => void handleLogout()}
                 className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-600"
               >
                 Logout
@@ -32,14 +48,14 @@ export default function NavBar(): JSX.Element {
             </li>
           ) : (
             <>
-            <li>
-            <Link
-              to="/location"
-              className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
-            >
-              Локация
-            </Link>
-          </li>
+              <li>
+                <Link
+                  to="/location"
+                  className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
+                >
+                  Локация
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/login"

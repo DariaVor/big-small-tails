@@ -21,16 +21,16 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerThunk.fulfilled, (state, action) => {
-        if (action.payload) state.accessToken = action.payload.accessToken;
-        if (action.payload?.user) state.user = { ...action.payload.user, status: 'logged' };
+        state.accessToken = action.payload.accessToken;
+        state.user = { ...action.payload.user, status: 'logged' };
       })
       .addCase(registerThunk.rejected, (state) => {
         state.accessToken = '';
         state.user = { status: 'guest' };
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
-        if (action.payload) state.accessToken = action.payload.accessToken;
-        if (action.payload) state.user = { ...action.payload.user, status: 'logged' };
+        state.accessToken = action.payload.accessToken;
+        state.user = { ...action.payload.user, status: 'logged' };
       })
       .addCase(loginThunk.rejected, (state) => {
         state.accessToken = '';
