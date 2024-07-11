@@ -1,5 +1,4 @@
 const authRouter = require('express').Router();
-
 const bcrypt = require('bcrypt');
 const { User } = require('../../db/models');
 const generateTokens = require('../utils/generateTokens');
@@ -8,10 +7,6 @@ const cookieConfig = require('../configs/cookie.config');
 authRouter.post('/register', async (req, res) => {
   const { email, username, password } = req.body;
 
-  if (!email || !username || !password) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-
   try {
     const [user, created] = await User.findOrCreate({
       where: { email },
@@ -19,8 +14,9 @@ authRouter.post('/register', async (req, res) => {
     });
 
     if (!created) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'Пользователь уже существует' });
     }
+
     const plainUser = user.get();
     delete plainUser.password;
 
@@ -37,17 +33,18 @@ authRouter.post('/register', async (req, res) => {
 
 authRouter.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
 
   try {
     const user = await User.findOne({ where: { email } });
 
+    if (!user) {
+      return res.status(400).json({ message: 'Пользователь не найден' });
+    }
+
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-      return res.status(400).json({ message: 'Incorrect password' });
+      return res.status(400).json({ message: 'Неверный пароль' });
     }
 
     const plainUser = user.get();
