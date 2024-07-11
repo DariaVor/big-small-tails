@@ -1,4 +1,4 @@
-import type { AxiosInstance, AxiosResponse } from 'axios';
+import type { AxiosInstance } from 'axios';
 import axiosInstance from './apiInstance';
 import type { PetFormType, PetType } from '../types/petTypes';
 
@@ -15,7 +15,7 @@ class PetsService {
     return response.data;
   }
 
-  async getAllFoundsPets(): Promise<PetType[]> {
+  async getAllFoundPets(): Promise<PetType[]> {
     const response = await this.apiInstance.get<PetType[]>('/pets/found');
     return response.data;
   }
@@ -27,6 +27,16 @@ class PetsService {
 
   async deleteOnePet(id: number): Promise<void> {
     await this.apiInstance.delete(`/pets/${id}`);
+  }
+
+  async addPet(formData: FormData): Promise<PetType> {
+    const response = await this.apiInstance.post<PetType>('/pets/add', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(response.data)
+    return response.data;
   }
 
   // async getOnePet(id: number): Promise<PetType> {

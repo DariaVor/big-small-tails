@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import petsService from '../../../services/petService';
-import { PetFormType } from '../../../types/petTypes';
+import type { PetFormType } from '../../../types/petTypes';
 
 export const getAllPetsThunk = createAsyncThunk('pets/getAllPets', async () => {
   const data = await petsService.getAllPets();
@@ -13,7 +13,7 @@ export const getAllLostPetsThunk = createAsyncThunk('pets/getAllLostPets', async
 });
 
 export const getAllFoundPetsThunk = createAsyncThunk('pets/getAllFoundPets', async () => {
-  const data = await petsService.getAllFoundsPets();
+  const data = await petsService.getAllFoundPets();
   return data;
 });
 
@@ -29,6 +29,18 @@ export const deleteOnePetThunk = createAsyncThunk('pets/deleteOnePet', async (id
   await petsService.deleteOnePet(id);
   return id;
 });
+
+export const addPetThunk = createAsyncThunk(
+  'pets/addPet',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await petsService.addPet(formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 // export const getOnePetThunk = createAsyncThunk('pets/getOnePet', async (id: number) => {
 //   const data = await petsService.getOnePet(id);

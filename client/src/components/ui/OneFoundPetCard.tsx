@@ -3,7 +3,7 @@ import React from 'react';
 export default function OneFoundPetCard({ pet, onDelete, onEdit }): JSX.Element {
   return (
     <div className="max-w-sm bg-white shadow-md rounded-lg overflow-hidden">
-      <img src={pet.image} alt={pet.name} className="w-full h-48 object-cover" />
+      <img src={`/img/${pet.image}`} alt={pet.name} className="w-full h-48 object-cover" />
       <div className="p-4">
         <h5 className="text-xl font-bold mb-2">{pet.name}</h5>
         <div className="flex justify-between items-center">

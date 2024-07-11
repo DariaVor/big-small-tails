@@ -4,15 +4,17 @@ import {
   getAllFoundPetsThunk,
   getAllLostPetsThunk,
   getAllPetsThunk,
-  getOnePetThunk,
+  addPetThunk,
   updateOnePetThunk,
+  // getOnePetThunk,
 } from './petThunk';
 
 const initialState = {
   pets: [],
   lostPets: [],
   foundPets: [],
-  // onePet: null,
+  loading: false,
+  error: null,
 };
 
 export const petsSlice = createSlice({
@@ -47,6 +49,18 @@ export const petsSlice = createSlice({
       })
       .addCase(deleteOnePetThunk.fulfilled, (state, action) => {
         state.pets = state.pets.filter((pet) => pet.id !== action.payload);
+      })
+      .addCase(addPetThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addPetThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.pets.unshift(action.payload);
+      })
+      .addCase(addPetThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
       // .addCase(getOnePetThunk.fulfilled, (state, action) => {
       //   state.onePet = action.payload;

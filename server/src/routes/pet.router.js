@@ -47,7 +47,7 @@ petRouter.route('/found').get(async (req, res) => {
 });
 
 // POST новый питомец
-petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (req, res) => {
+petRouter.route('/add').post(upload.single('file'),/* verifyAccessToken*/ async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'Файл не найден' });
@@ -55,12 +55,12 @@ petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (re
 
     const imageName = `${Date.now()}.webp`;
     const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
-    await fs.writeFile(`./public/img/${name}`, outputBuffer);
+    await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
 
     const pet = await Pet.create({
       ...req.body,
       image: imageName,
-      userId: res.locals.user.id,
+      userId: 1/*res.locals.user.id*/,
     });
 
     const plainPet = await Pet.findOne({
@@ -69,12 +69,13 @@ petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (re
       },
       include: {
         model: User,
-        attributes: ['id', 'name', 'email'],
+        attributes: ['id', 'username', 'email'],
       },
     });
 
     res.json(plainPet);
   } catch (error) {
+    console.log(error)
     res.status(500).send('Internal server error');
   }
 });
@@ -113,13 +114,14 @@ petRouter.route('/:id').delete(async (req, res) => {
       return res.status(404).send('Питомец не найден');
     }
 
-    if (pet.image) {
-      await fs.unlink(`./public/img/${pet.image}`);
-    }
+    // if (pet.image) {
+    //   await fs.unlink(`./public/img/${pet.image}`);
+    // }
 
     await pet.destroy();
     res.send('Успешно удалено');
   } catch (error) {
+    console.log(error)
     res.status(500).send('Internal server error');
   }
 });
