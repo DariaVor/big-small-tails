@@ -35,7 +35,7 @@ module.exports = {
     );
 
     await queryInterface.bulkInsert(
-      'AnimalStatuses',
+      'PetStatuses',
       [
         {
           status: 'Потерян',
@@ -127,11 +127,11 @@ module.exports = {
     );
 
     await queryInterface.bulkInsert(
-      'Animals',
+      'Pets',
       [
         {
           name: 'Басик',
-          animalStatusId: 1,
+          petStatusId: 1,
           categoryId: 2,
           colorId: 1,
           description: 'Помогите найти',
@@ -145,7 +145,7 @@ module.exports = {
         },
         {
           name: 'Бобик',
-          animalStatusId: 2,
+          petStatusId: 2,
           categoryId: 2,
           colorId: 2,
           description: 'Нашел кота',
@@ -156,6 +156,62 @@ module.exports = {
           date: '2024-06-11',
           requestStatusId: 1,
           userId: 2,
+        },
+        {
+          name: 'Шарик',
+          petStatusId: 1,
+          categoryId: 1,
+          colorId: 4,
+          description: 'Пропала собака',
+          location: '55.706570,37.597091',
+          image: 'шарик.webp',
+          hasCollar: true,
+          contactInfo: '+7(999)-999-99-99',
+          date: '2024-07-01',
+          requestStatusId: 1,
+          userId: 2,
+        },
+        {
+          name: 'Мурзик',
+          petStatusId: 2,
+          categoryId: 2,
+          colorId: 5,
+          description: 'Нашел кота',
+          location: '55.706570,37.597092',
+          image: 'басик.webp',
+          hasCollar: false,
+          contactInfo: '+7(999)-999-99-99',
+          date: '2024-06-15',
+          requestStatusId: 2,
+          userId: 2,
+        },
+        {
+          name: 'Рекс',
+          petStatusId: 1,
+          categoryId: 1,
+          colorId: 3,
+          description: 'Ищем потерявшегося пса',
+          location: '55.706570,37.597093',
+          image: 'шарик.webp',
+          hasCollar: true,
+          contactInfo: '+7(999)-999-99-99',
+          date: '2024-07-05',
+          requestStatusId: 1,
+          userId: 1,
+        },
+        {
+          name: 'Барсик',
+          petStatusId: 2,
+          categoryId: 2,
+          colorId: 6,
+          description: 'Кот найден',
+          location: '55.706570,37.597094',
+          image: 'басик.webp',
+          hasCollar: false,
+          contactInfo: '+7(999)-999-99-99',
+          date: '2024-06-20',
+          requestStatusId: 3,
+          userId: 1,
         },
       ],
       {},

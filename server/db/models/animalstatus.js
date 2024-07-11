@@ -1,19 +1,19 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class AnimalStatus extends Model {
-    static associate({ Animal }) {
-      this.hasMany(Animal, { foreignKey: 'animalStatusId' });
+  class PetStatus extends Model {
+    static associate({ Pet }) {
+      this.hasMany(Pet, { foreignKey: 'petStatusId' });
     }
   }
-  AnimalStatus.init(
+  PetStatus.init(
     {
       status: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: 'AnimalStatus',
+      modelName: 'PetStatus',
     },
   );
-  return AnimalStatus;
+  return PetStatus;
 };
