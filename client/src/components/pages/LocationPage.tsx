@@ -50,15 +50,15 @@ function LocationPage(): JSX.Element {
   }, [location]);
 
   return (
-    <div className="bg-gradient-to-b from-gray-800 to-gray-900 min-h-screen text-white font-sans">
+    <div className="min-h-screen text-white font-sans">
       <div className="container mx-auto py-16 px-4 text-center">
-        <h1 className="text-3xl font-bold mb-4">Местоположение</h1>
+        <h1 className="text-3xl text-black font-bold mb-4">Местоположение</h1>
         {location.latitude && location.longitude && (
-          <p className="text-lg mb-2">
+          <p className="text-lg mb-2 text-black">
             Ваше местоположение: {location.latitude}, {location.longitude}
           </p>
         )}
-        {address && <p className="text-lg mb-4">Полный адрес: {address}</p>}
+        {address && <p className="text-lg mb-4 text-black">Полный адрес: {address}</p>}
       </div>
     </div>
   );
