@@ -2,7 +2,7 @@ const data = [
   {
     title: 'Волонтерство 1',
     description: 'Волонтерская сеть из более чем 250 000 человек 1',
-    svgUrl: 'https://lottie.host/23460d79-8974-4ed2-ae09-bd24342194ac/IirAVKIGJc.json',
+    svgUrl: '',
   },
   {
     title: 'Волонтерство 2',
@@ -17,7 +17,42 @@ const data = [
   {
     title: 'Волонтерство 4',
     description: 'Волонтерская сеть из более чем 250 000 человек 4',
-    svgUrl: 'https://lottie.host/7e52a6bb-3bdc-468e-8ad2-4a28071b237f/jSIgy5hOK6.json',
+    svgUrl: 'https://lottie.host/fbee55bd-b64b-474f-9583-cc5ee25be2f0/F7Ik6Ne7BK.json',
+  },
+  {
+    title: 'Волонтерство 5',
+    description: 'Волонтерская сеть из более чем 250 000 человек 5',
+    svgUrl: 'https://lottie.host/c9d452f5-e141-484f-b3e7-3eb6c60e1a5e/LZ0G8IwIRU.json',
+  },
+  {
+    title: 'Волонтерство 5',
+    description: 'Волонтерская сеть из более чем 250 000 человек 5',
+    svgUrl: 'https://lottie.host/c9d452f5-e141-484f-b3e7-3eb6c60e1a5e/LZ0G8IwIRU.json',
+  },
+  {
+    title: 'Волонтерство 5',
+    description: 'Волонтерская сеть из более чем 250 000 человек 5',
+    svgUrl: 'https://lottie.host/c9d452f5-e141-484f-b3e7-3eb6c60e1a5e/LZ0G8IwIRU.json',
+  },
+  {
+    title: 'Волонтерство 5',
+    description: 'Волонтерская сеть из более чем 250 000 человек 5',
+    svgUrl: 'https://lottie.host/c9d452f5-e141-484f-b3e7-3eb6c60e1a5e/LZ0G8IwIRU.json',
+  },
+  {
+    title: 'Волонтерство 5',
+    description: 'Волонтерская сеть из более чем 250 000 человек 5',
+    svgUrl: 'https://lottie.host/c9d452f5-e141-484f-b3e7-3eb6c60e1a5e/LZ0G8IwIRU.json',
+  },
+  {
+    title: 'Волонтерство 5',
+    description: 'Волонтерская сеть из более чем 250 000 человек 5',
+    svgUrl: 'https://lottie.host/c9d452f5-e141-484f-b3e7-3eb6c60e1a5e/LZ0G8IwIRU.json',
+  },
+  {
+    title: 'Волонтерство 5',
+    description: 'Волонтерская сеть из более чем 250 000 человек 5',
+    svgUrl: 'https://lottie.host/c9d452f5-e141-484f-b3e7-3eb6c60e1a5e/LZ0G8IwIRU.json',
   },
 ];
 

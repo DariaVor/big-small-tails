@@ -4,7 +4,7 @@ import data from '../../../public/TS/aboutMeData';
 
 export default function HomePage(): JSX.Element {
   return (
-    <div className="container mx-auto p-4 bg-green-300">
+    <div className="container mx-auto p-4 mt-4 bg-white">
       <div className="bg-gray-100 p-8 rounded-md shadow-md mb-8">
         <h1 className="text-3xl font-bold text-center mb-4">
           Всероссийская система поиска пропавших животных
