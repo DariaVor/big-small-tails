@@ -11,6 +11,7 @@ import LocationPage from './components/pages/LocationPage';
 import FoundPetPage from './components/pages/FoundPetPage';
 import LostPetPage from './components/pages/LostPetPage';
 import PetDetailPage from './components/pages/PetDetailPage';
+import ErrorPage from './components/pages/ErrorPage';
 
 
 function App(): JSX.Element {
@@ -44,6 +45,10 @@ function App(): JSX.Element {
           element: <LostPetPage />,
         },
         { path: '/pets/:id', element: <PetDetailPage /> },
+        {
+          path: '*',
+          element: <ErrorPage />,
+        },
         {
           element: <PrivateRouter isAllowed={user.status !== 'logged'} redirect="/" />,
           children: [

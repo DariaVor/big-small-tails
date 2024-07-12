@@ -45,7 +45,7 @@ module.exports = {
       'Categories',
       [
         { category: 'Собака' },
-        { category: 'Кошка' },
+        { category: 'Кот / Кошка' },
         { category: 'Другое' },
       ],
       {},

@@ -14,7 +14,7 @@ export default function Loader({ children, isLoading }: LoaderProps): JSX.Elemen
           visible
           height="80"
           width="80"
-          color="#4fa94d"
+          color="#4f47e6"
           ariaLabel="rings-loading"
         />
       </div>
