@@ -14,68 +14,30 @@ export default function NavBar(): JSX.Element {
   };
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <ul className="flex justify-between items-center">
-        <li className="font-bold text-lg">
-          <Link to="/">Главная</Link>
-        </li>
-        <ul className="flex space-x-4">
-          <li>
-            <Link
-              to="/pets/found"
-              className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
-            >
-              Найденные Животные
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/pets/lost"
-              className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
-            >
-              Пропавшие Животные
-            </Link>
-          </li>
+    <nav className="bg-white shadow-md">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="flex items-center space-x-4">
+        <Link to="/">
+            <img src="images/pets.png" alt="Logo" className="h-8 w-8"/>
+          </Link>
+          <Link to="/" className="text-2xl font-bold text-green-700">Хвосты и хвостики</Link>
+        </div>
+        <div className="flex items-center space-x-4">
+          <input type="text" placeholder="Адрес или номер объявления" className="border rounded-md px-4 py-2"/>
           {user.status === 'logged' ? (
-            <li>
-              <button
-                type="button"
-                onClick={() => void handleLogout()}
-                className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-600"
-              >
-                Logout
-              </button>
-            </li>
+            <button
+              type="button"
+              onClick={() => void handleLogout()}
+              className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
+            >
+              Выйти
+            </button>
           ) : (
-            <>
-              <li>
-                <Link
-                  to="/location"
-                  className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
-                >
-                  Локация
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/login"
-                  className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
-                >
-                  Логин
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/register"
-                  className="px-4 py-2 rounded-md bg-green-500 hover:bg-green-600"
-                >
-                  Регистрация
-                </Link>
-              </li>
-            </>
+              <Link to="/login" className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Войти</Link>
           )}
-        </ul>
-      </ul>
+        </div>
+      </div>
     </nav>
   );
 }
+
