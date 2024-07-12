@@ -12,6 +12,7 @@ import FoundPetPage from './components/pages/FoundPetPage';
 import LostPetPage from './components/pages/LostPetPage';
 import PetDetailPage from './components/pages/PetDetailPage';
 import ErrorPage from './components/pages/ErrorPage';
+import AccountPage from './components/pages/AccountPage';
 
 
 function App(): JSX.Element {
@@ -59,6 +60,15 @@ function App(): JSX.Element {
             {
               path: '/login',
               element: <LoginPage />,
+            },
+          ],
+        },
+        {
+          element: <PrivateRouter isAllowed={user.status === 'logged'} redirect="/login" />,
+          children: [
+            {
+              path: '/account',
+              element: <AccountPage />,
             },
           ],
         },
