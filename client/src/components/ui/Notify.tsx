@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { resetNotify } from '../../redux/slices/notifySlice';
+
+const AUTO_CLOSE_DURATION = 5000;
 
 export default function Notify(): JSX.Element {
   const notify = useAppSelector((store) => store.notify);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (notify.type) {
+      const timer = setTimeout(() => {
+        dispatch(resetNotify());
+      }, AUTO_CLOSE_DURATION);
+
+      return () => clearTimeout(timer); 
+    }
+  }, [notify, dispatch]);
 
   const handleClose = (): void => {
     dispatch(resetNotify());

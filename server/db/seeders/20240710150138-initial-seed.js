@@ -1,15 +1,13 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 const bcrypt = require('bcrypt');
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
       'Roles',
       [
-        {
-          role: 'user',
-        },
+        { role: 'user' },
         { role: 'admin' },
       ],
       {},
@@ -37,12 +35,8 @@ module.exports = {
     await queryInterface.bulkInsert(
       'PetStatuses',
       [
-        {
-          status: 'Потерян',
-        },
-        {
-          status: 'Найден',
-        },
+        { status: 'Потерян' },
+        { status: 'Найден' },
       ],
       {},
     );
@@ -50,15 +44,9 @@ module.exports = {
     await queryInterface.bulkInsert(
       'Categories',
       [
-        {
-          category: 'Собака',
-        },
-        {
-          category: 'Кошка',
-        },
-        {
-          category: 'Другое',
-        },
+        { category: 'Собака' },
+        { category: 'Кошка' },
+        { category: 'Другое' },
       ],
       {},
     );
@@ -66,46 +54,14 @@ module.exports = {
     await queryInterface.bulkInsert(
       'Colors',
       [
-        {
-          color: 'Черный',
-        },
-        {
-          color: 'Белый',
-        },
-        {
-          color: 'Коричневый',
-        },
-        {
-          color: 'Рыжий',
-        },
-        {
-          color: 'Серый',
-        },
-        {
-          color: 'Кремовый',
-        },
-        {
-          color: 'Биколор (двухцветный)',
-        },
-        {
-          color: 'Калико (трехцветный)',
-        },
-      ],
-      {},
-    );
-
-    await queryInterface.bulkInsert(
-      'Categories',
-      [
-        {
-          category: 'Собака',
-        },
-        {
-          category: 'Кошка',
-        },
-        {
-          category: 'Другое',
-        },
+        { color: 'Черный' },
+        { color: 'Белый' },
+        { color: 'Коричневый' },
+        { color: 'Рыжий' },
+        { color: 'Серый' },
+        { color: 'Кремовый' },
+        { color: 'Биколор (двухцветный)' },
+        { color: 'Калико (трехцветный)' },
       ],
       {},
     );
@@ -113,15 +69,10 @@ module.exports = {
     await queryInterface.bulkInsert(
       'RequestStatuses',
       [
-        {
-          status: 'Ожидает одобрения',
-        },
-        {
-          status: 'Одобрено',
-        },
-        {
-          status: 'Найдено',
-        },
+        { status: 'Ожидает одобрения' },
+        { status: 'Одобрено' },
+        { status: 'Найдено' },
+        { status: 'Отклонено' },
       ],
       {},
     );

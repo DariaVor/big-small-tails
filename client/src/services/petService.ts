@@ -39,10 +39,10 @@ class PetsService {
     return response.data;
   }
 
-  // async getOnePet(id: number): Promise<PetType> {
-  //   const response = await this.apiInstance.get<PetType>(`/pets/${id}`);
-  //   return response.data;
-  // }
+  async getOnePet(id: number): Promise<PetType> {
+    const response = await this.apiInstance.get<PetType>(`/pets/${id}`);
+    return response.data;
+  }
 }
 
 export default new PetsService(axiosInstance);

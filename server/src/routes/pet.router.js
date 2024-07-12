@@ -1,5 +1,5 @@
 const petRouter = require('express').Router();
-const { Pet, User, PetStatus } = require('../../db/models');
+const { Pet, User, PetStatus, Category, Color } = require('../../db/models');
 const { verifyAccessToken } = require('../middlewares/verifyTokens');
 const upload = require('../middlewares/multer.middleware');
 const sharp = require('sharp');
@@ -41,6 +41,28 @@ petRouter.route('/found').get(async (req, res) => {
       include: [{ model: PetStatus, attributes: ['status'] }],
     });
     res.json(pets);
+  } catch (error) {
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET одного питомца
+petRouter.route('/:id').get(async (req, res) => {
+  try {
+    const pet = await Pet.findByPk(req.params.id, {
+      include: [
+        { model: PetStatus, attributes: ['status'] },
+        { model: User, attributes: ['username', 'email'] },
+        { model: Category, attributes: ['category'] },
+        { model: Color, attributes: ['color'] },
+      ],
+    });
+
+    if (!pet) {
+      return res.status(404).send('Pet not found');
+    }
+
+    res.json(pet);
   } catch (error) {
     res.status(500).send('Internal server error');
   }

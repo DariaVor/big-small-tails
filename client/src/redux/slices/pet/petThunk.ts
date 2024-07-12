@@ -42,7 +42,7 @@ export const addPetThunk = createAsyncThunk(
   },
 );
 
-// export const getOnePetThunk = createAsyncThunk('pets/getOnePet', async (id: number) => {
-//   const data = await petsService.getOnePet(id);
-//   return data;
-// });
+export const getOnePetThunk = createAsyncThunk('pets/getOnePet', async (id: number) => {
+  const data = await petsService.getOnePet(id);
+  return data;
+});

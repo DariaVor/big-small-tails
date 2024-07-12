@@ -6,13 +6,14 @@ import {
   getAllPetsThunk,
   addPetThunk,
   updateOnePetThunk,
-  // getOnePetThunk,
+  getOnePetThunk,
 } from './petThunk';
 
 const initialState = {
   pets: [],
   lostPets: [],
   foundPets: [],
+  onePet: null,
   loading: false,
   error: null,
 };
@@ -61,13 +62,13 @@ export const petsSlice = createSlice({
       .addCase(addPetThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getOnePetThunk.fulfilled, (state, action) => {
+        state.onePet = action.payload;
+      })
+      .addCase(getOnePetThunk.rejected, (state) => {
+        state.onePet = null;
       });
-      // .addCase(getOnePetThunk.fulfilled, (state, action) => {
-      //   state.onePet = action.payload;
-      // })
-      // .addCase(getOnePetThunk.rejected, (state) => {
-      //   state.onePet = null;
-      // });
   },
 });
 
