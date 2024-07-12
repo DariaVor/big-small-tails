@@ -46,6 +46,8 @@ petRouter.route('/found').get(async (req, res) => {
   }
 });
 
+const defaultImagePath = './public/img/paw.webp'
+
 // GET одного питомца
 petRouter.route('/:id').get(async (req, res) => {
   try {
@@ -69,41 +71,36 @@ petRouter.route('/:id').get(async (req, res) => {
 });
 
 // POST новый питомец
-petRouter.route('/add').post(upload.single('file'),/* verifyAccessToken*/ async (req, res) => {
+petRouter.route('/add').post(upload.single('file'), /* verifyAccessToken */ async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'Файл не найден' });
-    }
+    let imageName = null;
 
-    const imageName = `${Date.now()}.webp`;
-    const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
-    await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
+    if (req.file) {
+      imageName = `${Date.now()}.webp`;
+      const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
+      await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
+    } else {
+      // Use default image
+      const defaultImageBuffer = await fs.readFile(defaultImagePath);
+      imageName = `${Date.now()}_default.webp`;
+      await fs.writeFile(`./public/img/${imageName}`, defaultImageBuffer);
+    }
 
     const pet = await Pet.create({
       ...req.body,
       image: imageName,
-      userId: 1/*res.locals.user.id*/,
+      userId: 1 /* res.locals.user.id */,
     });
 
-    const plainPet = await Pet.findOne({
-      where: {
-        id: pet.id,
-      },
-      include: {
-        model: User,
-        attributes: ['id', 'username', 'email'],
-      },
-    });
-
-    res.json(plainPet);
+    res.status(201).json(pet);
   } catch (error) {
-    console.log(error)
-    res.status(500).send('Internal server error');
+    res.status(500).json({ message: 'Произошла ошибка при добавлении записи', error });
   }
 });
 
+
 // UPDATE одного питомца
-petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (req, res) => {
+petRouter.route('/:id').patch(upload.single('file'), /*verifyAccessToken,*/ async (req, res) => {
   try {
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) {
@@ -124,6 +121,7 @@ petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (r
     const updatedPet = await pet.update(req.body);
     res.json(updatedPet);
   } catch (error) {
+    console.log(error)
     res.status(500).send('Internal server error');
   }
 });

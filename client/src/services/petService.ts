@@ -1,6 +1,6 @@
 import type { AxiosInstance } from 'axios';
 import axiosInstance from './apiInstance';
-import type { PetFormType, PetType } from '../types/petTypes';
+import type { PetFormDataType, PetType } from '../types/petTypes';
 
 class PetsService {
   constructor(private readonly apiInstance: AxiosInstance) {}
@@ -20,7 +20,7 @@ class PetsService {
     return response.data;
   }
 
-  async updateOnePet(id: number, petForm: PetFormType): Promise<PetType> {
+  async updateOnePet(id: number, petForm: PetFormDataType): Promise<PetType> {
     const response = await this.apiInstance.patch<PetType>(`/pets/${id}`, petForm);
     return response.data;
   }
@@ -29,13 +29,13 @@ class PetsService {
     await this.apiInstance.delete(`/pets/${id}`);
   }
 
-  async addPet(formData: FormData): Promise<PetType> {
+  async addPet(formData: PetFormDataType): Promise<PetType> {
     const response = await this.apiInstance.post<PetType>('/pets/add', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   }
 
