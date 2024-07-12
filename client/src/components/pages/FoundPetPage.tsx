@@ -11,13 +11,8 @@ export default function FoundPetPage(): JSX.Element {
     void dispatch(getAllFoundPetsThunk());
   }, [dispatch]);
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number): void => {
     void dispatch(deleteOnePetThunk(id));
-  };
-
-  const handleEdit = (id: number) => {
-    // Логика для редактирования карточки питомца
-    console.log('Edit pet with id:', id);
   };
 
   return (
@@ -25,7 +20,7 @@ export default function FoundPetPage(): JSX.Element {
       <div className="mt-4 flex flex-wrap justify-center">
         {pets.map((pet) => (
           <div key={pet.id} className="mr-4 mb-4">
-            <OneFoundPetCard pet={pet} onDelete={handleDelete} onEdit={handleEdit} />
+            <OneFoundPetCard pet={pet} onDelete={handleDelete} />
           </div>
         ))}
       </div>
