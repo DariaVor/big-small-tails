@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkUserThunk } from './redux/slices/auth/authThunks';
 import PrivateRouter from './components/hocs/PrivateRouter';
+import AdminRouter from './components/hocs/AdminRoute'; // Import the new AdminRouter
 import RegisterPage from './components/pages/RegisterPage';
 import LoginPage from './components/pages/LoginPage';
 import Layout from './components/Layout';
@@ -13,19 +14,17 @@ import LostPetPage from './components/pages/LostPetPage';
 import PetDetailPage from './components/pages/PetDetailPage';
 import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
-// import Example2 from './components/pages/Example2';
 import Example from './components/pages/Example';
 import AdminDashboard from './components/pages/AdminDashboard';
-
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector((store) => store.auth.user);
-  
 
   useEffect(() => {
     void dispatch(checkUserThunk());
-  }, []);
+  }, [dispatch]);
+
 
   const router = createBrowserRouter([
     {
@@ -33,16 +32,16 @@ function App(): JSX.Element {
       element: <Layout />,
       children: [
         {
-          path: "/",
+          path: '/',
           element: <HomePage />,
         },
         {
           path: '/example',
-          element: <Example />
+          element: <Example />,
         },
         {
           path: 'location',
-          element: <LocationPage />
+          element: <LocationPage />,
         },
         {
           path: '/pets/found',
@@ -52,7 +51,10 @@ function App(): JSX.Element {
           path: '/pets/lost',
           element: <LostPetPage />,
         },
-        { path: '/pets/:id', element: <PetDetailPage /> },
+        {
+          path: '/pets/:id',
+          element: <PetDetailPage />,
+        },
         {
           path: '*',
           element: <ErrorPage />,
@@ -83,6 +85,15 @@ function App(): JSX.Element {
             },
           ],
         },
+        // {
+        //   element: <AdminRouter isAdmin={user.role === 'admin'} redirect="/login" />,
+        //   children: [
+        //     {
+        //       path: '/admin/dashboard',
+        //       element: <AdminDashboard />,
+        //     },
+        //   ],
+        // },
       ],
     },
   ]);
@@ -91,4 +102,3 @@ function App(): JSX.Element {
 }
 
 export default App;
-

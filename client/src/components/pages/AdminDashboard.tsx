@@ -7,7 +7,7 @@ import {
 } from '../../redux/slices/pet/petThunk';
 import type { PetType } from '../../types/petTypes';
 
-export default function AdminDashboard() {
+export default function AdminDashboard(): JSX.Element {
   const dispatch = useAppDispatch();
   const pendingPets = useAppSelector((state) => state.pets.pendingPets);
 

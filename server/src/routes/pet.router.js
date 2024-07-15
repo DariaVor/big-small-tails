@@ -149,8 +149,6 @@ petRouter.route('/:id').delete(async (req, res) => {
 });
 
 
-
-
 // GET all pending approval pets (admin)
 petRouter.get('/admin/approvals', verifyAccessToken, verifyAdmin, async (req, res) => {
   try {
