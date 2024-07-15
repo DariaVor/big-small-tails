@@ -4,6 +4,7 @@ import { updateOnePetThunk } from '../../redux/slices/pet/petThunk';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import type { RootState } from '../../redux/store';
 import { getCategoriesThunk, getColorsThunk } from '../../redux/slices/catandcolor/catandcolorThunk';
+import { Link } from 'react-router-dom';
 
 type PetType = {
   id: number;
@@ -77,7 +78,9 @@ export default function OneFoundPetCard({ pet, onDelete }: OneFoundPetCardProps)
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       <div className="md:flex">
         <div className="md:flex-shrink-0">
+        <Link to={`/pets/${pet.id}`}>
           <img className="h-48 w-full object-cover md:h-full md:w-48" src={`/img/${pet.image}`} alt="Found Pet" />
+          </Link>
         </div>
         <div className="p-8">
           <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Найденные</div>
