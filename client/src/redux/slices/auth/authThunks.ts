@@ -9,6 +9,7 @@ export const registerThunk = createAsyncThunk(
   async (formData: UserRegisterType, thunkApi) => {
     try {
       const data = await authService.register(formData);
+      thunkApi.dispatch(setNotify({ type: 'success', message: 'Вы вошли в систему' }));
       return data;
     } catch (error) {
       const err = error as AxiosError;
@@ -23,6 +24,7 @@ export const loginThunk = createAsyncThunk(
   async (formData: UserLoginType, thunkApi) => {
     try {
       const data = await authService.login(formData);
+      thunkApi.dispatch(setNotify({ type: 'success', message: 'Вы вошли в систему' }));
       return data;
     } catch (error) {
       const err = error as AxiosError;
