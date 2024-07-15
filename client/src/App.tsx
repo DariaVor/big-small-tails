@@ -3,7 +3,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkUserThunk } from './redux/slices/auth/authThunks';
 import PrivateRouter from './components/hocs/PrivateRouter';
-import AdminRouter from './components/hocs/AdminRoute'; // Import the new AdminRouter
 import RegisterPage from './components/pages/RegisterPage';
 import LoginPage from './components/pages/LoginPage';
 import Layout from './components/Layout';
@@ -14,8 +13,7 @@ import LostPetPage from './components/pages/LostPetPage';
 import PetDetailPage from './components/pages/PetDetailPage';
 import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
-import Example from './components/pages/Example';
-import AdminDashboard from './components/pages/AdminDashboard';
+import BothAddPage from './components/pages/BothAddPage';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -33,14 +31,12 @@ function App(): JSX.Element {
       children: [
         {
           path: '/',
+          path: '/',
           element: <HomePage />,
         },
         {
-          path: '/example',
-          element: <Example />,
-        },
-        {
           path: 'location',
+          element: <LocationPage />,
           element: <LocationPage />,
         },
         {
@@ -52,9 +48,14 @@ function App(): JSX.Element {
           element: <LostPetPage />,
         },
         {
-          path: '/pets/:id',
-          element: <PetDetailPage />,
+          path: 'lostaddpage',
+          element: <BothAddPage found="" />,
         },
+        {
+          path: 'foundaddpage',
+          element: <BothAddPage found="found" />,
+        },
+        { path: '/pets/:id', element: <PetDetailPage /> },
         {
           path: '*',
           element: <ErrorPage />,
