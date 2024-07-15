@@ -26,7 +26,7 @@ petRouter.route('/').get(async (req, res) => {
 petRouter.get('/lost', async (req, res) => {
   try {
     const pets = await Pet.findAll({
-      where: { petStatusId: 1 },
+      where: { petStatusId: 1, requestStatusId: 2 },
       order: [['createdAt', 'DESC']],
       include: [{ model: PetStatus, attributes: ['status'] }],
     });
@@ -41,7 +41,7 @@ petRouter.get('/lost', async (req, res) => {
 petRouter.route('/found').get(async (req, res) => {
   try {
     const pets = await Pet.findAll({
-      where: { petStatusId: 2 },
+      where: { petStatusId: 2, requestStatusId: 2 },
       order: [['createdAt', 'DESC']],
       include: [{ model: PetStatus, attributes: ['status'] }],
     });
@@ -119,8 +119,8 @@ petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (re
       hasCollar: req.body.hasCollar ? req.body.hasCollar === 'true' : null,
       contactInfo: req.body.contactInfo || null,
       date: req.body.date ? new Date(req.body.date) : null,
-      requestStatusId: req.body.requestStatusId ? parseInt(req.body.requestStatusId) : 1,
-      userId: 1, // res.locals.user.id,
+      requestStatusId: 1,
+      userId: res.locals.user.id,
     };
 
     console.log('Pet Data:', petData);
@@ -129,7 +129,7 @@ petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (re
 
     res.status(201).json(pet);
   } catch (error) {
-    console.error('Ошибка при добавлении питомца:', error); // Логирование ошибки
+    console.error('Ошибка при добавлении питомца:', error);
     res.status(500).json({ message: 'Произошла ошибка при добавлении записи', error });
   }
 });

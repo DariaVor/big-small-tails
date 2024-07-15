@@ -133,7 +133,7 @@ module.exports = {
           hasCollar: false,
           contactInfo: '+7(999)-999-99-99',
           date: '2024-06-15',
-          requestStatusId: 2,
+          requestStatusId: 1,
           userId: 2,
         },
         {
@@ -161,7 +161,7 @@ module.exports = {
           hasCollar: false,
           contactInfo: '+7(999)-999-99-99',
           date: '2024-06-20',
-          requestStatusId: 3,
+          requestStatusId: 1,
           userId: 1,
         },
       ],

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AppModal from './AppModal';
-import { updateOnePetThunk } from '../../redux/slices/pet/petThunk';
+import { deleteOnePetThunk, updateOnePetThunk } from '../../redux/slices/pet/petThunk';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import type { RootState } from '../../redux/store';
 import { getCategoriesThunk, getColorsThunk } from '../../redux/slices/catandcolor/catandcolorThunk';
@@ -21,10 +21,9 @@ type PetType = {
 
 type OneFoundPetCardProps = {
   pet: PetType;
-  onDelete: (id: number) => void;
 };
 
-export default function OneFoundPetCard({ pet, onDelete }: OneFoundPetCardProps): JSX.Element {
+export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Element {
   const [editedPet, setEditedPet] = useState({
     categoryId: pet.categoryId,
     colorId: pet.colorId,
@@ -39,11 +38,16 @@ export default function OneFoundPetCard({ pet, onDelete }: OneFoundPetCardProps)
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state: RootState) => state.data.categories);
   const colors = useAppSelector((state: RootState) => state.data.colors);
+  const user = useAppSelector((state: RootState) => state.auth.user)
 
   useEffect(() => {
-    dispatch(getCategoriesThunk());
-    dispatch(getColorsThunk());
+    dispatch(getCategoriesThunk()).catch(console.log)
+    dispatch(getColorsThunk()).catch(console.log)
   }, [dispatch]);
+
+  const handleDelete = (id: number): void => {
+    void dispatch(deleteOnePetThunk(id));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type, files } = e.target;
@@ -212,7 +216,7 @@ export default function OneFoundPetCard({ pet, onDelete }: OneFoundPetCardProps)
             </AppModal>
             <button
               type="button"
-              onClick={() => onDelete(pet.id)}
+              onClick={() => handleDelete(pet.id)}
               className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
             >
               Удалить

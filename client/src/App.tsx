@@ -79,21 +79,8 @@ function App(): JSX.Element {
               path: '/account',
               element: <AccountPage />,
             },
-            {
-              path: '/admin/dashboard',
-              element: <AdminDashboard />,
-            },
           ],
         },
-        // {
-        //   element: <AdminRouter isAdmin={user.role === 'admin'} redirect="/login" />,
-        //   children: [
-        //     {
-        //       path: '/admin/dashboard',
-        //       element: <AdminDashboard />,
-        //     },
-        //   ],
-        // },
       ],
     },
   ]);

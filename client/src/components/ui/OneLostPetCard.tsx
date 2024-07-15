@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppModal from './AppModal';
-import { updateOnePetThunk } from '../../redux/slices/pet/petThunk';
+import { deleteOnePetThunk, updateOnePetThunk } from '../../redux/slices/pet/petThunk';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import type { RootState } from '../../redux/store';
 import {
@@ -25,10 +25,9 @@ type PetType = {
 
 type OneLostPetCardProps = {
   pet: PetType;
-  onDelete: (id: number) => void;
 };
 
-export default function OneLostPetCard({ pet, onDelete }: OneLostPetCardProps): JSX.Element {
+export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [editedPet, setEditedPet] = useState({
     name: pet.name,
@@ -46,9 +45,13 @@ export default function OneLostPetCard({ pet, onDelete }: OneLostPetCardProps): 
   const colors = useAppSelector((state: RootState) => state.data.colors);
 
   useEffect(() => {
-    dispatch(getCategoriesThunk());
-    dispatch(getColorsThunk());
+    dispatch(getCategoriesThunk()).catch(console.log)
+    dispatch(getColorsThunk()).catch(console.log)
   }, [dispatch]);
+
+  const handleDelete = (id: number): void => {
+    void dispatch(deleteOnePetThunk(id));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, files } = e.target;
@@ -276,7 +279,7 @@ export default function OneLostPetCard({ pet, onDelete }: OneLostPetCardProps): 
             </AppModal>
             <button
               type="button"
-              onClick={() => onDelete(pet.id)}
+              onClick={() => handleDelete(pet.id)}
               className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
             >
               Удалить
