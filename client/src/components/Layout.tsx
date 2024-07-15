@@ -37,6 +37,7 @@ export default function Layout(): JSX.Element {
               </animated.div>
             ))}
           </div>
+          {/* <Outlet /> */}
         </>
       </Loader>
       <Notify />

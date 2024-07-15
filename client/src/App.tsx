@@ -13,14 +13,11 @@ import LostPetPage from './components/pages/LostPetPage';
 import PetDetailPage from './components/pages/PetDetailPage';
 import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
-// import Example2 from './components/pages/Example2';
-import Example from './components/pages/Example';
-
+import BothAddPage from './components/pages/BothAddPage';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector((store) => store.auth.user);
-  
 
   useEffect(() => {
     void dispatch(checkUserThunk());
@@ -32,16 +29,12 @@ function App(): JSX.Element {
       element: <Layout />,
       children: [
         {
-          path: "/",
+          path: '/',
           element: <HomePage />,
         },
         {
-          path: '/example',
-          element: <Example />
-        },
-        {
           path: 'location',
-          element: <LocationPage />
+          element: <LocationPage />,
         },
         {
           path: '/pets/found',
@@ -50,6 +43,14 @@ function App(): JSX.Element {
         {
           path: '/pets/lost',
           element: <LostPetPage />,
+        },
+        {
+          path: 'lostaddpage',
+          element: <BothAddPage found="" />,
+        },
+        {
+          path: 'foundaddpage',
+          element: <BothAddPage found="found" />,
         },
         { path: '/pets/:id', element: <PetDetailPage /> },
         {
@@ -86,4 +87,3 @@ function App(): JSX.Element {
 }
 
 export default App;
-

@@ -13,13 +13,10 @@ export default function ErrorPage(): JSX.Element {
           loop
           autoplay
           direction={1}
-          className="w-[500px] h-[500px] transition-all duration-1000 hover:w-[590px] hover:h-[590px]"
+          className="w-[450px] h-[450px] transition-all duration-1000 hover:w-[490px] hover:h-[490px]"
         />
       </div>
       <div className="text-center">
-        {/* <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Страница не найдена
-        </h1> */}
         <div className="mt-6 flex items-center justify-center gap-x-6">
           <a
             href="/"

@@ -1,8 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+// import json from './public/JSON/Anim9.json';
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      // backgroundImage: {
+      //   'hero-pattern': `${json}`,
+      //   'footer-texture': "url('/img/footer-texture.png')",
+      // }
+    },
   },
   plugins: [],
 };
