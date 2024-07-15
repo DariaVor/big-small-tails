@@ -16,9 +16,9 @@ export default function Layout(): JSX.Element {
       <Loader isLoading={user.status === 'fetching'}>
         <>
           <NavBar />
-          <AddPetForm />
-          <LostPetForm />
-          <FoundPetForm />
+          {/* <AddPetForm /> */}
+          {/* <LostPetForm />
+          <FoundPetForm /> */}
           <Outlet />
         </>
       </Loader>

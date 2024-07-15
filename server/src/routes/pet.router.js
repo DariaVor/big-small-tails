@@ -5,6 +5,8 @@ const upload = require('../middlewares/multer.middleware');
 const sharp = require('sharp');
 const fs = require('fs/promises');
 
+const defaultImagePath = 'public/img/paw.webp'; // Путь к дефолтному изображению в папке public/img
+
 // GET все питомцы
 petRouter.route('/').get(async (req, res) => {
   try {
@@ -14,6 +16,7 @@ petRouter.route('/').get(async (req, res) => {
     });
     res.json(pets);
   } catch (error) {
+    console.error('Ошибка при получении всех питомцев:', error);
     res.status(500).send('Internal server error');
   }
 });
@@ -28,6 +31,7 @@ petRouter.get('/lost', async (req, res) => {
     });
     res.json(pets);
   } catch (error) {
+    console.error('Ошибка при получении потерянных питомцев:', error);
     res.status(500).send('Internal server error');
   }
 });
@@ -42,11 +46,30 @@ petRouter.route('/found').get(async (req, res) => {
     });
     res.json(pets);
   } catch (error) {
+    console.error('Ошибка при получении найденных питомцев:', error);
     res.status(500).send('Internal server error');
   }
 });
 
-const defaultImagePath = './public/img/paw.webp'
+// GET категории
+petRouter.get('/categories', async (req, res) => {
+  try {
+    const categories = await Category.findAll();
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка при загрузке категорий', error });
+  }
+});
+
+// GET цвета
+petRouter.get('/colors', async (req, res) => {
+  try {
+    const colors = await Color.findAll();
+    res.json(colors);
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка при загрузке цветов', error });
+  }
+});
 
 // GET одного питомца
 petRouter.route('/:id').get(async (req, res) => {
@@ -66,12 +89,13 @@ petRouter.route('/:id').get(async (req, res) => {
 
     res.json(pet);
   } catch (error) {
+    console.error('Ошибка при получении одного питомца:', error);
     res.status(500).send('Internal server error');
   }
 });
 
 // POST новый питомец
-petRouter.route('/add').post(upload.single('file'), /* verifyAccessToken */ async (req, res) => {
+petRouter.route('/add').post(upload.single('file'), async (req, res) => {
   try {
     let imageName = null;
 
@@ -80,27 +104,37 @@ petRouter.route('/add').post(upload.single('file'), /* verifyAccessToken */ asyn
       const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
       await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
     } else {
-      // Use default image
-      const defaultImageBuffer = await fs.readFile(defaultImagePath);
-      imageName = `${Date.now()}_default.webp`;
-      await fs.writeFile(`./public/img/${imageName}`, defaultImageBuffer);
+      imageName = 'paw.webp';
     }
 
-    const pet = await Pet.create({
-      ...req.body,
+    const petData = {
+      name: req.body.name || null,
+      petStatusId: req.body.petStatusId ? parseInt(req.body.petStatusId) : null,
+      categoryId: req.body.categoryId ? parseInt(req.body.categoryId) : null,
+      colorId: req.body.colorId ? parseInt(req.body.colorId) : null,
+      description: req.body.description || null,
+      location: req.body.location || null,
       image: imageName,
-      userId: 1 /* res.locals.user.id */,
-    });
+      hasCollar: req.body.hasCollar ? req.body.hasCollar === 'true' : null,
+      contactInfo: req.body.contactInfo || null,
+      date: req.body.date ? new Date(req.body.date) : null,
+      requestStatusId: req.body.requestStatusId ? parseInt(req.body.requestStatusId) : 1,
+      userId: 1, // res.locals.user.id,
+    };
+
+    console.log('Pet Data:', petData);
+
+    const pet = await Pet.create(petData);
 
     res.status(201).json(pet);
   } catch (error) {
+    console.error('Ошибка при добавлении питомца:', error); // Логирование ошибки
     res.status(500).json({ message: 'Произошла ошибка при добавлении записи', error });
   }
 });
 
-
 // UPDATE одного питомца
-petRouter.route('/:id').patch(upload.single('file'), /*verifyAccessToken,*/ async (req, res) => {
+petRouter.route('/:id').patch(upload.single('file'), async (req, res) => {
   try {
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) {
@@ -113,20 +147,28 @@ petRouter.route('/:id').patch(upload.single('file'), /*verifyAccessToken,*/ asyn
       await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
       req.body.image = imageName;
 
-      if (pet.image) {
-        await fs.unlink(`./public/img/${pet.image}`);
+      if (pet.image && pet.image !== 'paw.webp') {
+        try {
+          await fs.unlink(`./public/img/${pet.image}`);
+        } catch (err) {
+          if (err.code !== 'ENOENT') {
+            throw err;
+          }
+        }
       }
     }
 
-    const updatedPet = await pet.update(req.body);
+    // const updatedPet = await pet.update(req.body);
+    await Pet.update(req.body, { where: { id: req.params.id } });
+    const updatedPet = await Pet.findByPk(req.params.id);
     res.json(updatedPet);
   } catch (error) {
-    console.log(error)
+    console.error('Ошибка при обновлении питомца:', error);
     res.status(500).send('Internal server error');
   }
 });
 
-// DELETE одного питомцы
+// DELETE одного питомца
 petRouter.route('/:id').delete(async (req, res) => {
   try {
     const pet = await Pet.findByPk(req.params.id);
@@ -134,14 +176,20 @@ petRouter.route('/:id').delete(async (req, res) => {
       return res.status(404).send('Питомец не найден');
     }
 
-    // if (pet.image) {
-    //   await fs.unlink(`./public/img/${pet.image}`);
-    // }
+    if (pet.image && pet.image !== 'paw.webp') {
+      try {
+        await fs.unlink(`./public/img/${pet.image}`);
+      } catch (err) {
+        if (err.code !== 'ENOENT') {
+          throw err;
+        }
+      }
+    }
 
     await pet.destroy();
     res.send('Успешно удалено');
   } catch (error) {
-    console.log(error)
+    console.error('Ошибка при удалении питомца:', error);
     res.status(500).send('Internal server error');
   }
 });

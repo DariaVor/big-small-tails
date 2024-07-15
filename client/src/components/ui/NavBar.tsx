@@ -18,7 +18,7 @@ export default function NavBar(): JSX.Element {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-4">
         <Link to="/">
-            <img src="images/pets.png" alt="Logo" className="h-8 w-8"/>
+            <img src="/images/pets.png" alt="Logo" className="h-8 w-8"/>
           </Link>
           <Link to="/" className="text-2xl font-bold text-green-700">Хвосты и хвостики</Link>
         </div>

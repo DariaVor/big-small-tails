@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getAllFoundPetsThunk, deleteOnePetThunk } from '../../redux/slices/pet/petThunk';
 import OneFoundPetCard from '../ui/OneFoundPetCard';
+import FoundPetForm from '../ui/FoundPetForm';
 
 export default function FoundPetPage(): JSX.Element {
   const pets = useAppSelector((store) => store.pets.foundPets);
@@ -17,11 +18,10 @@ export default function FoundPetPage(): JSX.Element {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="mt-4 flex flex-wrap justify-center">
+      <FoundPetForm />
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {pets.map((pet) => (
-          <div key={pet.id} className="mr-4 mb-4">
-            <OneFoundPetCard pet={pet} onDelete={handleDelete} />
-          </div>
+          <OneFoundPetCard key={pet.id} pet={pet} onDelete={handleDelete} />
         ))}
       </div>
     </div>

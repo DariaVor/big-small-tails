@@ -41,5 +41,14 @@ export type PetFormDataType = {
     date: string; // ISO 8601 date string
 }
 
+export type CategoryType = {
+    id: number;
+    name: string;
+  };
+  
+  export type ColorType = {
+    id: number;
+    name: string;
+  };
 
 // export type NewPetFormLostData = Omit<NewPetFormFoundData, 'name'>
