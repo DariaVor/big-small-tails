@@ -15,6 +15,7 @@ import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
 // import Example2 from './components/pages/Example2';
 import Example from './components/pages/Example';
+import AdminDashboard from './components/pages/AdminDashboard';
 
 
 function App(): JSX.Element {
@@ -75,6 +76,10 @@ function App(): JSX.Element {
             {
               path: '/account',
               element: <AccountPage />,
+            },
+            {
+              path: '/admin/dashboard',
+              element: <AdminDashboard />,
             },
           ],
         },

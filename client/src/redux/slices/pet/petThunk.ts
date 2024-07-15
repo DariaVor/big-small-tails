@@ -39,3 +39,19 @@ export const getOnePetThunk = createAsyncThunk('pets/getOnePet', async (id: numb
   const data = await petsService.getOnePet(id);
   return data;
 });
+
+
+export const getPendingPetsThunk = createAsyncThunk('pets/getPendingPets', async () => {
+  const data = await petsService.getPendingPets();
+  return data;
+});
+
+export const approvePetThunk = createAsyncThunk('pets/approvePet', async (id: number) => {
+  const data = await petsService.approvePet(id);
+  return data;
+});
+
+export const rejectPetThunk = createAsyncThunk('pets/rejectPet', async (id: number) => {
+  const data = await petsService.rejectPet(id);
+  return data;
+});

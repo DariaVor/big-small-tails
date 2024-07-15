@@ -1,9 +1,10 @@
 const petRouter = require('express').Router();
-const { Pet, User, PetStatus, Category, Color } = require('../../db/models');
+const { Pet, User, PetStatus, Category, Color, RequestStatus } = require('../../db/models');
 const { verifyAccessToken } = require('../middlewares/verifyTokens');
 const upload = require('../middlewares/multer.middleware');
 const sharp = require('sharp');
 const fs = require('fs/promises');
+const { verifyAdmin } = require('../middlewares/verifyAdmin');
 
 // GET все питомцы
 petRouter.route('/').get(async (req, res) => {
@@ -71,7 +72,7 @@ petRouter.route('/:id').get(async (req, res) => {
 });
 
 // POST новый питомец
-petRouter.route('/add').post(upload.single('file'), /* verifyAccessToken */ async (req, res) => {
+petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (req, res) => {
   try {
     let imageName = null;
 
@@ -89,7 +90,8 @@ petRouter.route('/add').post(upload.single('file'), /* verifyAccessToken */ asyn
     const pet = await Pet.create({
       ...req.body,
       image: imageName,
-      userId: 1 /* res.locals.user.id */,
+      userId: res.locals.user.id,
+      requestStatusId: 1,
     });
 
     res.status(201).json(pet);
@@ -142,6 +144,50 @@ petRouter.route('/:id').delete(async (req, res) => {
     res.send('Успешно удалено');
   } catch (error) {
     console.log(error)
+    res.status(500).send('Internal server error');
+  }
+});
+
+
+
+
+// GET all pending approval pets (admin)
+petRouter.get('/admin/approvals', verifyAccessToken, verifyAdmin, async (req, res) => {
+  try {
+    const pendingPets = await Pet.findAll({
+      where: { requestStatusId: 1 },
+      include: [{ model: RequestStatus, attributes: ['status'] }],
+    });
+    res.json(pendingPets);
+  } catch (error) {
+    res.status(500).send('Internal server error');
+  }
+});
+
+// PATCH approve pet (admin)
+petRouter.patch('/admin/approve/:id', verifyAccessToken, verifyAdmin, async (req, res) => {
+  try {
+    const pet = await Pet.findByPk(req.params.id);
+    if (!pet) return res.status(404).send('Pet not found');
+
+    pet.requestStatusId = 2; // Assuming 2 is "approved"
+    await pet.save();
+    res.json(pet);
+  } catch (error) {
+    res.status(500).send('Internal server error');
+  }
+});
+
+// PATCH reject pet (admin)
+petRouter.patch('/admin/reject/:id', verifyAccessToken, verifyAdmin, async (req, res) => {
+  try {
+    const pet = await Pet.findByPk(req.params.id);
+    if (!pet) return res.status(404).send('Pet not found');
+
+    pet.requestStatusId = 4; // Assuming 4 is "rejected"
+    await pet.save();
+    res.json(pet);
+  } catch (error) {
     res.status(500).send('Internal server error');
   }
 });

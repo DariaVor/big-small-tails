@@ -43,6 +43,22 @@ class PetsService {
     const response = await this.apiInstance.get<PetType>(`/pets/${id}`);
     return response.data;
   }
+
+  async getPendingPets(): Promise<PetType[]> {
+    const response = await this.apiInstance.get<PetType[]>('/pets/admin/approvals');
+    return response.data;
+  }
+
+  async approvePet(id: number): Promise<PetType> {
+    const response = await this.apiInstance.patch<PetType>(`/pets/admin/approve/${id}`);
+    return response.data;
+  }
+
+  async rejectPet(id: number): Promise<PetType> {
+    const response = await this.apiInstance.patch<PetType>(`/pets/admin/reject/${id}`);
+    return response.data;
+  }
+
 }
 
 export default new PetsService(axiosInstance);

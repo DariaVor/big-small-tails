@@ -7,6 +7,9 @@ import {
   addPetThunk,
   updateOnePetThunk,
   getOnePetThunk,
+    getPendingPetsThunk,
+  approvePetThunk,
+  rejectPetThunk,
 } from './petThunk';
 import type { PetType } from '../../../types/petTypes';
 
@@ -15,12 +18,14 @@ type PetState = {
   lostPets: PetType[];
   foundPets: PetType[];
   onePet: PetType,
+  pendingPets: PetType[];
 };
 
 const initialState: PetState = {
   pets: [],
   lostPets: [],
   foundPets: [],
+  pendingPets: [],
   onePet: null,
   loading: false,
   error: null,
@@ -86,7 +91,19 @@ export const petsSlice = createSlice({
     })
     .addCase(getOnePetThunk.rejected, (state) => {
       state.onePet = null;
+    })
+
+
+    .addCase(getPendingPetsThunk.fulfilled, (state, action) => {
+      state.pendingPets = action.payload;
+    })
+    .addCase(approvePetThunk.fulfilled, (state, action) => {
+      state.pendingPets = state.pendingPets.filter(pet => pet.id !== action.payload.id);
+    })
+    .addCase(rejectPetThunk.fulfilled, (state, action) => {
+      state.pendingPets = state.pendingPets.filter(pet => pet.id !== action.payload.id);
     });
+
   },
 });
 
