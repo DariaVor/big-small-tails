@@ -31,12 +31,10 @@ function App(): JSX.Element {
       children: [
         {
           path: '/',
-          path: '/',
           element: <HomePage />,
         },
         {
           path: 'location',
-          element: <LocationPage />,
           element: <LocationPage />,
         },
         {

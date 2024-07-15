@@ -41,6 +41,8 @@ export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Elemen
     image: null,
   });
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   const categories = useAppSelector((state: RootState) => state.data.categories);
   const colors = useAppSelector((state: RootState) => state.data.colors);
 
@@ -122,8 +124,11 @@ export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Elemen
               title="Изменить информацию о питомце"
               buttonText="Редактировать"
               buttonVariant="bg-indigo-600 hover:bg-indigo-500 text-white"
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
             >
-              <form onSubmit={handleEditPet}>
+               {(closeModal) => (
+           <form onSubmit={(e) => handleEditPet(e, closeModal)}>
                 <div className="mb-3">
                   <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
                     Имя
@@ -275,7 +280,8 @@ export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Elemen
                     Сохранить
                   </button>
                 </div>
-              </form>
+                </form>
+               )}
             </AppModal>
             <button
               type="button"

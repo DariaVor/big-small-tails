@@ -3,7 +3,10 @@ import AppModal from './AppModal';
 import { deleteOnePetThunk, updateOnePetThunk } from '../../redux/slices/pet/petThunk';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import type { RootState } from '../../redux/store';
-import { getCategoriesThunk, getColorsThunk } from '../../redux/slices/catandcolor/catandcolorThunk';
+import {
+  getCategoriesThunk,
+  getColorsThunk,
+} from '../../redux/slices/catandcolor/catandcolorThunk';
 import { Link } from 'react-router-dom';
 
 type PetType = {
@@ -35,29 +38,40 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
     image: null,
   });
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state: RootState) => state.data.categories);
   const colors = useAppSelector((state: RootState) => state.data.colors);
-  const user = useAppSelector((state: RootState) => state.auth.user)
+  const user = useAppSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    dispatch(getCategoriesThunk()).catch(console.log)
-    dispatch(getColorsThunk()).catch(console.log)
+    dispatch(getCategoriesThunk()).catch(console.log);
+    dispatch(getColorsThunk()).catch(console.log);
   }, [dispatch]);
 
   const handleDelete = (id: number): void => {
     void dispatch(deleteOnePetThunk(id));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value, type, files } = e.target;
     setEditedPet((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : files ? files[0] : name === 'categoryId' || name === 'colorId' ? Number(value) : value,
+      [name]:
+        type === 'checkbox'
+          ? (e.target as HTMLInputElement).checked
+          : files
+            ? files[0]
+            : name === 'categoryId' || name === 'colorId'
+              ? Number(value)
+              : value,
     }));
   };
 
-  const handleEditPet = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleEditPet = async (e: React.FormEvent<HTMLFormElement>, closeModal: () => void): Promise<void> => {
     e.preventDefault();
     const formData = new FormData();
     Object.entries(editedPet).forEach(([key, value]) => {
@@ -65,8 +79,10 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
         formData.append(key, value as string | Blob);
       }
     });
-    void dispatch(updateOnePetThunk({ id: pet.id, petForm: formData }));
+    await dispatch(updateOnePetThunk({ id: pet.id, petForm: formData }));
+    closeModal();
   };
+  
 
   const getCategoryName = (id: number | null) => {
     const category = categories.find((cat) => cat.id === id);
@@ -82,28 +98,54 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       <div className="md:flex">
         <div className="md:flex-shrink-0">
-        <Link to={`/pets/${pet.id}`}>
-          <img className="h-48 w-full object-cover md:h-full md:w-48" src={`/img/${pet.image}`} alt="Found Pet" />
+          <Link to={`/pets/${pet.id}`}>
+            <img
+              className="h-48 w-full object-cover md:h-full md:w-48"
+              src={`/img/${pet.image}`}
+              alt="Found Pet"
+            />
           </Link>
         </div>
         <div className="p-8">
-          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Найденные</div>
-          {pet.categoryId !== null && <p className="block mt-1 text-lg leading-tight font-medium text-black">Категория: {getCategoryName(pet.categoryId)}</p>}
-          {pet.colorId !== null && <p className="block mt-1 text-lg leading-tight font-medium text-black">Цвет: {getColorName(pet.colorId)}</p>}
+          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+            Найденные
+          </div>
+          {pet.categoryId !== null && (
+            <p className="block mt-1 text-lg leading-tight font-medium text-black">
+              Категория: {getCategoryName(pet.categoryId)}
+            </p>
+          )}
+          {pet.colorId !== null && (
+            <p className="block mt-1 text-lg leading-tight font-medium text-black">
+              Цвет: {getColorName(pet.colorId)}
+            </p>
+          )}
           {pet.description && <p className="mt-2 text-gray-500">Описание: {pet.description}</p>}
           {pet.location && <p className="mt-2 text-gray-500">Локация: {pet.location}</p>}
           <p className="mt-2 text-gray-500">Наличие ошейника: {pet.hasCollar ? 'Да' : 'Нет'}</p>
-          {pet.contactInfo && <p className="mt-2 text-gray-500">Контактная информация: {pet.contactInfo}</p>}
-          {pet.date && <p className="mt-2 text-gray-500">Дата: {new Date(pet.date).toLocaleDateString()}</p>}
+          {pet.contactInfo && (
+            <p className="mt-2 text-gray-500">Контактная информация: {pet.contactInfo}</p>
+          )}
+          {pet.date && (
+            <p className="mt-2 text-gray-500">Дата: {new Date(pet.date).toLocaleDateString()}</p>
+          )}
           <div className="flex justify-between items-center mt-4">
             <AppModal
               title="Изменить информацию о питомце"
               buttonText="Редактировать"
               buttonVariant="bg-indigo-600 hover:bg-indigo-500 text-white"
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
             >
-              <form onSubmit={handleEditPet}>
+               {(closeModal) => (
+           <form onSubmit={(e) => handleEditPet(e, closeModal)}>
                 <div className="mb-3">
-                  <label htmlFor="categoryId" className="block text-gray-700 text-sm font-bold mb-2">Категория</label>
+                  <label
+                    htmlFor="categoryId"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Категория
+                  </label>
                   <select
                     id="categoryId"
                     name="categoryId"
@@ -120,7 +162,9 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="colorId" className="block text-gray-700 text-sm font-bold mb-2">Цвет</label>
+                  <label htmlFor="colorId" className="block text-gray-700 text-sm font-bold mb-2">
+                    Цвет
+                  </label>
                   <select
                     id="colorId"
                     name="colorId"
@@ -137,7 +181,12 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Описание</label>
+                  <label
+                    htmlFor="description"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Описание
+                  </label>
                   <textarea
                     id="description"
                     name="description"
@@ -149,7 +198,9 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">Локация</label>
+                  <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
+                    Локация
+                  </label>
                   <input
                     id="location"
                     name="location"
@@ -161,18 +212,27 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="hasCollar" className="block text-gray-700 text-sm font-bold mb-2">Наличие ошейника</label>
+                  <label htmlFor="hasCollar" className="block text-gray-700 text-sm font-bold mb-2">
+                    Наличие ошейника
+                  </label>
                   <input
                     id="hasCollar"
                     name="hasCollar"
                     type="checkbox"
                     checked={editedPet.hasCollar}
-                    onChange={(e) => setEditedPet((prev) => ({ ...prev, hasCollar: e.target.checked }))}
+                    onChange={(e) =>
+                      setEditedPet((prev) => ({ ...prev, hasCollar: e.target.checked }))
+                    }
                     className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="contactInfo" className="block text-gray-700 text-sm font-bold mb-2">Контактная информация</label>
+                  <label
+                    htmlFor="contactInfo"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Контактная информация
+                  </label>
                   <input
                     id="contactInfo"
                     name="contactInfo"
@@ -184,7 +244,9 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">Дата</label>
+                  <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">
+                    Дата
+                  </label>
                   <input
                     id="date"
                     name="date"
@@ -195,7 +257,9 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">Картинка</label>
+                  <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
+                    Картинка
+                  </label>
                   <input
                     id="image"
                     name="file"
@@ -213,6 +277,7 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
                   </button>
                 </div>
               </form>
+               )}
             </AppModal>
             <button
               type="button"
