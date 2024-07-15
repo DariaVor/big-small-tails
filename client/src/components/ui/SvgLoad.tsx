@@ -12,7 +12,7 @@ export default function Spinner(): JSX.Element {
       loop
       autoplay
       direction={1}
-      className="w-[355px] h-[355px] transition-all duration-1000 hover:w-[390px] hover:h-[390px]"
+      className="w-[355px] h-[355px] transition-all duration-1000"
     />
   </div>
   );

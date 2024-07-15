@@ -28,7 +28,7 @@ export default function Layout(): JSX.Element {
       <Loader isLoading={user.status === 'fetching'}>
         <>
           <NavBar />
-          {/* <div className="relative">
+          <div className="relative">
             {transitions((style, item) => (
               <animated.div
                 key={item.pathname}
@@ -38,8 +38,8 @@ export default function Layout(): JSX.Element {
                 <Outlet />
               </animated.div>
             ))}
-          </div> */}
-          <Loader isLoading={isLoading}><Outlet /></Loader>
+          </div>
+          {/* <Loader isLoading={isLoading}><Outlet /></Loader> */}
         </>
       </Loader>
       <Notify />
