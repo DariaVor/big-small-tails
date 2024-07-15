@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PhoneInput from 'react-phone-input-2';
 import DatePicker from 'react-datepicker';
+import { useNavigate } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
 import { addPetThunk } from '../../redux/slices/pet/petThunk';
 import type { RootState } from '../../redux/store';
 import {
@@ -10,6 +12,9 @@ import {
 } from '../../redux/slices/catandcolor/catandcolorThunk';
 import 'react-phone-input-2/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import getAddress from '../../services/getAddress';
+import svgUrl from '../../../public/JSON/Anim6.json';
+import svgUrl2 from '../../../public/JSON/Anim3.json';
 
 type CategoryType = {
   id: number;
@@ -22,10 +27,13 @@ type ColorType = {
 };
 
 export default function FoundPetForm(): JSX.Element {
+
   const dispatch = useDispatch();
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null); // State для предварительного просмотра изображения
+  const navigate = useNavigate();
+  const [locActive, setLocActive] = useState(true);
 
   const [formState, setFormState] = useState({
     categoryId: '',
@@ -37,6 +45,8 @@ export default function FoundPetForm(): JSX.Element {
     date: new Date(),
     petStatusId: '2',
   });
+
+  
 
   const categories = useSelector((state: RootState) => state.data.categories);
   const colors = useSelector((state: RootState) => state.data.colors);
@@ -56,6 +66,7 @@ export default function FoundPetForm(): JSX.Element {
       formData.append('file', file);
     }
     void dispatch(addPetThunk(formData));
+    navigate('/account');
   };
 
   const handleInputChange = (
@@ -93,6 +104,15 @@ export default function FoundPetForm(): JSX.Element {
       setFile(e.target.files[0]);
       previewImage(e.target.files[0]); // Предварительный просмотр изображения при выборе файла
     }
+  };
+
+  const handleGetLocation = async () => {
+    setLocActive(!locActive)
+    const address = await getAddress();
+    setFormState((prevState) => ({
+      ...prevState,
+      location: address || '',
+    }));
   };
 
   const previewImage = (file: File) => {
@@ -138,7 +158,9 @@ export default function FoundPetForm(): JSX.Element {
                   type="button"
                   key={category.id}
                   className={`flex-grow px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                    formState.categoryId === category.id.toString() ? 'bg-indigo-200' : 'bg-gray-100'
+                    formState.categoryId === category.id.toString()
+                      ? 'bg-indigo-200'
+                      : 'bg-gray-100'
                   }`}
                   onClick={() => handleCategoryClick(category.id)}
                 >
@@ -149,7 +171,9 @@ export default function FoundPetForm(): JSX.Element {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Цвет найденного питомца?</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Цвет найденного питомца?
+            </label>
             <div className="grid grid-cols-2 gap-2">
               {colors.map((color: ColorType) => (
                 <button
@@ -183,17 +207,30 @@ export default function FoundPetForm(): JSX.Element {
 
           <div className="mb-4">
             <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
-              Укажите место где вы его нашли?
+              Укажите место, где нашелся питомец
             </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              placeholder="Введите локацию"
-              value={formState.location}
-              onChange={handleInputChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
-            />
+            <div className="flex">
+              <input
+                id="location"
+                name="location"
+                type="text"
+                placeholder="Введите локацию"
+                value={formState.location}
+                onChange={handleInputChange}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              />
+              <div className="w-[65px]" onClick={handleGetLocation}>
+                <Player
+                  src={locActive || formState.location ? svgUrl : svgUrl2}
+                  background='#ffffff'
+                  speed={1}
+                  loop
+                  autoplay
+                  direction={1}
+                  className="w-[55px] h-[55px] transition-all duration-1000"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -246,7 +283,7 @@ export default function FoundPetForm(): JSX.Element {
 
           <div className="mb-4">
             <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
-              Добавьте фотографию найденного питомца
+              Добавьте фотографию вашего питомца
             </label>
             <div
               onDragEnter={handleDrag}
@@ -260,38 +297,40 @@ export default function FoundPetForm(): JSX.Element {
               {imagePreview ? (
                 <img src={imagePreview} alt="Preview" className="mx-auto h-32" />
               ) : (
-                <svg
-                  className="mx-auto h-12 w-12 text-gray-300"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 16V4a4 4 0 014-4h8m0 0h16m0 0h8a4 4 0 014 4v12m-8 0H12M4 16l16 16m0-16h16m-8 0v32m-8-8h8m-8 0h-8a4 4 0 01-4-4V20m16 24v-4M8 32l8-8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
+                <div className="text-center">
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-300"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4 16V4a4 4 0 014-4h8m0 0h16m0 0h8a4 4 0 014 4v12m-8 0H12M4 16l16 16m0-16h16m-8 0v32m-8-8h8m-8 0h-8a4 4 0 01-4-4V20m16 24v-4M8 32l8-8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
+                  </svg>
+                  <div className="mt-4 flex text-sm text-gray-600">
+                    <label
+                      htmlFor="file-upload"
+                      className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+                    >
+                      <span>Загрузите файл</span>
+                      <input
+                        id="file-upload"
+                        name="file"
+                        type="file"
+                        className="sr-only"
+                        onChange={handleChange}
+                      />
+                    </label>
+                    <p className="pl-1">или перетащите сюда</p>
+                  </div>
+                  <p className="text-xs text-gray-500">PNG, JPG, GIF до 10MB</p>
+                </div>
               )}
-              <div className="mt-4 flex text-sm text-gray-600">
-                <label
-                  htmlFor="file-upload"
-                  className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
-                >
-                  <span>Загрузите файл</span>
-                  <input
-                    id="file-upload"
-                    name="file"
-                    type="file"
-                    className="sr-only"
-                    onChange={handleChange}
-                  />
-                </label>
-                <p className="pl-1">или перетащите сюда</p>
-              </div>
-              <p className="text-xs text-gray-500">PNG, JPG, GIF до 10MB</p>
               {file && (
                 <div className="mt-2 text-center">
                   <p className="text-xs text-green-500">{file.name}</p>
@@ -313,7 +352,7 @@ export default function FoundPetForm(): JSX.Element {
             <button
               type="button"
               className="text-sm font-semibold leading-6 text-gray-900"
-              onClick={() =>
+              onClick={() => {
                 setFormState({
                   categoryId: '',
                   colorId: '',
@@ -323,7 +362,7 @@ export default function FoundPetForm(): JSX.Element {
                   contactInfo: '',
                   date: new Date(),
                   petStatusId: '2',
-                })
+                }); navigate('/') }
               }
             >
               Отмена

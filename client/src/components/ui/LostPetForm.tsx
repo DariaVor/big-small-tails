@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PhoneInput from 'react-phone-input-2';
 import DatePicker from 'react-datepicker';
+import { useNavigate } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
 import { addPetThunk } from '../../redux/slices/pet/petThunk';
 import type { RootState } from '../../redux/store';
 import {
@@ -10,6 +12,9 @@ import {
 } from '../../redux/slices/catandcolor/catandcolorThunk';
 import 'react-phone-input-2/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import getAddress from '../../services/getAddress';
+import svgUrl from '../../../public/JSON/Anim6.json';
+import svgUrl2 from '../../../public/JSON/Anim3.json';
 
 type CategoryType = {
   id: number;
@@ -26,6 +31,8 @@ export default function LostPetForm(): JSX.Element {
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null); // State для предварительного просмотра изображения
+  const navigate = useNavigate();
+  const [locActive, setLocActive] = useState(true);
 
   const [formState, setFormState] = useState({
     name: '',
@@ -57,6 +64,7 @@ export default function LostPetForm(): JSX.Element {
       formData.append('file', file);
     }
     void dispatch(addPetThunk(formData));
+    navigate('/account');
   };
 
   const handleInputChange = (
@@ -94,6 +102,15 @@ export default function LostPetForm(): JSX.Element {
       setFile(e.target.files[0]);
       previewImage(e.target.files[0]); // Предварительный просмотр изображения при выборе файла
     }
+  };
+
+  const handleGetLocation = async () => {
+    setLocActive(!locActive)
+    const address = await getAddress();
+    setFormState((prevState) => ({
+      ...prevState,
+      location: address || '',
+    }));
   };
 
   const previewImage = (file: File) => {
@@ -154,7 +171,9 @@ export default function LostPetForm(): JSX.Element {
                   type="button"
                   key={category.id}
                   className={`flex-grow px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                    formState.categoryId === category.id.toString() ? 'bg-indigo-200' : 'bg-gray-100'
+                    formState.categoryId === category.id.toString()
+                      ? 'bg-indigo-200'
+                      : 'bg-gray-100'
                   }`}
                   onClick={() => handleCategoryClick(category.id)}
                 >
@@ -198,20 +217,32 @@ export default function LostPetForm(): JSX.Element {
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
             />
           </div>
-
           <div className="mb-4">
             <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
               Укажите место, где потерялся питомец
             </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              placeholder="Введите локацию"
-              value={formState.location}
-              onChange={handleInputChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
-            />
+            <div className="flex">
+              <input
+                id="location"
+                name="location"
+                type="text"
+                placeholder="Введите локацию"
+                value={formState.location}
+                onChange={handleInputChange}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              />
+              <div className="" onClick={handleGetLocation}>
+                <Player
+                  src={locActive || formState.location ? svgUrl : svgUrl2}
+                  background="#ffffff"
+                  speed={1}
+                  loop
+                  autoplay
+                  direction={1}
+                  className="w-[55px] h-[55px] transition-all duration-1000"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -333,7 +364,7 @@ export default function LostPetForm(): JSX.Element {
             <button
               type="button"
               className="text-sm font-semibold leading-6 text-gray-900"
-              onClick={() =>
+              onClick={() => {
                 setFormState({
                   name: '',
                   categoryId: '',
@@ -344,8 +375,9 @@ export default function LostPetForm(): JSX.Element {
                   contactInfo: '',
                   date: new Date(),
                   petStatusId: '1',
-                })
-              }
+                });
+                navigate('/');
+              }}
             >
               Отмена
             </button>
