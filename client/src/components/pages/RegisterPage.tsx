@@ -10,6 +10,7 @@ export default function RegisterPage(): JSX.Element {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -24,13 +25,17 @@ export default function RegisterPage(): JSX.Element {
     void dispatch(registerThunk(formData));
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto p-4 pt-[15%] flex justify-center">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="container mx-auto p-4 flex justify-center">
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
-          <div className="flex items-center border-b border-green-500 py-2 mb-4">
+          <div className="flex flex-col border-b border-green-500 py-2 mb-4">
             <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
-              Username
+              Имя пользователя
             </label>
             <input
               type="text"
@@ -38,13 +43,13 @@ export default function RegisterPage(): JSX.Element {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+              className="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none"
               required
             />
           </div>
-          <div className="flex items-center border-b border-green-500 py-2 mb-4">
+          <div className="flex flex-col border-b border-green-500 py-2 mb-4">
             <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
-              Email
+              Электронная почта
             </label>
             <input
               type="email"
@@ -52,23 +57,32 @@ export default function RegisterPage(): JSX.Element {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+              className="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none"
               required
             />
           </div>
-          <div className="flex items-center border-b border-green-500 py-2 mb-6">
+          <div className="flex flex-col border-b border-green-500 py-2 mb-6 relative">
             <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
-              Password
+              Пароль
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-              required
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 pr-2 text-gray-700 focus:outline-none"
+              >
+                {showPassword ? 'Скрыть' : 'Показать'}
+              </button>
+            </div>
           </div>
           <div className="flex items-center justify-center">
             <button

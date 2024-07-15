@@ -6,7 +6,7 @@ import Footer from '../ui/Footer';
 
 export default function HomePage(): JSX.Element {
   return (
-    <div className="container mx-auto p-4 mt-8">
+    <div className="container mx-auto p-4 mt-8 fade-in">
       <div className="p-8 rounded-md mb-8 h-56">
         <h1 className="text-3xl font-bold text-center mb-4">
           Всероссийская система поиска пропавших животных
