@@ -25,9 +25,10 @@ type PetType = {
 
 type OneLostPetCardProps = {
   pet: PetType;
+  showButtons?: boolean;
 };
 
-export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Element {
+export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [editedPet, setEditedPet] = useState({
     name: pet.name,
@@ -127,7 +128,7 @@ export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Elemen
             <p className="mt-2 text-gray-500">Дата: {new Date(pet.date).toLocaleDateString()}</p>
           )}
           <div className="flex justify-between items-center mt-4">
-            {user.roleId === 2 ? (
+          {showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleApprove(pet.id)}
@@ -135,7 +136,7 @@ export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Elemen
               >
                 Одобрить
               </button>
-            ) : (
+            )} {showButtons && user.roleId === 1 && (
               <AppModal
                 title="Изменить информацию о питомце"
                 buttonText="Редактировать"
@@ -302,7 +303,7 @@ export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Elemen
                 </form>
               </AppModal>
             )}
-            {user.roleId === 2 ? (
+            {showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleReject(pet.id)}
@@ -310,7 +311,7 @@ export default function OneLostPetCard({ pet }: OneLostPetCardProps): JSX.Elemen
               >
                 Отклонить
               </button>
-            ) : (
+            )} {showButtons && user.roleId === 1 && (
               <button
                 type="button"
                 onClick={() => handleDelete(pet.id)}

@@ -29,9 +29,10 @@ type PetType = {
 
 type OneFoundPetCardProps = {
   pet: PetType;
+  showButtons?: boolean;
 };
 
-export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Element {
+export default function OneFoundPetCard({ pet, showButtons = false }: OneFoundPetCardProps): JSX.Element {
   const [editedPet, setEditedPet] = useState({
     categoryId: pet.categoryId,
     colorId: pet.colorId,
@@ -139,7 +140,7 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
             <p className="mt-2 text-gray-500">Дата: {new Date(pet.date).toLocaleDateString()}</p>
           )}
           <div className="flex justify-between items-center mt-4">
-            {user.roleId === 2 ? (
+            {showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleApprove(pet.id)}
@@ -147,7 +148,7 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
               >
                 Одобрить
               </button>
-            ) : (
+            )} {showButtons && user.roleId === 1 && (
               <AppModal
                 title="Изменить информацию о питомце"
                 buttonText="Редактировать"
@@ -301,14 +302,7 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
               </AppModal>
             )}
 
-            {/* <button
-                type="button"
-                onClick={() => handleDelete(pet.id)}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-              >
-                Удалить
-              </button> */}
-            {user.roleId === 2 ? (
+            {showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleReject(pet.id)}
@@ -316,7 +310,9 @@ export default function OneFoundPetCard({ pet }: OneFoundPetCardProps): JSX.Elem
               >
                 Отклонить
               </button>
-            ) : (
+            )}
+            {showButtons && user.roleId === 1 && 
+            (
               <button
                 type="button"
                 onClick={() => handleDelete(pet.id)}

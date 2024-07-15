@@ -10,6 +10,7 @@ import {
     getPendingPetsThunk,
   approvePetThunk,
   rejectPetThunk,
+  getAllPetsOfUserThunk,
 } from './petThunk';
 import type { PetType } from '../../../types/petTypes';
 
@@ -38,6 +39,9 @@ export const petsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllPetsThunk.fulfilled, (state, action) => {
+        state.pets = action.payload;
+      })
+      .addCase(getAllPetsOfUserThunk.fulfilled, (state, action) => {
         state.pets = action.payload;
       })
       .addCase(getAllPetsThunk.rejected, (state) => {

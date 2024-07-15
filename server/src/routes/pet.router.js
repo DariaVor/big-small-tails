@@ -135,7 +135,7 @@ petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (re
 });
 
 // UPDATE одного питомца
-petRouter.route('/:id').patch(upload.single('file'), async (req, res) => {
+petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (req, res) => {
   try {
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) {
@@ -170,7 +170,7 @@ petRouter.route('/:id').patch(upload.single('file'), async (req, res) => {
 });
 
 // DELETE одного питомца
-petRouter.route('/:id').delete(async (req, res) => {
+petRouter.route('/:id').delete(verifyAccessToken, async (req, res) => {
   try {
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) {

@@ -7,6 +7,11 @@ export const getAllPetsThunk = createAsyncThunk('pets/getAllPets', async () => {
   return data;
 });
 
+export const getAllPetsOfUserThunk = createAsyncThunk('account/getAllPets', async () => {
+  const data = await petsService.getAllPetsOfUser();
+  return data;
+});
+
 export const getAllLostPetsThunk = createAsyncThunk('pets/getAllLostPets', async () => {
   const data = await petsService.getAllLostPets();
   return data;

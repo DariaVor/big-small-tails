@@ -10,6 +10,11 @@ class PetsService {
     return response.data;
   }
 
+  async getAllPetsOfUser(): Promise<PetType[]> {
+    const response = await this.apiInstance.get<PetType[]>('/account');
+    return response.data;
+  }
+
   async getAllLostPets(): Promise<PetType[]> {
     const response = await this.apiInstance.get<PetType[]>('/pets/lost');
     return response.data;

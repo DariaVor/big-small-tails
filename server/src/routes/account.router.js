@@ -11,12 +11,14 @@ accountRouter.route('/').get(verifyAccessToken, async (req, res) => {
       where: { userId },
       include: {
         model: User,
-        attributes: ['id', 'name', 'email'],
+        attributes: ['id', 'username', 'email'],
       },
       order: [['createdAt', 'DESC']],
     });
     res.json(pets);
+
   } catch (error) {
+    console.log(error)
     res.status(500).send('Internal server error');
   }
 });
