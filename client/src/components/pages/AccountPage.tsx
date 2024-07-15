@@ -14,8 +14,6 @@ export default function AccountPage(): JSX.Element {
   const pendingPets = useAppSelector((state) => state.pets.pendingPets);
   const user = useAppSelector((state) => state.auth.user);
 
-  console.log(user);
-
   useEffect(() => {
     dispatch(getPendingPetsThunk()).catch(console.log);
   }, [dispatch]);
