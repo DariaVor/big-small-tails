@@ -23,9 +23,9 @@ export default function NavBar(): JSX.Element {
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center space-x-6">
-          <Link to="/">
-            <img src="images/pets.png" alt="Logo" className="h-8 w-8"/>
+        <div className="flex items-center space-x-4">
+        <Link to="/">
+            <img src="/images/pets.png" alt="Logo" className="h-8 w-8"/>
           </Link>
           <Link to="/" className="text-2xl font-bold text-green-700">Хвосты и хвостики</Link>
         </div>

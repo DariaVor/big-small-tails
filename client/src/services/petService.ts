@@ -30,6 +30,7 @@ class PetsService {
   }
 
   async addPet(formData: PetFormDataType): Promise<PetType> {
+    console.log(formData)
     const response = await this.apiInstance.post<PetType>('/pets/add', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',

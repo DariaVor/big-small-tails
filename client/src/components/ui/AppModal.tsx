@@ -12,7 +12,7 @@ function AppModal({
   title,
   buttonText,
   children,
-  buttonVariant = 'bg-blue-500 hover:bg-blue-700 text-white',
+  buttonVariant = 'bg-indigo-600 hover:bg-indigo-500 text-white',
 }: AppModalProps): JSX.Element {
   const [show, setShow] = React.useState(false);
 
@@ -22,7 +22,7 @@ function AppModal({
   return (
     <>
       <button
-        className={`${buttonVariant} font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+        className={`${buttonVariant} font-bold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600`}
         onClick={handleShow}
         type="button"
       >
@@ -50,7 +50,7 @@ function AppModal({
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={handleClose}
                 >
                   Закрыть
