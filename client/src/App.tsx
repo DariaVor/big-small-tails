@@ -13,6 +13,8 @@ import LostPetPage from './components/pages/LostPetPage';
 import PetDetailPage from './components/pages/PetDetailPage';
 import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
+// import Example2 from './components/pages/Example2';
+import Example from './components/pages/Example';
 
 
 function App(): JSX.Element {
@@ -32,6 +34,10 @@ function App(): JSX.Element {
         {
           path: "/",
           element: <HomePage />,
+        },
+        {
+          path: '/example',
+          element: <Example />
         },
         {
           path: 'location',

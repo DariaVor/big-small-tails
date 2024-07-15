@@ -5,21 +5,22 @@ type AboutMeCardProps = {
   title: string;
   description: string;
   svgUrl: string;
+  bgColor: string;
 };
 
-function AboutMeCard({ title, description, svgUrl }: AboutMeCardProps): JSX.Element {
+function AboutMeCard({ title, description, svgUrl, bgColor }: AboutMeCardProps): JSX.Element {
   return (
     <div className="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
-      <div className="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40 flex justify-center items-center">
-        <div className="w-[350px] h-[350px] transition-all duration-1000 hover:w-[390px] hover:h-[390px]">
+      <div className="h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40 flex justify-center items-center">
+        <div className="">
           <Player
             src={svgUrl}
-            background="#FFFFFF"
+            background={bgColor}
             speed={1}
             loop
             autoplay
             direction={1}
-            className="w-[350px] h-[350px] transition-all duration-1000 hover:w-[390px] hover:h-[390px]"
+            className="w-[355px] h-[355px] transition-all duration-1000 hover:w-[390px] hover:h-[390px]"
           />
         </div>
       </div>
