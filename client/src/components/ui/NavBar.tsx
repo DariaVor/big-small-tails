@@ -14,9 +14,9 @@ export default function NavBar(): JSX.Element {
   };
 
   const navLinks = [
-    { path: '/pets/found', label: 'Найденные' },
     { path: '/pets/lost', label: 'Потерянные' },
-    { path: '/location', label: 'Расположение' },
+    { path: '/pets/found', label: 'Найденные' },
+    // { path: '/location', label: 'Расположение' },
     { path: '/account', label: 'Личный кабинет', private: true },
   ];
 
