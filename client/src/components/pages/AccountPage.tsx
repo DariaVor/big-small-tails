@@ -21,7 +21,7 @@ export default function AccountPage(): JSX.Element {
     }
   }, [dispatch, user.roleId]);
 
-  const userPendingPets = user.roleId === 1 ? pets.filter(pet => pet.userId === user.id) : pendingPets;
+  const userPendingPets = user.roleId === 1 ? pets.filter(pet => pet.userId === user.id && pet.requestStatusId === 1) : pendingPets;
 
   console.log(userPendingPets);
 
@@ -52,7 +52,7 @@ export default function AccountPage(): JSX.Element {
       )}
       {user.roleId === 1 && (
         <>
-          <h1 className="text-2xl font-bold mb-4">Ваши питомцы ждут одобрения</h1>
+          <h1 className="text-2xl font-bold mb-4">Добавленные питомцы</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {foundPets.map((pet: PetType) => (
               <OneFoundPetCard key={pet.id} pet={pet} showButtons />
