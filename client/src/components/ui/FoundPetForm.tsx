@@ -8,7 +8,7 @@ import {
   getCategoriesThunk,
   getColorsThunk,
 } from '../../redux/slices/catandcolor/catandcolorThunk';
-import 'react-phone-input-2/lib/style.css'
+import 'react-phone-input-2/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
 type CategoryType = {
@@ -25,6 +25,8 @@ export default function FoundPetForm(): JSX.Element {
   const dispatch = useDispatch();
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null); // State для предварительного просмотра изображения
+
   const [formState, setFormState] = useState({
     categoryId: '',
     colorId: '',
@@ -82,17 +84,30 @@ export default function FoundPetForm(): JSX.Element {
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setFile(e.dataTransfer.files[0]);
+      previewImage(e.dataTransfer.files[0]); // Предварительный просмотр изображения при перетаскивании
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+      previewImage(e.target.files[0]); // Предварительный просмотр изображения при выборе файла
     }
+  };
+
+  const previewImage = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setImagePreview(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeFile = () => {
     setFile(null);
+    setImagePreview(null); // Очистка предварительного просмотра при удалении файла
   };
 
   const handleCategoryClick = (id: number) => {
@@ -114,7 +129,7 @@ export default function FoundPetForm(): JSX.Element {
       <div className="container mx-auto p-4 max-w-2xl">
         <form onSubmit={handleSubmit} className="w-full bg-white shadow-md rounded-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-center">Форма для найденного питомца</h2>
-          
+
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Кого вы нашли?</label>
             <div className="flex space-x-2">
@@ -132,7 +147,7 @@ export default function FoundPetForm(): JSX.Element {
               ))}
             </div>
           </div>
-          
+
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Цвет найденного питомца?</label>
             <div className="grid grid-cols-2 gap-2">
@@ -150,9 +165,11 @@ export default function FoundPetForm(): JSX.Element {
               ))}
             </div>
           </div>
-          
+
           <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Опишите дополнительную информацию о найденном питомце</label>
+            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">
+              Опишите дополнительную информацию о найденном питомце
+            </label>
             <textarea
               id="description"
               name="description"
@@ -163,9 +180,11 @@ export default function FoundPetForm(): JSX.Element {
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
             />
           </div>
-          
+
           <div className="mb-4">
-            <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">Укажите место где вы его нашли?</label>
+            <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
+              Укажите место где вы его нашли?
+            </label>
             <input
               id="location"
               name="location"
@@ -176,17 +195,19 @@ export default function FoundPetForm(): JSX.Element {
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
             />
           </div>
-          
+
           <div className="mb-4">
-            <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">Когда вы нашли питомца?</label>
+            <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">
+              Когда вы нашли питомца?
+            </label>
             <DatePicker
               selected={formState.date}
               onChange={(date: Date) => setFormState((prevState) => ({ ...prevState, date }))}
-              dateFormat="dd/MM/yyyy"
+              dateFormat="dd.MM.yyyy"
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
             />
           </div>
-          
+
           <div className="mb-4 flex items-center">
             <input
               id="hasCollar"
@@ -205,9 +226,11 @@ export default function FoundPetForm(): JSX.Element {
               Был ли ошейник?
             </label>
           </div>
-          
+
           <div className="mb-4">
-            <label htmlFor="contactInfo" className="block text-gray-700 text-sm font-bold mb-2">Контактная информация</label>
+            <label htmlFor="contactInfo" className="block text-gray-700 text-sm font-bold mb-2">
+              Контактная информация
+            </label>
             <PhoneInput
               country="ru"
               value={formState.contactInfo}
@@ -217,12 +240,14 @@ export default function FoundPetForm(): JSX.Element {
                   contactInfo: value,
                 }))
               }
-              inputClass="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              inputClass="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500focus:ring-indigo-500 sm:text-sm p-3"
             />
           </div>
-          
+
           <div className="mb-4">
-            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">Добавьте фотографию найденного питомца</label>
+            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
+              Добавьте фотографию найденного питомца
+            </label>
             <div
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
@@ -232,7 +257,9 @@ export default function FoundPetForm(): JSX.Element {
                 dragActive ? 'border-indigo-600' : 'border-gray-300'
               } px-6 py-10`}
             >
-              <div className="text-center">
+              {imagePreview ? (
+                <img src={imagePreview} alt="Preview" className="mx-auto h-32" />
+              ) : (
                 <svg
                   className="mx-auto h-12 w-12 text-gray-300"
                   stroke="currentColor"
@@ -247,36 +274,36 @@ export default function FoundPetForm(): JSX.Element {
                     strokeWidth={2}
                   />
                 </svg>
-                <div className="mt-4 flex text-sm text-gray-600">
-                  <label
-                    htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
-                  >
-                    <span>Загрузите файл</span>
-                    <input
-                      id="file-upload"
-                      name="file"
-                      type="file"
-                      className="sr-only"
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <p className="pl-1">или перетащите сюда</p>
-                </div>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF до 10MB</p>
-                {file && (
-                  <div className="mt-2 text-center">
-                    <p className="text-xs text-green-500">{file.name}</p>
-                    <button
-                      type="button"
-                      onClick={removeFile}
-                      className="text-xs text-red-500 underline"
-                    >
-                      Удалить
-                    </button>
-                  </div>
-                )}
+              )}
+              <div className="mt-4 flex text-sm text-gray-600">
+                <label
+                  htmlFor="file-upload"
+                  className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+                >
+                  <span>Загрузите файл</span>
+                  <input
+                    id="file-upload"
+                    name="file"
+                    type="file"
+                    className="sr-only"
+                    onChange={handleChange}
+                  />
+                </label>
+                <p className="pl-1">или перетащите сюда</p>
               </div>
+              <p className="text-xs text-gray-500">PNG, JPG, GIF до 10MB</p>
+              {file && (
+                <div className="mt-2 text-center">
+                  <p className="text-xs text-green-500">{file.name}</p>
+                  <button
+                    type="button"
+                    onClick={removeFile}
+                    className="text-xs text-red-500 underline"
+                  >
+                    Удалить
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
