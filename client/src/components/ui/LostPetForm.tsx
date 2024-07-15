@@ -25,6 +25,8 @@ export default function LostPetForm(): JSX.Element {
   const dispatch = useDispatch();
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null); // State для предварительного просмотра изображения
+
   const [formState, setFormState] = useState({
     name: '',
     categoryId: '',
@@ -83,17 +85,30 @@ export default function LostPetForm(): JSX.Element {
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setFile(e.dataTransfer.files[0]);
+      previewImage(e.dataTransfer.files[0]); // Предварительный просмотр изображения при перетаскивании
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+      previewImage(e.target.files[0]); // Предварительный просмотр изображения при выборе файла
     }
+  };
+
+  const previewImage = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setImagePreview(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeFile = () => {
     setFile(null);
+    setImagePreview(null); // Очистка предварительного просмотра при удалении файла
   };
 
   const handleCategoryClick = (id: number) => {
@@ -117,7 +132,7 @@ export default function LostPetForm(): JSX.Element {
           <h2 className="text-2xl font-bold mb-4 text-center">Форма для потерянного питомца</h2>
 
           <div className="mb-4">
-            <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
               Укажите имя
             </label>
             <input
@@ -139,9 +154,7 @@ export default function LostPetForm(): JSX.Element {
                   type="button"
                   key={category.id}
                   className={`flex-grow px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                    formState.categoryId === category.id.toString()
-                      ? 'bg-indigo-200'
-                      : 'bg-gray-100'
+                    formState.categoryId === category.id.toString() ? 'bg-indigo-200' : 'bg-gray-100'
                   }`}
                   onClick={() => handleCategoryClick(category.id)}
                 >
@@ -208,7 +221,7 @@ export default function LostPetForm(): JSX.Element {
             <DatePicker
               selected={formState.date}
               onChange={(date: Date) => setFormState((prevState) => ({ ...prevState, date }))}
-              dateFormat="dd/MM/yyyy"
+              dateFormat="dd.MM.yyyy"
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
             />
           </div>
@@ -262,51 +275,55 @@ export default function LostPetForm(): JSX.Element {
                 dragActive ? 'border-indigo-600' : 'border-gray-300'
               } px-6 py-10`}
             >
-              <div className="text-center">
-                <svg
-                  className="mx-auto h-12 w-12 text-gray-300"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 16V4a4 4 0 014-4h8m0 0h16m0 0h8a4 4 0 014 4v12m-8 0H12M4 16l16 16m0-16h16m-8 0v32m-8-8h8m-8 0h-8a4 4 0 01-4-4V20m16 24v-4M8 32l8-8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-                <div className="mt-4 flex text-sm text-gray-600">
-                  <label
-                    htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+              {imagePreview ? (
+                <img src={imagePreview} alt="Preview" className="mx-auto h-32" />
+              ) : (
+                <div className="text-center">
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-300"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
                   >
-                    <span>Загрузите файл</span>
-                    <input
-                      id="file-upload"
-                      name="file"
-                      type="file"
-                      className="sr-only"
-                      onChange={handleChange}
+                    <path
+                      d="M4 16V4a4 4 0 014-4h8m0 0h16m0 0h8a4 4 0 014 4v12m-8 0H12M4 16l16 16m0-16h16m-8 0v32m-8-8h8m-8 0h-8a4 4 0 01-4-4V20m16 24v-4M8 32l8-8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
                     />
-                  </label>
-                  <p className="pl-1">или перетащите сюда</p>
-                </div>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF до 10MB</p>
-                {file && (
-                  <div className="mt-2 text-center">
-                    <p className="text-xs text-green-500">{file.name}</p>
-                    <button
-                      type="button"
-                      onClick={removeFile}
-                      className="text-xs text-red-500 underline"
+                  </svg>
+                  <div className="mt-4 flex text-sm text-gray-600">
+                    <label
+                      htmlFor="file-upload"
+                      className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
                     >
-                      Удалить
-                    </button>
+                      <span>Загрузите файл</span>
+                      <input
+                        id="file-upload"
+                        name="file"
+                        type="file"
+                        className="sr-only"
+                        onChange={handleChange}
+                      />
+                    </label>
+                    <p className="pl-1">или перетащите сюда</p>
                   </div>
-                )}
-              </div>
+                  <p className="text-xs text-gray-500">PNG, JPG, GIF до 10MB</p>
+                </div>
+              )}
+              {file && (
+                <div className="mt-2 text-center">
+                  <p className="text-xs text-green-500">{file.name}</p>
+                  <button
+                    type="button"
+                    onClick={removeFile}
+                    className="text-xs text-red-500 underline"
+                  >
+                    Удалить
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -318,6 +335,7 @@ export default function LostPetForm(): JSX.Element {
               className="text-sm font-semibold leading-6 text-gray-900"
               onClick={() =>
                 setFormState({
+                  name: '',
                   categoryId: '',
                   colorId: '',
                   description: '',
