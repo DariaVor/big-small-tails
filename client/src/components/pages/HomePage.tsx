@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import AboutMeCard from '../ui/AboutMeCard';
 import data from '../../../public/TS/aboutMeData';
 import Footer from '../ui/Footer';
-import { useAppSelector } from '../../redux/hooks';
+import AboutUs from '../ui/AboutUs';
+import Questions from '../ui/Questions';
 
 export default function HomePage(): JSX.Element {
   return (
@@ -36,12 +37,6 @@ export default function HomePage(): JSX.Element {
       </div>
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold mb-4 font-rubik">Три простых шага</h2>
-        {/* <button
-          type="button"
-          className="px-4 py-2 rounded-md bg-[#268a57] text-white hover:bg-green-500"
-        >
-          Станьте волонтёром
-        </button> */}
       </div>
       <div className="flex flex-wrap justify-center gap-6">
         {data.map((item, id) => (
@@ -54,6 +49,8 @@ export default function HomePage(): JSX.Element {
           />
         ))}
       </div>
+      <AboutUs />
+      <Questions />
       <Footer />
     </div>
   );

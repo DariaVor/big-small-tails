@@ -8,10 +8,10 @@ import OneLostPetCard from '../ui/OneLostPetCard';
 export default function AccountPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const pendingPets = useAppSelector((state) => state.pets.pendingPets);
-  const pets = useAppSelector((state) => state.pets.pets)
+  const pets = useAppSelector((state) => state.pets.pets);
   const user = useAppSelector((state) => state.auth.user);
 
-  console.log(pets)
+  console.log(pets);
 
   useEffect(() => {
     if (user.roleId === 2) {
@@ -21,7 +21,10 @@ export default function AccountPage(): JSX.Element {
     }
   }, [dispatch, user.roleId]);
 
-  const userPendingPets = user.roleId === 1 ? pets.filter(pet => pet.userId === user.id && pet.requestStatusId === 1) : pendingPets;
+  const userPendingPets =
+    user.roleId === 1
+      ? pets.filter((pet) => pet.userId === user.id && pet.requestStatusId === 1)
+      : pendingPets;
 
   console.log(userPendingPets);
 
@@ -32,19 +35,23 @@ export default function AccountPage(): JSX.Element {
     <div className="container mx-auto p-4">
       {user.roleId === 2 && (
         <>
-          <div>
-            <h1 className="text-2xl font-semibold mb-4 font-rubik">Найденные питомцы ждут одобрения</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {foundPets.map((pet: PetType) => (
-                <OneFoundPetCard key={pet.id} pet={pet} showButtons />
-              ))}
-            </div>
-          </div>
-          <div className="mt-8">
-            <h1 className="text-2xl font-semibold font-rubik mb-4">Потерянные питомцы ждут одобрения</h1>
+          <div className="mt-8 mb-8">
+            <h1 className="text-2xl font-semibold font-rubik mb-4">
+              Потерянные питомцы ждут одобрения
+            </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {lostPets.map((pet: PetType) => (
                 <OneLostPetCard key={pet.id} pet={pet} showButtons />
+              ))}
+            </div>
+          </div>
+          <div>
+            <h1 className="text-2xl font-semibold mb-4 font-rubik">
+              Найденные питомцы ждут одобрения
+            </h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {foundPets.map((pet: PetType) => (
+                <OneFoundPetCard key={pet.id} pet={pet} showButtons />
               ))}
             </div>
           </div>
@@ -66,4 +73,3 @@ export default function AccountPage(): JSX.Element {
     </div>
   );
 }
-

@@ -32,7 +32,7 @@ export default function NavBar(): JSX.Element {
         <div className="flex items-center space-x-4">
           {navLinks.map((link) =>
             (!link.private || (link.private && user.status === 'logged')) && (
-              <Link key={link.path} to={link.path} className="text-violet-800 hover:text-violet-700 font-rubik font-semibold">
+              <Link key={link.path} to={link.path} className="text-violet-800 hover:text-violet-700 font-rubik font-medium">
                 {link.label}
               </Link>
             )

@@ -143,7 +143,7 @@ export default function FoundPetPage(): JSX.Element {
               <OneFoundPetCard key={pet.id} pet={pet} onDelete={handleDelete} />
             ))
           ) : (
-            <p className="text-center w-full">Ничего не найдено</p>
+            <p className="text-center w-full font-rubik">Ничего не найдено</p>
           )}
         </div>
       </div>

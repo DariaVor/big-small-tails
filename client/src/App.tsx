@@ -14,6 +14,7 @@ import PetDetailPage from './components/pages/PetDetailPage';
 import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
 import BothAddPage from './components/pages/BothAddPage';
+import Example from './components/pages/Example';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
