@@ -163,7 +163,7 @@ export default function OneFoundPetCard({
           )}
           {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location}</p>}
           <p className="mt-2 text-gray-500 font-rubik">
-            Наличие ошейника: {pet.hasCollar ? 'Да' : 'Нет'}
+            Наличие ошейника: {pet.hasCollar ? 'Присутствует' : 'Отсутствует'}
           </p>
           {pet.contactInfo && (
             <p className="mt-2 text-gray-500 font-rubik">

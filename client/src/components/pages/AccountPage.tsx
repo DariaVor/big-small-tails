@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getAllPetsOfUserThunk, getPendingPetsThunk } from '../../redux/slices/pet/petThunk';
 import type { PetType } from '../../types/petTypes';
@@ -23,7 +24,13 @@ export default function AccountPage(): JSX.Element {
 
   const userPendingPets =
     user.roleId === 1
-      ? pets.filter((pet) => pet.userId === user.id && pet.requestStatusId === 1 || pet.requestStatusId === 2 || pet.requestStatusId === 3 || pet.requestStatusId === 4)
+      ? pets.filter(
+          (pet) =>
+            (pet.userId === user.id && pet.requestStatusId === 1) ||
+            pet.requestStatusId === 2 ||
+            pet.requestStatusId === 3 ||
+            pet.requestStatusId === 4,
+        )
       : pendingPets;
 
   console.log(userPendingPets);
@@ -33,25 +40,55 @@ export default function AccountPage(): JSX.Element {
 
   return (
     <div className="container mx-auto p-4">
+      <div className="flex justify-center space-x-4 mt-4 mb-3">
+        <Link to="/lostaddpage">
+          <button
+            type="button"
+            className="px-6 py-3 text-lg rounded-md bg-fuchsia-700 text-white hover:bg-fuchsia-800 font-rubik"
+          >
+            Я потерял питомца
+          </button>
+        </Link>
+        <Link to="/foundaddpage">
+          <button
+            type="button"
+            className="px-6 py-3 text-lg rounded-md bg-indigo-700 text-white hover:bg-indigo-800 font-rubik"
+          >
+            Я нашёл питомца
+          </button>
+        </Link>
+      </div>
       {user.roleId === 2 && (
         <>
           <div className="mt-8 mb-8">
-            <h1 className="text-2xl font-semibold font-rubik mb-4">
-              Потерянные питомцы ждут одобрения
-            </h1>
+            {!lostPets.length ? (
+              <h2 className="text-2xl font-semibold font-rubik mb-4">
+                Нет заявок на потерянных питомцев
+              </h2>
+            ) : (
+              <h2 className="text-2xl font-semibold font-rubik mb-4">
+                Потерянные питомцы ждут одобрения
+              </h2>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {lostPets.map((pet: PetType) => (
-                <OneLostPetCard key={pet.id} pet={pet} showButtons isAccountPage={true}/>
+                <OneLostPetCard key={pet.id} pet={pet} showButtons isAccountPage />
               ))}
             </div>
           </div>
           <div>
-            <h1 className="text-2xl font-semibold mb-4 font-rubik">
-              Найденные питомцы ждут одобрения
-            </h1>
+            {!foundPets.length ? (
+              <h2 className="text-2xl font-semibold mb-4 font-rubik">
+                Нет заявок на найденных питомцев
+              </h2>
+            ) : (
+              <h2 className="text-2xl font-semibold mb-4 font-rubik">
+                Найденные питомцы ждут одобрения
+              </h2>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {foundPets.map((pet: PetType) => (
-                <OneFoundPetCard key={pet.id} pet={pet} showButtons isAccountPage={true}/>
+                <OneFoundPetCard key={pet.id} pet={pet} showButtons isAccountPage />
               ))}
             </div>
           </div>
@@ -65,7 +102,7 @@ export default function AccountPage(): JSX.Element {
               <OneFoundPetCard key={pet.id} pet={pet} showButtons />
             ))}
             {lostPets.map((pet: PetType) => (
-              <OneLostPetCard key={pet.id} pet={pet} showButtons  />
+              <OneLostPetCard key={pet.id} pet={pet} showButtons />
             ))}
           </div>
         </>
