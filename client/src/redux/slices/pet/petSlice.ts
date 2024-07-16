@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  deleteOnePetThunk,
-  getAllFoundPetsThunk,
   getAllLostPetsThunk,
-  getAllPetsThunk,
-  addPetThunk,
+  getAllFoundPetsThunk,
+  deleteOnePetThunk,
   updateOnePetThunk,
+  addPetThunk,
   getOnePetThunk,
-    getPendingPetsThunk,
+  getPendingPetsThunk,
   approvePetThunk,
   rejectPetThunk,
   getAllPetsOfUserThunk,
@@ -18,16 +17,22 @@ type PetState = {
   pets: PetType[];
   lostPets: PetType[];
   foundPets: PetType[];
-  onePet: PetType,
+  onePet: PetType;
   pendingPets: PetType[];
+  currentPage: number;
+  totalPages: number;
+  loading: boolean;
+  error: string | null;
 };
 
 const initialState: PetState = {
   pets: [],
   lostPets: [],
   foundPets: [],
-  pendingPets: [],
   onePet: null,
+  pendingPets: [],
+  currentPage: 0,
+  totalPages: 0,
   loading: false,
   error: null,
 };
@@ -38,26 +43,22 @@ export const petsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllPetsThunk.fulfilled, (state, action) => {
-        state.pets = action.payload;
-      })
-      .addCase(getAllPetsOfUserThunk.fulfilled, (state, action) => {
-        state.pets = action.payload;
-      })
-      .addCase(getAllPetsThunk.rejected, (state) => {
-        state.pets = [];
-      })
       .addCase(getAllLostPetsThunk.fulfilled, (state, action) => {
-        state.lostPets = action.payload;
+        if (action.meta.arg.page === 1) {
+          state.lostPets = action.payload.pets;
+        } else {
+          state.lostPets = [...state.lostPets, ...action.payload.pets];
+        }
+        state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
+        state.loading = false;
       })
-      .addCase(getAllLostPetsThunk.rejected, (state) => {
-        state.lostPets = [];
+      .addCase(getAllLostPetsThunk.pending, (state) => {
+        state.loading = true;
       })
-      .addCase(getAllFoundPetsThunk.fulfilled, (state, action) => {
-        state.foundPets = action.payload;
-      })
-      .addCase(getAllFoundPetsThunk.rejected, (state) => {
-        state.foundPets = [];
+      .addCase(getAllLostPetsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Something went wrong';
       })
       .addCase(updateOnePetThunk.fulfilled, (state, action) => {
         const index = state.pets.findIndex((pet) => pet.id === action.payload.id);
@@ -77,6 +78,23 @@ export const petsSlice = createSlice({
           }
         }
       })
+      .addCase(getAllFoundPetsThunk.fulfilled, (state, action) => {
+        if (action.meta.arg.page === 1) {
+          state.foundPets = action.payload.pets;
+        } else {
+          state.foundPets = [...state.foundPets, ...action.payload.pets];
+        }
+        state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
+        state.loading = false;
+      })
+      .addCase(getAllFoundPetsThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllFoundPetsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Something went wrong';
+      })
       .addCase(deleteOnePetThunk.fulfilled, (state, action) => {
         state.pets = state.pets.filter((pet) => pet.id !== action.payload);
         state.lostPets = state.lostPets.filter((pet) => pet.id !== action.payload);
@@ -90,24 +108,21 @@ export const petsSlice = createSlice({
           state.foundPets.unshift(action.payload);
         }
       })
-    .addCase(getOnePetThunk.fulfilled, (state, action) => {
-      state.onePet = action.payload;
-    })
-    .addCase(getOnePetThunk.rejected, (state) => {
-      state.onePet = null;
-    })
-
-
-    .addCase(getPendingPetsThunk.fulfilled, (state, action) => {
-      state.pendingPets = action.payload;
-    })
-    .addCase(approvePetThunk.fulfilled, (state, action) => {
-      state.pendingPets = state.pendingPets.filter(pet => pet.id !== action.payload.id);
-    })
-    .addCase(rejectPetThunk.fulfilled, (state, action) => {
-      state.pendingPets = state.pendingPets.filter(pet => pet.id !== action.payload.id);
-    });
-
+      .addCase(getOnePetThunk.fulfilled, (state, action) => {
+        state.onePet = action.payload;
+      })
+      .addCase(getOnePetThunk.rejected, (state) => {
+        state.onePet = null;
+      })
+      .addCase(getPendingPetsThunk.fulfilled, (state, action) => {
+        state.pendingPets = action.payload;
+      })
+      .addCase(approvePetThunk.fulfilled, (state, action) => {
+        state.pendingPets = state.pendingPets.filter((pet) => pet.id !== action.payload.id);
+      })
+      .addCase(rejectPetThunk.fulfilled, (state, action) => {
+        state.pendingPets = state.pendingPets.filter((pet) => pet.id !== action.payload.id);
+      });
   },
 });
 

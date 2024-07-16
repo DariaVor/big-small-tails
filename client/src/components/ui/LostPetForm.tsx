@@ -31,7 +31,7 @@ export default function LostPetForm(): JSX.Element {
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null); // State для предварительного просмотра изображения
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [locActive, setLocActive] = useState(true);
 
   const [formState, setFormState] = useState({
@@ -64,7 +64,7 @@ export default function LostPetForm(): JSX.Element {
       formData.append('file', file);
     }
     void dispatch(addPetThunk(formData));
-    navigate('/account');
+    // navigate('/account');
   };
 
   const handleInputChange = (

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getAllLostPetsThunk } from '../../redux/slices/pet/petThunk';
 import OneLostPetCard from '../ui/OneLostPetCard';
-import LostPetForm from '../ui/LostPetForm';
 import SearchBar from '../ui/SearchBar';
 import { getCategoriesThunk, getColorsThunk } from '../../redux/slices/catandcolor/catandcolorThunk';
 import type { RootState } from '../../redux/store';
@@ -11,9 +10,11 @@ export default function LostPetPage(): JSX.Element {
   const pets = useAppSelector((store) => store.pets.lostPets);
   const categories = useAppSelector((state: RootState) => state.data.categories);
   const colors = useAppSelector((state: RootState) => state.data.colors);
+  const totalPages = useAppSelector((store) => store.pets.totalPages);
+  const currentPage = useAppSelector((store) => store.pets.currentPage);
+  const loading = useAppSelector((store) => store.pets.loading);
   const dispatch = useAppDispatch();
 
-  const [filteredPets, setFilteredPets] = useState(pets);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [selectedColors, setSelectedColors] = useState<number[]>([]);
@@ -22,103 +23,63 @@ export default function LostPetPage(): JSX.Element {
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    void dispatch(getAllLostPetsThunk());
-    void dispatch(getCategoriesThunk());
-    void dispatch(getColorsThunk());
+    dispatch(getAllLostPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
+    dispatch(getCategoriesThunk());
+    dispatch(getColorsThunk());
   }, [dispatch]);
-
-  useEffect(() => {
-    setFilteredPets(pets);
-  }, [pets]);
-
-  useEffect(() => {
-    filterPets();
-  }, [searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate]);
-
-  const handleDelete = (id: number): void => {
-    void dispatch(deleteOnePetThunk(id));
-  };
 
   const handleSearchChange = (term: string) => {
     setSearchTerm(term);
+    dispatch(getAllLostPetsThunk({ page: 1, limit: 12, searchTerm: term, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
   };
 
   const handleCategoryChange = (id: number) => {
-    setSelectedCategories((prev) =>
-      prev.includes(id) ? prev.filter((categoryId) => categoryId !== id) : [...prev, id]
-    );
+    const updatedCategories = selectedCategories.includes(id)
+      ? selectedCategories.filter((categoryId) => categoryId !== id)
+      : [...selectedCategories, id];
+    setSelectedCategories(updatedCategories);
+    dispatch(getAllLostPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories: updatedCategories, selectedColors, hasCollar, startDate, endDate }));
   };
 
   const handleColorChange = (id: number) => {
-    setSelectedColors((prev) =>
-      prev.includes(id) ? prev.filter((colorId) => colorId !== id) : [...prev, id]
-    );
+    const updatedColors = selectedColors.includes(id)
+      ? selectedColors.filter((colorId) => colorId !== id)
+      : [...selectedColors, id];
+    setSelectedColors(updatedColors);
+    dispatch(getAllLostPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors: updatedColors, hasCollar, startDate, endDate }));
   };
 
   const handleCollarChange = (value: boolean | null) => {
     setHasCollar(value);
+    dispatch(getAllLostPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar: value, startDate, endDate }));
   };
 
   const handleStartDateChange = (date: Date | null) => {
     setStartDate(date);
+    dispatch(getAllLostPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate: date, endDate }));
   };
 
   const handleEndDateChange = (date: Date | null) => {
     setEndDate(date);
+    dispatch(getAllLostPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate: date }));
   };
 
-  const filterPets = () => {
-    let filtered = pets;
-
-    if (searchTerm) {
-      filtered = filtered.filter((pet) => {
-        const searchTermLower = searchTerm.toLowerCase();
-        return (
-          pet.description?.toLowerCase().includes(searchTermLower) ||
-          pet.location?.toLowerCase().includes(searchTermLower) ||
-          pet.contactInfo?.toLowerCase().includes(searchTermLower) ||
-          pet.image?.toLowerCase().includes(searchTermLower) ||
-          getCategoryName(pet.categoryId)?.toLowerCase().includes(searchTermLower) ||
-          getColorName(pet.colorId)?.toLowerCase().includes(searchTermLower)
-        );
-      });
+  const handleLoadMore = useCallback(() => {
+    if (currentPage < totalPages && !loading) {
+      dispatch(getAllLostPetsThunk({ page: currentPage + 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
     }
+  }, [currentPage, totalPages, loading, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate, dispatch]);
 
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter((pet) =>
-        selectedCategories.includes(pet.categoryId)
-      );
-    }
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50 && !loading) {
+        handleLoadMore();
+      }
+    };
 
-    if (selectedColors.length > 0) {
-      filtered = filtered.filter((pet) =>
-        selectedColors.includes(pet.colorId)
-      );
-    }
-
-    if (hasCollar !== null) {
-      filtered = filtered.filter((pet) => pet.hasCollar === hasCollar);
-    }
-
-    if (startDate && endDate) {
-      filtered = filtered.filter((pet) => {
-        const petDate = new Date(pet.date || '');
-        return petDate >= startDate && petDate <= endDate;
-      });
-    }
-
-    setFilteredPets(filtered);
-  };
-
-  const getCategoryName = (id: number | null) => {
-    const category = categories.find((cat) => cat.id === id);
-    return category ? category.category : 'Неизвестно';
-  };
-
-  const getColorName = (id: number | null) => {
-    const color = colors.find((col) => col.id === id);
-    return color ? color.color : 'Неизвестно';
-  };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleLoadMore, loading]);
 
   return (
     <div className="container mx-auto p-4 flex">
@@ -138,14 +99,19 @@ export default function LostPetPage(): JSX.Element {
       </div>
       <div className="flex-1 min-h-screen">
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPets.length > 0 ? (
-            filteredPets.map((pet) => (
-              <OneLostPetCard key={pet.id} pet={pet} onDelete={handleDelete} />
+          {pets.length > 0 ? (
+            pets.map((pet) => (
+              <OneLostPetCard key={pet.id} pet={pet} />
             ))
           ) : (
             <p className="text-center w-full">Ничего не найдено</p>
           )}
         </div>
+        {loading && currentPage > 1 && (
+          <div className="text-center mt-4">
+            <p>Loading more...</p>
+          </div>
+        )}
       </div>
     </div>
   );

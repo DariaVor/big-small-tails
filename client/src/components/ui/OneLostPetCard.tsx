@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppModal from './AppModal';
-import { deleteOnePetThunk, updateOnePetThunk } from '../../redux/slices/pet/petThunk';
+import { approvePetThunk, deleteOnePetThunk, rejectPetThunk, updateOnePetThunk } from '../../redux/slices/pet/petThunk';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import type { RootState } from '../../redux/store';
 import {

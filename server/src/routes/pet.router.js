@@ -5,6 +5,7 @@ const upload = require('../middlewares/multer.middleware');
 const sharp = require('sharp');
 const fs = require('fs/promises');
 const { verifyAdmin } = require('../middlewares/verifyAdmin');
+const { Op } = require('sequelize');
 
 const defaultImagePath = 'public/img/paw.webp'; // Путь к дефолтному изображению в папке public/img
 
@@ -23,14 +24,75 @@ petRouter.route('/').get(async (req, res) => {
 });
 
 // GET все потерянные питомцы
+
 petRouter.get('/lost', async (req, res) => {
+  const {
+    page = 1,
+    limit = 12,
+    searchTerm,
+    selectedCategories,
+    selectedColors,
+    hasCollar,
+    startDate,
+    endDate,
+  } = req.query;
+
+  const offset = (page - 1) * limit;
+  const where = {
+    petStatusId: 1,
+    requestStatusId: 2,
+  };
+
+  if (searchTerm) {
+    where[Op.or] = [
+      { name: { [Op.iLike]: `%${searchTerm}%` } },
+      { description: { [Op.iLike]: `%${searchTerm}%` } },
+      { location: { [Op.iLike]: `%${searchTerm}%` } },
+      { contactInfo: { [Op.iLike]: `%${searchTerm}%` } },
+      { '$Category.category$': { [Op.iLike]: `%${searchTerm}%` } },
+      { '$Color.color$': { [Op.iLike]: `%${searchTerm}%` } },
+    ];
+  }
+
+  if (selectedCategories && selectedCategories.length > 0) {
+    const categoriesArray = selectedCategories.split(',').map(Number);
+    where.categoryId = { [Op.in]: categoriesArray };
+  }
+
+  if (selectedColors && selectedColors.length > 0) {
+    const colorsArray = selectedColors.split(',').map(Number);
+    where.colorId = { [Op.in]: colorsArray };
+  }
+
+  if (hasCollar !== 'null') {
+    where.hasCollar = hasCollar === 'true';
+  }
+
+  if (startDate && endDate) {
+    where.date = {
+      [Op.between]: [new Date(startDate), new Date(endDate)],
+    };
+  }
+
   try {
-    const pets = await Pet.findAll({
-      where: { petStatusId: 1, requestStatusId: 2 },
+    const { rows: pets, count: total } = await Pet.findAndCountAll({
+      where,
+      limit: parseInt(limit, 10),
+      offset: parseInt(offset, 10),
+      include: [
+        { model: PetStatus, attributes: ['status'] },
+        { model: Category, attributes: ['category'] },
+        { model: Color, attributes: ['color'] }
+      ],
       order: [['createdAt', 'DESC']],
-      include: [{ model: PetStatus, attributes: ['status'] }],
     });
-    res.json(pets);
+
+    res.json({
+      pets,
+      total,
+      totalPages: Math.ceil(total / limit),
+      currentPage: parseInt(page, 10),
+    });
   } catch (error) {
     console.error('Ошибка при получении потерянных питомцев:', error);
     res.status(500).send('Internal server error');
@@ -38,14 +100,74 @@ petRouter.get('/lost', async (req, res) => {
 });
 
 // GET все найденные питомцы
-petRouter.route('/found').get(async (req, res) => {
+petRouter.get('/found', async (req, res) => {
+  const {
+    page = 1,
+    limit = 12,
+    searchTerm,
+    selectedCategories,
+    selectedColors,
+    hasCollar,
+    startDate,
+    endDate,
+  } = req.query;
+
+  const offset = (page - 1) * limit;
+  const where = {
+    petStatusId: 2,
+    requestStatusId: 2,
+  };
+
+  if (searchTerm) {
+    where[Op.or] = [
+      { name: { [Op.iLike]: `%${searchTerm}%` } },
+      { description: { [Op.iLike]: `%${searchTerm}%` } },
+      { location: { [Op.iLike]: `%${searchTerm}%` } },
+      { contactInfo: { [Op.iLike]: `%${searchTerm}%` } },
+      { '$Category.category$': { [Op.iLike]: `%${searchTerm}%` } },
+      { '$Color.color$': { [Op.iLike]: `%${searchTerm}%` } },
+    ];
+  }
+
+  if (selectedCategories && selectedCategories.length > 0) {
+    const categoriesArray = selectedCategories.split(',').map(Number);
+    where.categoryId = { [Op.in]: categoriesArray };
+  }
+
+  if (selectedColors && selectedColors.length > 0) {
+    const colorsArray = selectedColors.split(',').map(Number);
+    where.colorId = { [Op.in]: colorsArray };
+  }
+
+  if (hasCollar !== 'null') {
+    where.hasCollar = hasCollar === 'true';
+  }
+
+  if (startDate && endDate) {
+    where.date = {
+      [Op.between]: [new Date(startDate), new Date(endDate)],
+    };
+  }
+
   try {
-    const pets = await Pet.findAll({
-      where: { petStatusId: 2, requestStatusId: 2 },
+    const { rows: pets, count: total } = await Pet.findAndCountAll({
+      where,
+      limit: parseInt(limit, 10),
+      offset: parseInt(offset, 10),
+      include: [
+        { model: PetStatus, attributes: ['status'] },
+        { model: Category, attributes: ['category'] },
+        { model: Color, attributes: ['color'] }
+      ],
       order: [['createdAt', 'DESC']],
-      include: [{ model: PetStatus, attributes: ['status'] }],
     });
-    res.json(pets);
+
+    res.json({
+      pets,
+      total,
+      totalPages: Math.ceil(total / limit),
+      currentPage: parseInt(page, 10),
+    });
   } catch (error) {
     console.error('Ошибка при получении найденных питомцев:', error);
     res.status(500).send('Internal server error');
@@ -159,7 +281,6 @@ petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (r
       }
     }
 
-    // const updatedPet = await pet.update(req.body);
     await Pet.update(req.body, { where: { id: req.params.id } });
     const updatedPet = await Pet.findByPk(req.params.id);
     res.json(updatedPet);
@@ -191,47 +312,6 @@ petRouter.route('/:id').delete(verifyAccessToken, async (req, res) => {
     res.send('Успешно удалено');
   } catch (error) {
     console.error('Ошибка при удалении питомца:', error);
-    res.status(500).send('Internal server error');
-  }
-});
-
-// GET all pending approval pets (admin)
-petRouter.get('/admin/approvals', verifyAccessToken, verifyAdmin, async (req, res) => {
-  try {
-    const pendingPets = await Pet.findAll({
-      where: { requestStatusId: 1 },
-      include: [{ model: RequestStatus, attributes: ['status'] }],
-    });
-    res.json(pendingPets);
-  } catch (error) {
-    res.status(500).send('Internal server error');
-  }
-});
-
-// PATCH approve pet (admin)
-petRouter.patch('/admin/approve/:id', verifyAccessToken, verifyAdmin, async (req, res) => {
-  try {
-    const pet = await Pet.findByPk(req.params.id);
-    if (!pet) return res.status(404).send('Pet not found');
-
-    pet.requestStatusId = 2; // Assuming 2 is "approved"
-    await pet.save();
-    res.json(pet);
-  } catch (error) {
-    res.status(500).send('Internal server error');
-  }
-});
-
-// PATCH reject pet (admin)
-petRouter.patch('/admin/reject/:id', verifyAccessToken, verifyAdmin, async (req, res) => {
-  try {
-    const pet = await Pet.findByPk(req.params.id);
-    if (!pet) return res.status(404).send('Pet not found');
-
-    pet.requestStatusId = 4; // Assuming 4 is "rejected"
-    await pet.save();
-    res.json(pet);
-  } catch (error) {
     res.status(500).send('Internal server error');
   }
 });

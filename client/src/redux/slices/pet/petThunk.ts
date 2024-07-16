@@ -12,15 +12,21 @@ export const getAllPetsOfUserThunk = createAsyncThunk('account/getAllPets', asyn
   return data;
 });
 
-export const getAllLostPetsThunk = createAsyncThunk('pets/getAllLostPets', async () => {
-  const data = await petsService.getAllLostPets();
-  return data;
-});
+export const getAllLostPetsThunk = createAsyncThunk(
+  'pets/getAllLostPets',
+  async (params: { page: number; limit: number; searchTerm?: string; selectedCategories?: number[]; selectedColors?: number[]; hasCollar?: boolean | null; startDate?: Date | null; endDate?: Date | null; }) => {
+    const data = await petsService.getAllLostPets(params);
+    return data;
+  }
+);
 
-export const getAllFoundPetsThunk = createAsyncThunk('pets/getAllFoundPets', async () => {
-  const data = await petsService.getAllFoundPets();
-  return data;
-});
+export const getAllFoundPetsThunk = createAsyncThunk(
+  'pets/getAllFoundPets',
+  async (params: { page: number; limit: number; searchTerm?: string; selectedCategories?: number[]; selectedColors?: number[]; hasCollar?: boolean | null; startDate?: Date | null; endDate?: Date | null; }) => {
+    const data = await petsService.getAllFoundPets(params);
+    return data;
+  }
+);
 
 export const updateOnePetThunk = createAsyncThunk(
   'pets/updateOnePet',

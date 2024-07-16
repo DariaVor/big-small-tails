@@ -15,13 +15,39 @@ class PetsService {
     return response.data;
   }
 
-  async getAllLostPets(): Promise<PetType[]> {
-    const response = await this.apiInstance.get<PetType[]>('/pets/lost');
+  async getAllLostPets(params: { page: number; limit: number; searchTerm?: string; selectedCategories?: number[]; selectedColors?: number[]; hasCollar?: boolean | null; startDate?: Date | null; endDate?: Date | null; }): Promise<{ pets: PetType[]; total: number; totalPages: number; currentPage: number }> {
+    const queryParams = {
+      page: params.page.toString(),
+      limit: params.limit.toString(),
+      searchTerm: params.searchTerm || '',
+      selectedCategories: params.selectedCategories?.join(',') || '',
+      selectedColors: params.selectedColors?.join(',') || '',
+      hasCollar: params.hasCollar !== null ? params.hasCollar.toString() : '',
+      startDate: params.startDate ? params.startDate.toISOString() : '',
+      endDate: params.endDate ? params.endDate.toISOString() : ''
+    };
+
+    const queryString = new URLSearchParams(queryParams).toString();
+    
+    const response = await this.apiInstance.get<{ pets: PetType[]; total: number; totalPages: number; currentPage: number }>(`/pets/lost?${queryString}`);
     return response.data;
   }
 
-  async getAllFoundPets(): Promise<PetType[]> {
-    const response = await this.apiInstance.get<PetType[]>('/pets/found');
+  async getAllFoundPets(params: { page: number; limit: number; searchTerm?: string; selectedCategories?: number[]; selectedColors?: number[]; hasCollar?: boolean | null; startDate?: Date | null; endDate?: Date | null; }): Promise<{ pets: PetType[]; total: number; totalPages: number; currentPage: number }> {
+    const queryParams = {
+      page: params.page.toString(),
+      limit: params.limit.toString(),
+      searchTerm: params.searchTerm || '',
+      selectedCategories: params.selectedCategories?.join(',') || '',
+      selectedColors: params.selectedColors?.join(',') || '',
+      hasCollar: params.hasCollar !== null ? params.hasCollar.toString() : '',
+      startDate: params.startDate ? params.startDate.toISOString() : '',
+      endDate: params.endDate ? params.endDate.toISOString() : ''
+    };
+
+    const queryString = new URLSearchParams(queryParams).toString();
+
+    const response = await this.apiInstance.get<{ pets: PetType[]; total: number; totalPages: number; currentPage: number }>(`/pets/found?${queryString}`);
     return response.data;
   }
 
