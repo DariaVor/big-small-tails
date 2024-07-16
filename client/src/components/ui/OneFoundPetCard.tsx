@@ -118,14 +118,14 @@ export default function OneFoundPetCard({
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-      <div className="md:flex">
-        <div className="md:flex-shrink-0">
+    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
+      {/* <div className="md:flex"> */}
+        <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
           <Link to={`/pets/${pet.id}`}>
             <img
-              className="h-48 w-full object-cover md:h-full md:w-48"
+              // className="h-48 w-full object-cover md:h-full md:w-48"
               src={`/img/${pet.image}`}
-              alt="Found Pet"
+              alt="Найденный питомец"
             />
           </Link>
         </div>
@@ -356,7 +356,7 @@ export default function OneFoundPetCard({
               <button
                 type="submit"
                 onClick={() => handleReject(pet.id)}
-                className="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-semibold font-rubik"
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik"
               >
                 Отклонить
               </button>
@@ -381,7 +381,8 @@ export default function OneFoundPetCard({
             )}
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 }
+

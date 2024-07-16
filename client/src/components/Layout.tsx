@@ -15,13 +15,13 @@ export default function Layout(): JSX.Element {
     leave: { opacity: 0, transform: 'translate3d(-100%, 0, 0)' },
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1500);
+  // }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
