@@ -126,34 +126,34 @@ export default function OneFoundPetCard({
           </Link>
         </div>
         <div className="p-8">
-          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+          <div className="uppercase tracking-wide text-sm text-violet-500 font-semibold font-rubik">
             Найденные
           </div>
           {pet.categoryId !== null && (
-            <p className="block mt-1 text-lg leading-tight font-medium text-black">
+            <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
               Категория: {getCategoryName(pet.categoryId)}
             </p>
           )}
           {pet.colorId !== null && (
-            <p className="block mt-1 text-lg leading-tight font-medium text-black">
+            <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
               Цвет: {getColorName(pet.colorId)}
             </p>
           )}
-          {pet.description && <p className="mt-2 text-gray-500">Описание: {pet.description}</p>}
-          {pet.location && <p className="mt-2 text-gray-500">Локация: {pet.location}</p>}
-          <p className="mt-2 text-gray-500">Наличие ошейника: {pet.hasCollar ? 'Да' : 'Нет'}</p>
+          {pet.description && <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description}</p>}
+          {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location}</p>}
+          <p className="mt-2 text-gray-500 font-rubik">Наличие ошейника: {pet.hasCollar ? 'Да' : 'Нет'}</p>
           {pet.contactInfo && (
-            <p className="mt-2 text-gray-500">Контактная информация: {pet.contactInfo}</p>
+            <p className="mt-2 text-gray-500 font-rubik">Контактная информация: {pet.contactInfo}</p>
           )}
           {pet.date && (
-            <p className="mt-2 text-gray-500">Дата: {new Date(pet.date).toLocaleDateString()}</p>
+            <p className="mt-2 text-gray-500 font-rubik">Дата: {new Date(pet.date).toLocaleDateString()}</p>
           )}
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between items-center mt-4 font-rubik">
             {showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleApprove(pet.id)}
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-rubik font-semibold"
               >
                 Одобрить
               </button>
@@ -162,7 +162,7 @@ export default function OneFoundPetCard({
               <AppModal
                 title="Изменить информацию о питомце"
                 buttonText="Редактировать"
-                buttonVariant="bg-indigo-600 hover:bg-indigo-500 text-white"
+                buttonVariant="bg-indigo-500 hover:bg-indigo-600 text-white font-rubik"
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
               >
@@ -171,7 +171,7 @@ export default function OneFoundPetCard({
                     <div className="mb-3">
                       <label
                         htmlFor="categoryId"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
                       >
                         Категория
                       </label>
@@ -180,7 +180,7 @@ export default function OneFoundPetCard({
                         name="categoryId"
                         value={editedPet.categoryId || ''}
                         onChange={handleChange}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-rubik"
                       >
                         <option value="">Выберите категорию</option>
                         {categories.map((category) => (
@@ -193,7 +193,7 @@ export default function OneFoundPetCard({
                     <div className="mb-3">
                       <label
                         htmlFor="colorId"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
                       >
                         Цвет
                       </label>
@@ -202,7 +202,7 @@ export default function OneFoundPetCard({
                         name="colorId"
                         value={editedPet.colorId || ''}
                         onChange={handleChange}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-rubik"
                       >
                         <option value="">Выберите цвет</option>
                         {colors.map((color) => (
@@ -215,7 +215,7 @@ export default function OneFoundPetCard({
                     <div className="mb-3">
                       <label
                         htmlFor="description"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
                       >
                         Описание
                       </label>
@@ -226,13 +226,13 @@ export default function OneFoundPetCard({
                         placeholder="Введите описание"
                         value={editedPet.description}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-rubik"
                       />
                     </div>
                     <div className="mb-3">
                       <label
                         htmlFor="location"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
                       >
                         Локация
                       </label>
@@ -243,13 +243,13 @@ export default function OneFoundPetCard({
                         placeholder="Введите локацию"
                         value={editedPet.location || ''}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-rubik"
                       />
                     </div>
                     <div className="mb-3">
                       <label
                         htmlFor="hasCollar"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
                       >
                         Наличие ошейника
                       </label>
@@ -261,13 +261,13 @@ export default function OneFoundPetCard({
                         onChange={(e) =>
                           setEditedPet((prev) => ({ ...prev, hasCollar: e.target.checked }))
                         }
-                        className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 font-rubik"
                       />
                     </div>
                     <div className="mb-3">
                       <label
                         htmlFor="contactInfo"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
                       >
                         Контактная информация
                       </label>
@@ -278,11 +278,11 @@ export default function OneFoundPetCard({
                         placeholder="Введите контактную информацию"
                         value={editedPet.contactInfo || ''}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-rubik"
                       />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">
+                      <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
                         Дата
                       </label>
                       <input
@@ -291,11 +291,11 @@ export default function OneFoundPetCard({
                         type="date"
                         value={editedPet.date || ''}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-rubik"
                       />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
+                      <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
                         Картинка
                       </label>
                       <input
@@ -303,13 +303,13 @@ export default function OneFoundPetCard({
                         name="file"
                         type="file"
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-rubik"
                       />
                     </div>
                     <div className="flex justify-end mt-3">
                       <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                        className="rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 font-rubik"
                       >
                         Сохранить
                       </button>
@@ -322,7 +322,7 @@ export default function OneFoundPetCard({
               <button
                 type="submit"
                 onClick={() => handleReject(pet.id)}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                className="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-semibold font-rubik"
               >
                 Отклонить
               </button>
@@ -331,7 +331,7 @@ export default function OneFoundPetCard({
               <button
                 type="button"
                 onClick={() => handleDelete(pet.id)}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                className="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-semibold font-rubik"
               >
                 Удалить
               </button>

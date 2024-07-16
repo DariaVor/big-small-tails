@@ -33,7 +33,7 @@ export default function AccountPage(): JSX.Element {
       {user.roleId === 2 && (
         <>
           <div>
-            <h1 className="text-2xl font-bold mb-4">Найденные питомцы ждут одобрения</h1>
+            <h1 className="text-2xl font-semibold mb-4 font-rubik">Найденные питомцы ждут одобрения</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {foundPets.map((pet: PetType) => (
                 <OneFoundPetCard key={pet.id} pet={pet} showButtons />
@@ -41,7 +41,7 @@ export default function AccountPage(): JSX.Element {
             </div>
           </div>
           <div className="mt-8">
-            <h1 className="text-2xl font-bold mb-4">Потерянные питомцы ждут одобрения</h1>
+            <h1 className="text-2xl font-semibold font-rubik mb-4">Потерянные питомцы ждут одобрения</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {lostPets.map((pet: PetType) => (
                 <OneLostPetCard key={pet.id} pet={pet} showButtons />

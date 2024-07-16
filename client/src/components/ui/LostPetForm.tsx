@@ -146,10 +146,10 @@ export default function LostPetForm(): JSX.Element {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="container mx-auto p-4 max-w-2xl">
         <form onSubmit={handleSubmit} className="w-full bg-white shadow-md rounded-lg p-8">
-          <h2 className="text-2xl font-bold mb-4 text-center">Форма для потерянного питомца</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center font-rubik">Форма для потерянного питомца</h2>
 
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Укажите имя
             </label>
             <input
@@ -159,20 +159,20 @@ export default function LostPetForm(): JSX.Element {
               placeholder="Введите имя"
               value={formState.name}
               onChange={handleInputChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm p-3 font-rubik"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Кого ищем?</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2 font-rubik">Кого ищем?</label>
             <div className="flex space-x-2">
               {categories.map((category: CategoryType) => (
                 <button
                   type="button"
                   key={category.id}
-                  className={`flex-grow px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                  className={`flex-grow px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-600 font-rubik ${
                     formState.categoryId === category.id.toString()
-                      ? 'bg-indigo-200'
+                      ? 'bg-violet-200'
                       : 'bg-gray-100'
                   }`}
                   onClick={() => handleCategoryClick(category.id)}
@@ -184,7 +184,7 @@ export default function LostPetForm(): JSX.Element {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Цвет вашего питомца?
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -192,8 +192,8 @@ export default function LostPetForm(): JSX.Element {
                 <button
                   type="button"
                   key={color.id}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                    formState.colorId === color.id.toString() ? 'bg-indigo-200' : 'bg-gray-100'
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-600 font-rubik ${
+                    formState.colorId === color.id.toString() ? 'bg-violet-200' : 'bg-gray-100'
                   }`}
                   onClick={() => handleColorClick(color.id)}
                 >
@@ -204,7 +204,7 @@ export default function LostPetForm(): JSX.Element {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Опишите дополнительную информацию о пропавшем питомце
             </label>
             <textarea
@@ -214,11 +214,11 @@ export default function LostPetForm(): JSX.Element {
               placeholder="Введите описание"
               value={formState.description}
               onChange={handleInputChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm p-3 font-rubik"
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Укажите место, где потерялся питомец
             </label>
             <div className="flex">
@@ -229,7 +229,7 @@ export default function LostPetForm(): JSX.Element {
                 placeholder="Введите локацию"
                 value={formState.location}
                 onChange={handleInputChange}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm p-3 font-rubik"
               />
               <div className="" onClick={handleGetLocation}>
                 <Player
@@ -246,14 +246,14 @@ export default function LostPetForm(): JSX.Element {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Когда потерялся питомец?
             </label>
             <DatePicker
               selected={formState.date}
               onChange={(date: Date) => setFormState((prevState) => ({ ...prevState, date }))}
               dateFormat="dd.MM.yyyy"
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm p-3 font-rubik"
             />
           </div>
 
@@ -269,15 +269,15 @@ export default function LostPetForm(): JSX.Element {
                   hasCollar: e.target.checked,
                 }))
               }
-              className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              className="h-4 w-4 text-violet-600 border-gray-300 rounded focus:ring-violet-500"
             />
-            <label htmlFor="hasCollar" className="ml-2 block text-gray-700 text-sm font-bold">
+            <label htmlFor="hasCollar" className="ml-2 block text-gray-700 text-sm font-bold font-rubik">
               Был ли ошейник?
             </label>
           </div>
 
           <div className="mb-4">
-            <label htmlFor="contactInfo" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="contactInfo" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Контактная информация
             </label>
             <PhoneInput
@@ -289,12 +289,12 @@ export default function LostPetForm(): JSX.Element {
                   contactInfo: value,
                 }))
               }
-              inputClass="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              inputClass="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm p-3 font-rubik"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Добавьте фотографию вашего питомца
             </label>
             <div
@@ -327,7 +327,7 @@ export default function LostPetForm(): JSX.Element {
                   <div className="mt-4 flex text-sm text-gray-600">
                     <label
                       htmlFor="file-upload"
-                      className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+                      className="relative cursor-pointer rounded-md bg-white font-medium text-violet-800 hover:text-violet-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-violet-500 focus-within:ring-offset-2 font-rubik"
                     >
                       <span>Загрузите файл</span>
                       <input
@@ -338,7 +338,7 @@ export default function LostPetForm(): JSX.Element {
                         onChange={handleChange}
                       />
                     </label>
-                    <p className="pl-1">или перетащите сюда</p>
+                    <p className="pl-1 font-rubik">или перетащите сюда</p>
                   </div>
                   <p className="text-xs text-gray-500">PNG, JPG, GIF до 10MB</p>
                 </div>
@@ -349,7 +349,7 @@ export default function LostPetForm(): JSX.Element {
                   <button
                     type="button"
                     onClick={removeFile}
-                    className="text-xs text-red-500 underline"
+                    className="text-xs text-rose-600 underline"
                   >
                     Удалить
                   </button>
@@ -363,7 +363,7 @@ export default function LostPetForm(): JSX.Element {
           <div className="flex justify-end space-x-4">
             <button
               type="button"
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className="text-sm font-semibold leading-6 text-gray-900 font-rubik"
               onClick={() => {
                 setFormState({
                   name: '',
@@ -383,7 +383,7 @@ export default function LostPetForm(): JSX.Element {
             </button>
             <button
               type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+              className="rounded-md bg-violet-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-600 font-rubik"
             >
               Добавить питомца
             </button>

@@ -54,7 +54,7 @@ function AppModal({
   return (
     <>
       <button
-        className={`${buttonVariant} font-bold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600`}
+        className={`${buttonVariant} font-rubik font-bold py-2 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600`}
         onClick={handleShow}
         type="button"
       >
@@ -84,7 +84,7 @@ function AppModal({
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+              <div className=" font-rubik bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 {/* <button
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 sm:ml-3 sm:w-auto sm:text-sm"

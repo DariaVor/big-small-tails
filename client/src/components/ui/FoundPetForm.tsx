@@ -148,18 +148,18 @@ export default function FoundPetForm(): JSX.Element {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="container mx-auto p-4 max-w-2xl">
         <form onSubmit={handleSubmit} className="w-full bg-white shadow-md rounded-lg p-8">
-          <h2 className="text-2xl font-bold mb-4 text-center">Форма для найденного питомца</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center font-rubik">Форма для найденного питомца</h2>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Кого вы нашли?</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2 font-rubik">Кого вы нашли?</label>
             <div className="flex space-x-2">
               {categories.map((category: CategoryType) => (
                 <button
                   type="button"
                   key={category.id}
-                  className={`flex-grow px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                  className={`flex-grow px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-600 font-rubik ${
                     formState.categoryId === category.id.toString()
-                      ? 'bg-indigo-200'
+                      ? 'bg-violet-200'
                       : 'bg-gray-100'
                   }`}
                   onClick={() => handleCategoryClick(category.id)}
@@ -171,7 +171,7 @@ export default function FoundPetForm(): JSX.Element {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Цвет найденного питомца?
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -179,8 +179,8 @@ export default function FoundPetForm(): JSX.Element {
                 <button
                   type="button"
                   key={color.id}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                    formState.colorId === color.id.toString() ? 'bg-indigo-200' : 'bg-gray-100'
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-600 font-rubik ${
+                    formState.colorId === color.id.toString() ? 'bg-violet-200' : 'bg-gray-100'
                   }`}
                   onClick={() => handleColorClick(color.id)}
                 >
@@ -191,7 +191,7 @@ export default function FoundPetForm(): JSX.Element {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Опишите дополнительную информацию о найденном питомце
             </label>
             <textarea
@@ -201,12 +201,12 @@ export default function FoundPetForm(): JSX.Element {
               placeholder="Введите описание"
               value={formState.description}
               onChange={handleInputChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              className="font-rubik block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-600 focus:ring-violet-600 sm:text-sm p-3"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Укажите место, где нашелся питомец
             </label>
             <div className="flex">
@@ -217,7 +217,7 @@ export default function FoundPetForm(): JSX.Element {
                 placeholder="Введите локацию"
                 value={formState.location}
                 onChange={handleInputChange}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+                className="font-rubik block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-600 focus:ring-violet-600 sm:text-sm p-3"
               />
               <div className="w-[65px]" onClick={handleGetLocation}>
                 <Player
@@ -234,14 +234,14 @@ export default function FoundPetForm(): JSX.Element {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Когда вы нашли питомца?
             </label>
             <DatePicker
               selected={formState.date}
               onChange={(date: Date) => setFormState((prevState) => ({ ...prevState, date }))}
               dateFormat="dd.MM.yyyy"
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm p-3 font-rubik"
             />
           </div>
 
@@ -257,15 +257,15 @@ export default function FoundPetForm(): JSX.Element {
                   hasCollar: e.target.checked,
                 }))
               }
-              className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              className="h-4 w-4 text-violet-600 border-gray-300 rounded focus:ring-violet-500 font-rubik"
             />
-            <label htmlFor="hasCollar" className="ml-2 block text-gray-700 text-sm font-bold">
+            <label htmlFor="hasCollar" className="ml-2 block text-gray-700 text-sm font-bold font-rubik">
               Был ли ошейник?
             </label>
           </div>
 
           <div className="mb-4">
-            <label htmlFor="contactInfo" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="contactInfo" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
               Контактная информация
             </label>
             <PhoneInput
@@ -277,13 +277,13 @@ export default function FoundPetForm(): JSX.Element {
                   contactInfo: value,
                 }))
               }
-              inputClass="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500focus:ring-indigo-500 sm:text-sm p-3"
+              inputClass="font-rubik w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500focus:ring-violet-500 sm:text-sm p-3"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
-              Добавьте фотографию вашего питомца
+            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
+              Добавьте фотографию питомца
             </label>
             <div
               onDragEnter={handleDrag}
@@ -291,7 +291,7 @@ export default function FoundPetForm(): JSX.Element {
               onDragOver={handleDrag}
               onDrop={handleDrop}
               className={`mt-2 flex justify-center rounded-lg border-2 border-dashed ${
-                dragActive ? 'border-indigo-600' : 'border-gray-300'
+                dragActive ? 'border-violet-600' : 'border-gray-300'
               } px-6 py-10`}
             >
               {imagePreview ? (
@@ -315,7 +315,7 @@ export default function FoundPetForm(): JSX.Element {
                   <div className="mt-4 flex text-sm text-gray-600">
                     <label
                       htmlFor="file-upload"
-                      className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+                      className="relative cursor-pointer rounded-md bg-white font-medium text-violet-800 hover:text-violet-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-violet-500 focus-within:ring-offset-2"
                     >
                       <span>Загрузите файл</span>
                       <input
@@ -337,7 +337,7 @@ export default function FoundPetForm(): JSX.Element {
                   <button
                     type="button"
                     onClick={removeFile}
-                    className="text-xs text-red-500 underline"
+                    className="text-xs text-rose-600 underline"
                   >
                     Удалить
                   </button>
@@ -369,7 +369,7 @@ export default function FoundPetForm(): JSX.Element {
             </button>
             <button
               type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+              className="rounded-md bg-violet-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-600"
             >
               Добавить питомца
             </button>

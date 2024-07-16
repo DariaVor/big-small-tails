@@ -33,7 +33,7 @@ export default function RegisterPage(): JSX.Element {
     <div className="min-h-screen flex items-center justify-center">
       <div className="container mx-auto p-4 flex justify-center">
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
-          <div className="flex flex-col border-b border-green-500 py-2 mb-4">
+          <div className="flex flex-col border-b border-violet-700 py-2 mb-4">
             <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
               Имя пользователя
             </label>
@@ -47,7 +47,7 @@ export default function RegisterPage(): JSX.Element {
               required
             />
           </div>
-          <div className="flex flex-col border-b border-green-500 py-2 mb-4">
+          <div className="flex flex-col border-b border-violet-700 py-2 mb-4">
             <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
               Электронная почта
             </label>
@@ -61,7 +61,7 @@ export default function RegisterPage(): JSX.Element {
               required
             />
           </div>
-          <div className="flex flex-col border-b border-green-500 py-2 mb-6 relative">
+          <div className="flex flex-col border-b border-violet-700 py-2 mb-6 relative">
             <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
               Пароль
             </label>
@@ -80,14 +80,18 @@ export default function RegisterPage(): JSX.Element {
                 onClick={togglePasswordVisibility}
                 className="absolute inset-y-0 right-0 pr-2 text-gray-700 focus:outline-none"
               >
-                {showPassword ? 'Скрыть' : 'Показать'}
+                <img
+                  src={showPassword ? '/images/eye-close.svg' : '/images/eye-open.svg'}
+                  alt={showPassword ? 'Hide password' : 'Show password'}
+                  className="h-5 w-5"
+                />
               </button>
             </div>
           </div>
           <div className="flex items-center justify-center">
             <button
               type="submit"
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-violet-800 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded"
             >
               Зарегистрироваться
             </button>
