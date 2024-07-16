@@ -4,6 +4,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        rubik: ["Rubik", "sans-serif"],
+      },
       // backgroundImage: {
       //   'hero-pattern': `${json}`,
       //   'footer-texture': "url('/img/footer-texture.png')",

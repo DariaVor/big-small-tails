@@ -27,7 +27,7 @@ export default function Notify(): JSX.Element {
       {notify.type && (
         <div
           className={`p-4 rounded-md shadow-md transition-all ${
-            notify.type === 'error' ? 'bg-red-500' : 'bg-green-500'
+            notify.type === 'error' ? 'bg-rose-500' : 'bg-teal-500'
           } text-white`}
         >
           <div className="flex justify-between items-center">

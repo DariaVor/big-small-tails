@@ -10,36 +10,35 @@ export default function Layout(): JSX.Element {
   const user = useAppSelector((store) => store.auth.user);
   const location = useLocation();
   const transitions = useTransition(location, {
-    from: { opacity: 0, transform: 'translate3d(100%,0,0)' },
-    enter: { opacity: 1, transform: 'translate3d(0,0,0)' },
-    leave: { opacity: 0, transform: 'translate3d(-50%,0,0)' },
+    from: { opacity: 0, transform: 'translate3d(100%, 0, 0)' },
+    enter: { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+    leave: { opacity: 0, transform: 'translate3d(-100%, 0, 0)' },
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1500);
+  // }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Loader isLoading={user.status === 'fetching'}>
         <>
           <NavBar />
-          <div className="relative">
+{/*           <div className="relative flex-1">
             {transitions((style, item) => (
               <animated.div
                 key={item.pathname}
                 style={style}
-                className="absolute w-full top-0 left-0"
-              >
+                className="absolute top-0 left-0 w-full"
+              > */}
                 <Outlet />
-              </animated.div>
+{/*               </animated.div>
             ))}
-          </div>
-          {/* <Loader isLoading={isLoading}><Outlet /></Loader> */}
+          </div> */}
         </>
       </Loader>
       <Notify />

@@ -104,7 +104,7 @@ export default function FoundPetPage(): JSX.Element {
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {pets.length > 0 ? (
               pets.map((pet) => (
-                <OneFoundPetCard key={pet.id} pet={pet} />
+                <OneFoundPetCard key={pet.id} pet={pet} /*onDelete={handleDelete}*/ showButtons isAccountPage={false} />
               ))
             ) : (
               <p className="text-center w-full">Ничего не найдено</p>

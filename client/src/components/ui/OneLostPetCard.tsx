@@ -21,14 +21,20 @@ type PetType = {
   hasCollar: boolean;
   contactInfo: string | null;
   date: string | null; // ISO 8601 date string
+  requestStatusId: number | null;
 };
 
 type OneLostPetCardProps = {
   pet: PetType;
   showButtons?: boolean;
+  isAccountPage?: boolean;
 };
 
-export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps): JSX.Element {
+export default function OneLostPetCard({
+  pet,
+  showButtons,
+  isAccountPage = true,
+}: OneLostPetCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [editedPet, setEditedPet] = useState({
     name: pet.name,
@@ -40,6 +46,7 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
     contactInfo: pet.contactInfo,
     date: pet.date,
     image: null,
+    requestStatusId: pet.requestStatusId,
   });
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -65,7 +72,10 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
     }));
   };
 
-  const handleEditPet = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleEditPet = (
+    e: React.FormEvent<HTMLFormElement>,
+    closeModal: () => void,
+  ): Promise<void> => {
     e.preventDefault();
     const formData = new FormData();
     Object.entries(editedPet).forEach(([key, value]) => {
@@ -74,6 +84,7 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
       }
     });
     void dispatch(updateOnePetThunk({ id: pet.id, petForm: formData }));
+    closeModal();
   };
 
   const getCategoryName = (id: number | null) => {
@@ -95,62 +106,88 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-      <div className="md:flex">
-        <div className="md:flex-shrink-0">
+    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
+        <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
           <Link to={`/pets/${pet.id}`}>
             <img
-              className="h-48 w-full object-cover md:h-full md:w-48"
+              className="w-full h-full object-cover"
+              style={{ aspectRatio: '1 / 1' }}
               src={`/img/${pet.image}`}
               alt="Lost Pet"
             />
           </Link>
         </div>
         <div className="p-8">
-          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-            Потерянные
+        {isAccountPage && user.roleId === 1 && pet.requestStatusId === 1 && (
+            <div className="mb-2 uppercase tracking-wide text-sm text-indigo-700 font-semibold font-rubik">
+              Ожидает одобрения
+            </div>
+          )}
+          {isAccountPage && user.roleId === 1 && pet.requestStatusId === 2 && (
+            <div className="mb-2 uppercase tracking-wide text-sm text-teal-600 font-semibold font-rubik">
+              Одобрено
+            </div>
+          )}
+          {isAccountPage && user.roleId === 1 && pet.requestStatusId === 4 && (
+            <div className="mb-2 uppercase tracking-wide text-sm text-rose-600 font-semibold font-rubik">
+              Отклонено
+            </div>
+          )}
+          <div className="uppercase tracking-wide text-sm text-fuchsia-700 font-semibold font-rubik">
+            Потерян
           </div>
           {pet.categoryId !== null && (
-            <p className="block mt-1 text-lg leading-tight font-medium text-black">
-              Категория: {getCategoryName(pet.categoryId)}
+            <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
+              {getCategoryName(pet.categoryId)}
             </p>
           )}
           {pet.colorId !== null && (
-            <p className="block mt-1 text-lg leading-tight font-medium text-black">
+            <p className="mt-2 text-gray-500 font-rubik">
               Цвет: {getColorName(pet.colorId)}
             </p>
           )}
-          {pet.description && <p className="mt-2 text-gray-500">Описание: {pet.description}</p>}
-          {pet.location && <p className="mt-2 text-gray-500">Локация: {pet.location}</p>}
-          <p className="mt-2 text-gray-500">Наличие ошейника: {pet.hasCollar ? 'Да' : 'Нет'}</p>
-          {pet.contactInfo && (
-            <p className="mt-2 text-gray-500">Контактная информация: {pet.contactInfo}</p>
+          {pet.description && (
+            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description.length > 22 ? `${pet.description.slice(0, 23)}...` : pet.description}</p>
           )}
+          {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location.length > 23 ? `${pet.location.slice(0, 28)}...` : pet.location}</p>}
+          <p className="mt-2 text-gray-500 font-rubik">
+            Наличие ошейника: {pet.hasCollar ? 'Присутствует' : 'Отсутствует'}
+          </p>
+          {/* {pet.contactInfo && (
+            <p className="mt-2 text-gray-500 font-rubik">
+              Контактная информация: {pet.contactInfo}
+            </p>
+          )} */}
           {pet.date && (
-            <p className="mt-2 text-gray-500">Дата: {new Date(pet.date).toLocaleDateString()}</p>
+            <p className="mt-2 text-gray-500 font-rubik">
+              Дата: {new Date(pet.date).toLocaleDateString()}
+            </p>
           )}
           <div className="flex justify-between items-center mt-4">
-            {showButtons && user.roleId === 2 && (
+            {isAccountPage && showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleApprove(pet.id)}
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 font-rubik font-semibold"
               >
                 Одобрить
               </button>
             )}{' '}
-            {showButtons && user.roleId === 1 && (
+            {isAccountPage && showButtons && user.roleId === 1 && (
               <AppModal
                 title="Изменить информацию о питомце"
                 buttonText="Редактировать"
-                buttonVariant="bg-indigo-600 hover:bg-indigo-500 text-white"
+                buttonVariant="bg-indigo-500 hover:bg-indigo-600 text-white"
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
               >
                 {(closeModal) => (
                   <form onSubmit={(e) => handleEditPet(e, closeModal)}>
                     <div className="mb-3">
-                      <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
+                      <label
+                        htmlFor="name"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
+                      >
                         Имя
                       </label>
                       <input
@@ -160,13 +197,13 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         placeholder="Введите имя питомца"
                         value={editedPet.name}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="font-rubik shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
                     <div className="mb-3">
                       <label
                         htmlFor="categoryId"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
                       >
                         Категория
                       </label>
@@ -175,7 +212,7 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         name="categoryId"
                         value={editedPet.categoryId || ''}
                         onChange={handleChange}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="font-rubik block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
                         <option value="">Выберите категорию</option>
                         {categories.map((category) => (
@@ -188,7 +225,7 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                     <div className="mb-3">
                       <label
                         htmlFor="colorId"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
                       >
                         Цвет
                       </label>
@@ -197,7 +234,7 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         name="colorId"
                         value={editedPet.colorId || ''}
                         onChange={handleChange}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="font-rubik block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
                         <option value="">Выберите цвет</option>
                         {colors.map((color) => (
@@ -210,7 +247,7 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                     <div className="mb-3">
                       <label
                         htmlFor="description"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
                       >
                         Описание
                       </label>
@@ -221,13 +258,13 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         placeholder="Введите описание"
                         value={editedPet.description}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="font-rubik shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
                     <div className="mb-3">
                       <label
                         htmlFor="location"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
                       >
                         Локация
                       </label>
@@ -238,13 +275,13 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         placeholder="Введите локацию"
                         value={editedPet.location || ''}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="font-rubik shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
                     <div className="mb-3">
                       <label
                         htmlFor="hasCollar"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
                       >
                         Наличие ошейника
                       </label>
@@ -256,13 +293,13 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         onChange={(e) =>
                           setEditedPet((prev) => ({ ...prev, hasCollar: e.target.checked }))
                         }
-                        className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        className="font-rubik h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                       />
                     </div>
                     <div className="mb-3">
                       <label
                         htmlFor="contactInfo"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
                       >
                         Контактная информация
                       </label>
@@ -277,7 +314,10 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                       />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">
+                      <label
+                        htmlFor="date"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
+                      >
                         Дата
                       </label>
                       <input
@@ -286,11 +326,14 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         type="date"
                         value={editedPet.date || ''}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="font-rubik shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
+                      <label
+                        htmlFor="image"
+                        className="font-rubik block text-gray-700 text-sm font-bold mb-2"
+                      >
                         Картинка
                       </label>
                       <input
@@ -298,13 +341,13 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                         name="file"
                         type="file"
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="font-rubik shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
                     <div className="flex justify-end mt-3">
                       <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                        className="font-rubik rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-600"
                       >
                         Сохранить
                       </button>
@@ -313,27 +356,36 @@ export default function OneLostPetCard({ pet, showButtons }: OneLostPetCardProps
                 )}
               </AppModal>
             )}
-            {showButtons && user.roleId === 2 && (
+            {isAccountPage && showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleReject(pet.id)}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-rubik font-semibold"
               >
                 Отклонить
               </button>
             )}
-            {showButtons && user.roleId === 1 && (
+            {isAccountPage && showButtons && user.roleId === 1 && (
               <button
                 type="button"
                 onClick={() => handleDelete(pet.id)}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-rubik font-semibold"
+              >
+                Удалить
+              </button>
+            )}
+            {user.roleId === 2 && !isAccountPage && (
+              <button
+                type="button"
+                onClick={() => handleDelete(pet.id)}
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik"
               >
                 Удалить
               </button>
             )}
           </div>
         </div>
-      </div>
     </div>
   );
 }
+
