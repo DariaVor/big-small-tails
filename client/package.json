@@ -21,6 +21,7 @@
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@mui/icons-material": "^5.16.0",
     "@mui/material": "^5.16.0",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
     "rc-slider": "^10.6.2",
