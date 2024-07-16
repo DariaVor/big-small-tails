@@ -112,11 +112,11 @@ export default function OneLostPetCard({
 
   return (
     <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
-      {/* <div className="md:flex"> */}
         <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
           <Link to={`/pets/${pet.id}`}>
             <img
-              // className="h-48 w-full object-cover md:h-full md:w-48"
+              className="w-full h-full object-cover"
+              style={{ aspectRatio: '1 / 1' }}
               src={`/img/${pet.image}`}
               alt="Lost Pet"
             />
@@ -139,30 +139,30 @@ export default function OneLostPetCard({
             </div>
           )}
           <div className="uppercase tracking-wide text-sm text-fuchsia-700 font-semibold font-rubik">
-            Потерянные
+            Потерян
           </div>
           {pet.categoryId !== null && (
             <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
-              Категория: {getCategoryName(pet.categoryId)}
+              {getCategoryName(pet.categoryId)}
             </p>
           )}
           {pet.colorId !== null && (
-            <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
+            <p className="mt-2 text-gray-500 font-rubik">
               Цвет: {getColorName(pet.colorId)}
             </p>
           )}
           {pet.description && (
-            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description}</p>
+            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description.length > 22 ? `${pet.description.slice(0, 23)}...` : pet.description}</p>
           )}
-          {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location}</p>}
+          {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location.length > 23 ? `${pet.location.slice(0, 28)}...` : pet.location}</p>}
           <p className="mt-2 text-gray-500 font-rubik">
             Наличие ошейника: {pet.hasCollar ? 'Присутствует' : 'Отсутствует'}
           </p>
-          {pet.contactInfo && (
+          {/* {pet.contactInfo && (
             <p className="mt-2 text-gray-500 font-rubik">
               Контактная информация: {pet.contactInfo}
             </p>
-          )}
+          )} */}
           {pet.date && (
             <p className="mt-2 text-gray-500 font-rubik">
               Дата: {new Date(pet.date).toLocaleDateString()}
@@ -390,7 +390,7 @@ export default function OneLostPetCard({
             )}
           </div>
         </div>
-      {/* </div> */}
     </div>
   );
 }
+

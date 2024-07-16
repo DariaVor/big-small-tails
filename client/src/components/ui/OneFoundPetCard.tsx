@@ -123,7 +123,8 @@ export default function OneFoundPetCard({
         <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
           <Link to={`/pets/${pet.id}`}>
             <img
-              // className="h-48 w-full object-cover md:h-full md:w-48"
+              className="w-full h-full object-cover"
+              style={{ aspectRatio: '1 / 1' }}
               src={`/img/${pet.image}`}
               alt="Найденный питомец"
             />
@@ -146,7 +147,7 @@ export default function OneFoundPetCard({
             </div>
           )}
           <div className="uppercase tracking-wide text-sm text-indigo-700 font-semibold font-rubik">
-            Найденные
+            Найден
           </div>
           {pet.categoryId !== null && (
             <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
@@ -159,17 +160,17 @@ export default function OneFoundPetCard({
             </p>
           )}
           {pet.description && (
-            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description}</p>
+            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description.length > 30 ? `${pet.description.slice(0, 30)}...` : pet.description}</p>
           )}
-          {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location}</p>}
+          {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location.length > 23 ? `${pet.location.slice(0, 28)}...` : pet.location}</p>}
           <p className="mt-2 text-gray-500 font-rubik">
             Наличие ошейника: {pet.hasCollar ? 'Присутствует' : 'Отсутствует'}
           </p>
-          {pet.contactInfo && (
+          {/* {pet.contactInfo && (
             <p className="mt-2 text-gray-500 font-rubik">
               Контактная информация: {pet.contactInfo}
             </p>
-          )}
+          )} */}
           {pet.date && (
             <p className="mt-2 text-gray-500 font-rubik">
               Дата: {new Date(pet.date).toLocaleDateString()}

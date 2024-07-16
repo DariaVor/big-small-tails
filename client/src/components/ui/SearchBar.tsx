@@ -208,11 +208,11 @@ function SearchBar({
         <div className="px-2">
           <Slider
             range
-            min={new Date('2020-01-01').getTime()}
+            min={new Date('2024-01-01').getTime()}
             max={new Date().getTime()}
             step={24 * 60 * 60 * 1000}
             defaultValue={[
-              dateRange[0]?.getTime() || new Date('2020-01-01').getTime(),
+              dateRange[0]?.getTime() || new Date('2024-01-01').getTime(),
               dateRange[1]?.getTime() || new Date().getTime(),
             ]}
             onChange={handleDateRangeChange}

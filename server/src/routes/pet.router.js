@@ -108,17 +108,20 @@ petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (re
       imageName = 'paw.webp';
     }
 
+    const defaultColor = await Color.findOne({ where: { color: 'Отсутствует' } });
+    const defaultColorId = defaultColor ? defaultColor.id : null;
+
     const petData = {
-      name: req.body.name || null,
+      name: req.body.name || 'Имя отсутствует',
       petStatusId: req.body.petStatusId ? parseInt(req.body.petStatusId) : null,
       categoryId: req.body.categoryId ? parseInt(req.body.categoryId) : null,
-      colorId: req.body.colorId ? parseInt(req.body.colorId) : null,
-      description: req.body.description || null,
-      location: req.body.location || null,
+      colorId: req.body.colorId ? parseInt(req.body.colorId) : defaultColorId,
+      description: req.body.description || 'Отсутствует',
+      location: req.body.location || 'Отсутствует',
       image: imageName,
       hasCollar: req.body.hasCollar ? req.body.hasCollar === 'true' : null,
-      contactInfo: req.body.contactInfo || null,
-      date: req.body.date ? new Date(req.body.date) : null,
+      contactInfo: req.body.contactInfo || 'Отсутствует',
+      date: req.body.date ? new Date(req.body.date) : 'Отсутствует',
       requestStatusId: 1,
       userId: res.locals.user.id,
     };
