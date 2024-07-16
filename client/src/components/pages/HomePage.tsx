@@ -13,7 +13,7 @@ export default function HomePage(): JSX.Element {
         <h1 className="text-3xl font-bold text-center mb-4 font-rubik">
           Всероссийская система поиска пропавших животных
         </h1>
-        <p className="text-gray-600 text-center mb-4 font-rubik">
+        <p className="text-gray-600 text-center mb-6 font-rubik">
           Помогите питомцу вернуться домой.
         </p>
         <div className="flex justify-center space-x-4 ">
@@ -35,9 +35,9 @@ export default function HomePage(): JSX.Element {
           </Link>
         </div>
       </div>
-      <div className="text-center mb-8">
+      {/* <div className="text-center mb-8">
         <h2 className="text-2xl font-bold mb-4 font-rubik">Три простых шага</h2>
-      </div>
+      </div> */}
       <div className="flex flex-wrap justify-center gap-6">
         {data.map((item, id) => (
           <AboutMeCard
