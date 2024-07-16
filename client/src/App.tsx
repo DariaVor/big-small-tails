@@ -15,6 +15,7 @@ import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
 import BothAddPage from './components/pages/BothAddPage';
 import Example from './components/pages/Example';
+import ContactUsPage from './components/pages/ContactUsPage';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -47,17 +48,34 @@ function App(): JSX.Element {
           element: <LostPetPage />,
         },
         {
-          path: 'lostaddpage',
-          element: <BothAddPage found="" />,
+          element: <PrivateRouter isAllowed={user.status === 'logged'} redirect="/login" />,
+          children: [
+            {
+              path: 'lostaddpage',
+              element: <BothAddPage found="" />,
+            },
+            {
+              path: 'foundaddpage',
+              element: <BothAddPage found="found"/>,
+            },
+          ],
         },
-        {
-          path: 'foundaddpage',
-          element: <BothAddPage found="found" />,
-        },
+        // {
+        //   path: 'lostaddpage',
+        //   element: <BothAddPage found="" />,
+        // },
+        // {
+        //   path: 'foundaddpage',
+        //   element: <BothAddPage found="found" />,
+        // },
         { path: '/pets/:id', element: <PetDetailPage /> },
         {
           path: '*',
           element: <ErrorPage />,
+        },
+        {
+          path: '/contact-us',
+          element: <ContactUsPage />,
         },
         {
           element: <PrivateRouter isAllowed={user.status !== 'logged'} redirect="/" />,

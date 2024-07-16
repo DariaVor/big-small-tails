@@ -159,8 +159,13 @@ petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (r
       }
     }
 
-    // const updatedPet = await pet.update(req.body);
+    // Обновляем данные питомца
     await Pet.update(req.body, { where: { id: req.params.id } });
+
+    // Устанавливаем requestStatusId в 1
+    pet.requestStatusId = 1;
+    await pet.save();
+
     const updatedPet = await Pet.findByPk(req.params.id);
     res.json(updatedPet);
   } catch (error) {

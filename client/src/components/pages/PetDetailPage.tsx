@@ -69,7 +69,7 @@ export default function PetDetailPage(): JSX.Element {
   return (
     <div className="max-w-3xl mx-auto px-4 mt-8 py-8 bg-white shadow-md rounded-lg">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-5">{pet.name}</h1>
+        <h1 className="text-3xl font-bold mb-5">{pet?.name}</h1>
         <div
           role="button"
           tabIndex={0}
@@ -78,8 +78,8 @@ export default function PetDetailPage(): JSX.Element {
           onKeyDown={handleKeyDown}
         >
           <img
-            src={`/img/${pet.image}`}
-            alt={pet.name}
+            src={`/img/${pet?.image}`}
+            alt={pet?.name}
             className="mx-auto rounded-lg shadow-md cursor-pointer object-cover h-64 w-full sm:h-80 md:h-96 lg:h-108"
           />
         </div>
@@ -88,39 +88,39 @@ export default function PetDetailPage(): JSX.Element {
         <dl className="divide-y divide-gray-200">
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Статус</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.PetStatus.status}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.PetStatus?.status}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Вид</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.Category.category}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.Category?.category}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Раскрас</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.Color.color}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.Color?.color}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Описание</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.description}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.description}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Местонахождение</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.location}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.location}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Наличие ошейника</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.hasCollar ? 'Присутствует' : 'Отсутствует'}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.hasCollar ? 'Присутствует' : 'Отсутствует'}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Контактная информация</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.contactInfo}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.contactInfo}</dd>
           </div>
           <div className="py-2">
-            <dt className="text-sm font-medium text-gray-500">{pet.PetStatus.status === 'Найден' ? 'Дата нахождения' : 'Дата потери'}</dt>
-            <dd className="mt-1 text-lg text-gray-900">{new Date(pet.date).toLocaleDateString('ru-RU')}</dd>
+            <dt className="text-sm font-medium text-gray-500">{pet?.PetStatus?.status === 'Найден' ? 'Дата нахождения' : 'Дата потери'}</dt>
+            <dd className="mt-1 text-lg text-gray-900">{new Date(pet?.date).toLocaleDateString('ru-RU')}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Добавлено</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet.User.username}</dd>
+            <dd className="mt-1 text-lg text-gray-900">{pet?.User?.username}</dd>
           </div>
         </dl>
       </div>
@@ -139,8 +139,8 @@ export default function PetDetailPage(): JSX.Element {
         >
           <div className="max-w-3xl mx-auto">
             <img
-              src={`/img/${pet.image}`}
-              alt={pet.name}
+              src={`/img/${pet?.image}`}
+              alt={pet?.name}
               className="rounded-lg shadow-lg max-h-screen max-w-full"
             />
           </div>

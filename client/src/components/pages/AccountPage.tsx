@@ -23,7 +23,7 @@ export default function AccountPage(): JSX.Element {
 
   const userPendingPets =
     user.roleId === 1
-      ? pets.filter((pet) => pet.userId === user.id && pet.requestStatusId === 1)
+      ? pets.filter((pet) => pet.userId === user.id && pet.requestStatusId === 1 || pet.requestStatusId === 2 || pet.requestStatusId === 3 || pet.requestStatusId === 4)
       : pendingPets;
 
   console.log(userPendingPets);
@@ -41,7 +41,7 @@ export default function AccountPage(): JSX.Element {
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {lostPets.map((pet: PetType) => (
-                <OneLostPetCard key={pet.id} pet={pet} showButtons />
+                <OneLostPetCard key={pet.id} pet={pet} showButtons isAccountPage={true}/>
               ))}
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function AccountPage(): JSX.Element {
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {foundPets.map((pet: PetType) => (
-                <OneFoundPetCard key={pet.id} pet={pet} showButtons />
+                <OneFoundPetCard key={pet.id} pet={pet} showButtons isAccountPage={true}/>
               ))}
             </div>
           </div>
@@ -65,7 +65,7 @@ export default function AccountPage(): JSX.Element {
               <OneFoundPetCard key={pet.id} pet={pet} showButtons />
             ))}
             {lostPets.map((pet: PetType) => (
-              <OneLostPetCard key={pet.id} pet={pet} showButtons />
+              <OneLostPetCard key={pet.id} pet={pet} showButtons  />
             ))}
           </div>
         </>

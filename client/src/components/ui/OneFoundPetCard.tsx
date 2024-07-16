@@ -25,16 +25,19 @@ type PetType = {
   hasCollar: boolean;
   contactInfo: string | null;
   date: string | null;
+  requestStatusId: number | null;
 };
 
 type OneFoundPetCardProps = {
   pet: PetType;
   showButtons?: boolean;
+  isAccountPage?: boolean;
 };
 
 export default function OneFoundPetCard({
   pet,
   showButtons = false,
+  isAccountPage = true,
 }: OneFoundPetCardProps): JSX.Element {
   const [editedPet, setEditedPet] = useState({
     categoryId: pet.categoryId,
@@ -45,6 +48,7 @@ export default function OneFoundPetCard({
     contactInfo: pet.contactInfo,
     date: pet.date,
     image: null,
+    requestStatusId: pet.requestStatusId,
   });
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -126,7 +130,22 @@ export default function OneFoundPetCard({
           </Link>
         </div>
         <div className="p-8">
-          <div className="uppercase tracking-wide text-sm text-violet-500 font-semibold font-rubik">
+          {isAccountPage && user.roleId === 1 && pet.requestStatusId === 1 && (
+            <div className="mb-2 uppercase tracking-wide text-sm text-indigo-700 font-semibold font-rubik">
+              Ожидает одобрения
+            </div>
+          )}
+          {isAccountPage && user.roleId === 1 && pet.requestStatusId === 2 && (
+            <div className="mb-2 uppercase tracking-wide text-sm text-teal-600 font-semibold font-rubik">
+              Одобрено
+            </div>
+          )}
+          {isAccountPage && user.roleId === 1 && pet.requestStatusId === 4 && (
+            <div className="mb-2 uppercase tracking-wide text-sm text-rose-600 font-semibold font-rubik">
+              Отклонено
+            </div>
+          )}
+          <div className="uppercase tracking-wide text-sm text-indigo-700 font-semibold font-rubik">
             Найденные
           </div>
           {pet.categoryId !== null && (
@@ -139,26 +158,35 @@ export default function OneFoundPetCard({
               Цвет: {getColorName(pet.colorId)}
             </p>
           )}
-          {pet.description && <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description}</p>}
+          {pet.description && (
+            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description}</p>
+          )}
           {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location}</p>}
-          <p className="mt-2 text-gray-500 font-rubik">Наличие ошейника: {pet.hasCollar ? 'Да' : 'Нет'}</p>
+          <p className="mt-2 text-gray-500 font-rubik">
+            Наличие ошейника: {pet.hasCollar ? 'Да' : 'Нет'}
+          </p>
           {pet.contactInfo && (
-            <p className="mt-2 text-gray-500 font-rubik">Контактная информация: {pet.contactInfo}</p>
+            <p className="mt-2 text-gray-500 font-rubik">
+              Контактная информация: {pet.contactInfo}
+            </p>
           )}
           {pet.date && (
-            <p className="mt-2 text-gray-500 font-rubik">Дата: {new Date(pet.date).toLocaleDateString()}</p>
+            <p className="mt-2 text-gray-500 font-rubik">
+              Дата: {new Date(pet.date).toLocaleDateString()}
+            </p>
           )}
+
           <div className="flex justify-between items-center mt-4 font-rubik">
-            {showButtons && user.roleId === 2 && (
+            {isAccountPage && showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleApprove(pet.id)}
-                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-rubik font-semibold"
+                className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 font-rubik font-semibold"
               >
                 Одобрить
               </button>
             )}{' '}
-            {showButtons && user.roleId === 1 && (
+            {isAccountPage && showButtons && user.roleId === 1 && (
               <AppModal
                 title="Изменить информацию о питомце"
                 buttonText="Редактировать"
@@ -282,7 +310,10 @@ export default function OneFoundPetCard({
                       />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
+                      <label
+                        htmlFor="date"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
+                      >
                         Дата
                       </label>
                       <input
@@ -295,7 +326,10 @@ export default function OneFoundPetCard({
                       />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2 font-rubik">
+                      <label
+                        htmlFor="image"
+                        className="block text-gray-700 text-sm font-bold mb-2 font-rubik"
+                      >
                         Картинка
                       </label>
                       <input
@@ -318,7 +352,7 @@ export default function OneFoundPetCard({
                 )}
               </AppModal>
             )}
-            {showButtons && user.roleId === 2 && (
+            {isAccountPage && showButtons && user.roleId === 2 && (
               <button
                 type="submit"
                 onClick={() => handleReject(pet.id)}
@@ -327,11 +361,20 @@ export default function OneFoundPetCard({
                 Отклонить
               </button>
             )}
-            {showButtons && user.roleId === 1 && (
+            {isAccountPage && showButtons && user.roleId === 1 && (
               <button
                 type="button"
                 onClick={() => handleDelete(pet.id)}
-                className="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-semibold font-rubik"
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik"
+              >
+                Удалить
+              </button>
+            )}
+            {user.roleId === 2 && !isAccountPage && (
+              <button
+                type="button"
+                onClick={() => handleDelete(pet.id)}
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik"
               >
                 Удалить
               </button>

@@ -20,7 +20,7 @@ export default function HomePage(): JSX.Element {
           <Link to="/lostaddpage">
             <button
               type="button"
-              className="px-6 py-3 text-lg rounded-md bg-violet-500 text-white hover:bg-violet-600 font-rubik"
+              className="px-6 py-3 text-lg rounded-md bg-fuchsia-700 text-white hover:bg-fuchsia-800 font-rubik"
             >
               Я потерял питомца
             </button>
@@ -28,7 +28,7 @@ export default function HomePage(): JSX.Element {
           <Link to="/foundaddpage">
             <button
               type="button"
-              className="px-6 py-3 text-lg rounded-md bg-violet-700 text-white hover:bg-violet-800 font-rubik"
+              className="px-6 py-3 text-lg rounded-md bg-indigo-700 text-white hover:bg-indigo-800 font-rubik"
             >
               Я нашёл питомца
             </button>

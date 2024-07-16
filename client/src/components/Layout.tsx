@@ -39,7 +39,6 @@ export default function Layout(): JSX.Element {
               </animated.div>
             ))}
           </div>
-          {/* <Loader isLoading={isLoading}><Outlet /></Loader> */}
         </>
       </Loader>
       <Notify />

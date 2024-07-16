@@ -10,26 +10,8 @@ export default function Footer(): JSX.Element {
   </p>
   <ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
     <li>
-      <a href="#"
-        className="block font-sans text-base antialiased font-normal leading-relaxed transition-colors text-blue-gray-900 hover:text-blue-500 focus:text-blue-500 font-rubik">
-        О нас
-      </a>
-    </li>
-    <li>
-      <a href="#"
-        className="block font-sans text-base antialiased font-normal leading-relaxed transition-colors text-blue-gray-900 hover:text-blue-500 focus:text-blue-500 font-rubik">
-        Блог
-      </a>
-    </li>
-    <li>
-      <a href="#"
-        className="block font-sans text-base antialiased font-normal leading-relaxed transition-colors text-blue-gray-900 hover:text-blue-500 focus:text-blue-500 font-rubik">
-        Вопросы-ответы
-      </a>
-    </li>
-    <li>
-      <a href="#"
-        className="block font-sans text-base antialiased font-normal leading-relaxed transition-colors text-blue-gray-900 hover:text-blue-500 focus:text-blue-500 font-rubik">
+      <a href="/contact-us"
+        className="block font-sans text-base antialiased font-normal leading-relaxed transition-colors text-blue-gray-900 hover:text-violet-600 focus:text-violet-600 font-rubik">
         Свяжитесь с нами
       </a>
     </li>

@@ -140,10 +140,10 @@ export default function LostPetPage(): JSX.Element {
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPets.length > 0 ? (
             filteredPets.map((pet) => (
-              <OneLostPetCard key={pet.id} pet={pet} onDelete={handleDelete} />
+              <OneLostPetCard key={pet.id} pet={pet} onDelete={handleDelete} isAccountPage={false} />
             ))
           ) : (
-            <p className="text-center w-full font-rubik">Ничего не найдено</p>
+            <p className="text-center w-full">Ничего не найдено</p>
           )}
         </div>
       </div>
