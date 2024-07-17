@@ -6,6 +6,7 @@ const sharp = require('sharp');
 const fs = require('fs/promises');
 const { verifyAdmin } = require('../middlewares/verifyAdmin');
 const { Op } = require('sequelize');
+const petLimiter = require('../middlewares/petLimiter')
 
 const defaultImagePath = 'public/img/paw.webp'; // Путь к дефолтному изображению в папке public/img
 
@@ -82,7 +83,7 @@ petRouter.get('/lost', async (req, res) => {
       include: [
         { model: PetStatus, attributes: ['status'] },
         { model: Category, attributes: ['category'] },
-        { model: Color, attributes: ['color'] }
+        { model: Color, attributes: ['color'] },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -157,7 +158,7 @@ petRouter.get('/found', async (req, res) => {
       include: [
         { model: PetStatus, attributes: ['status'] },
         { model: Category, attributes: ['category'] },
-        { model: Color, attributes: ['color'] }
+        { model: Color, attributes: ['color'] },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -342,7 +343,7 @@ petRouter.patch('/admin/approve/:id', verifyAccessToken, verifyAdmin, async (req
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) return res.status(404).send('Pet not found');
 
-    pet.requestStatusId = 2; 
+    pet.requestStatusId = 2;
     await pet.save();
     res.json(pet);
   } catch (error) {
@@ -356,7 +357,7 @@ petRouter.patch('/admin/reject/:id', verifyAccessToken, verifyAdmin, async (req,
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) return res.status(404).send('Pet not found');
 
-    pet.requestStatusId = 4; 
+    pet.requestStatusId = 4;
     await pet.save();
     res.json(pet);
   } catch (error) {
