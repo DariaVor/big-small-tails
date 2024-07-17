@@ -5,18 +5,19 @@ import data from '../../../public/TS/aboutMeData';
 import Footer from '../ui/Footer';
 import AboutUs from '../ui/AboutUs';
 import Questions from '../ui/Questions';
+import './homePageStyles.css';
 
 export default function HomePage(): JSX.Element {
   return (
     <div className="container mx-auto p-4 mt-8 fade-in">
-      <div className="p-8 rounded-md mb-8 h-56">
+      <div className="p-8 rounded-md h-56 m_bot">
         <h1 className="text-3xl font-bold text-center mb-4 font-rubik">
           Всероссийская система поиска пропавших питомцев
         </h1>
         <p className="text-gray-600 text-center mb-6 font-rubik text-lg">
           Помогите питомцу вернуться домой.
         </p>
-        <div className="flex justify-center space-x-4 ">
+        <div className="flex justify-center space-x-4">
           <Link to="/lostaddpage">
             <button
               type="button"

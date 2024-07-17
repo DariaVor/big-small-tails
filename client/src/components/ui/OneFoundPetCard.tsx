@@ -159,7 +159,7 @@ export default function OneFoundPetCard({
             </p>
           )}
           {pet.description && (
-            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description.length > 30 ? `${pet.description.slice(0, 30)}...` : pet.description}</p>
+            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description.length > 25 ? `${pet.description.slice(0, 25)}...` : pet.description}</p>
           )}
           {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location.length > 23 ? `${pet.location.slice(0, 28)}...` : pet.location}</p>}
           <p className="mt-2 text-gray-500 font-rubik">

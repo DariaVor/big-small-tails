@@ -93,7 +93,7 @@ module.exports = {
           hasCollar: false,
           contactInfo: '7(999)-987-65-43',
           date: '2024-07-11',
-          requestStatusId: 2,
+          requestStatusId: 1,
           userId: 2,
         },
         {

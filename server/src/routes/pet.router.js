@@ -6,6 +6,7 @@ const sharp = require('sharp');
 const fs = require('fs/promises');
 const { verifyAdmin } = require('../middlewares/verifyAdmin');
 const { Op } = require('sequelize');
+const petLimiter = require('../middlewares/petLimiter');
 
 // GET все питомцы
 petRouter.route('/').get(async (req, res) => {
@@ -26,7 +27,7 @@ petRouter.route('/').get(async (req, res) => {
 petRouter.get('/lost', async (req, res) => {
   const {
     page = 1,
-    limit = 12,
+    limit = 6,
     searchTerm,
     selectedCategories,
     selectedColors,
@@ -80,7 +81,7 @@ petRouter.get('/lost', async (req, res) => {
       include: [
         { model: PetStatus, attributes: ['status'] },
         { model: Category, attributes: ['category'] },
-        { model: Color, attributes: ['color'] }
+        { model: Color, attributes: ['color'] },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -101,7 +102,7 @@ petRouter.get('/lost', async (req, res) => {
 petRouter.get('/found', async (req, res) => {
   const {
     page = 1,
-    limit = 12,
+    limit = 6,
     searchTerm,
     selectedCategories,
     selectedColors,
@@ -155,7 +156,7 @@ petRouter.get('/found', async (req, res) => {
       include: [
         { model: PetStatus, attributes: ['status'] },
         { model: Category, attributes: ['category'] },
-        { model: Color, attributes: ['color'] }
+        { model: Color, attributes: ['color'] },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -216,46 +217,48 @@ petRouter.route('/:id').get(async (req, res) => {
 });
 
 // POST новый питомец
-petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (req, res) => {
-  try {
-    let imageName = null;
+petRouter
+  .route('/add')
+  .post(petLimiter, upload.single('file'), verifyAccessToken, async (req, res) => {
+    try {
+      let imageName = null;
 
-    if (req.file) {
-      imageName = `${Date.now()}.webp`;
-      const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
-      await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
-    } else {
-      imageName = 'paw.svg';
+      if (req.file) {
+        imageName = `${Date.now()}.webp`;
+        const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
+        await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
+      } else {
+        imageName = 'paw.svg';
+      }
+
+      const defaultColor = await Color.findOne({ where: { color: 'Отсутствует' } });
+      const defaultColorId = defaultColor ? defaultColor.id : null;
+
+      const petData = {
+        name: req.body.name || 'Имя отсутствует',
+        petStatusId: req.body.petStatusId ? parseInt(req.body.petStatusId) : null,
+        categoryId: req.body.categoryId ? parseInt(req.body.categoryId) : null,
+        colorId: req.body.colorId ? parseInt(req.body.colorId) : defaultColorId,
+        description: req.body.description || 'Отсутствует',
+        location: req.body.location || 'Отсутствует',
+        image: imageName,
+        hasCollar: req.body.hasCollar ? req.body.hasCollar === 'true' : null,
+        contactInfo: req.body.contactInfo || 'Отсутствует',
+        date: req.body.date ? new Date(req.body.date) : 'Отсутствует',
+        requestStatusId: 1,
+        userId: res.locals.user.id,
+      };
+
+      console.log('Pet Data:', petData);
+
+      const pet = await Pet.create(petData);
+
+      res.status(201).json(pet);
+    } catch (error) {
+      console.error('Ошибка при добавлении питомца:', error);
+      res.status(500).json({ message: 'Произошла ошибка при добавлении записи', error });
     }
-
-    const defaultColor = await Color.findOne({ where: { color: 'Отсутствует' } });
-    const defaultColorId = defaultColor ? defaultColor.id : null;
-
-    const petData = {
-      name: req.body.name || 'Имя отсутствует',
-      petStatusId: req.body.petStatusId ? parseInt(req.body.petStatusId) : null,
-      categoryId: req.body.categoryId ? parseInt(req.body.categoryId) : null,
-      colorId: req.body.colorId ? parseInt(req.body.colorId) : defaultColorId,
-      description: req.body.description || 'Отсутствует',
-      location: req.body.location || 'Отсутствует',
-      image: imageName,
-      hasCollar: req.body.hasCollar ? req.body.hasCollar === 'true' : null,
-      contactInfo: req.body.contactInfo || 'Отсутствует',
-      date: req.body.date ? new Date(req.body.date) : 'Отсутствует',
-      requestStatusId: 1,
-      userId: res.locals.user.id,
-    };
-
-    console.log('Pet Data:', petData);
-
-    const pet = await Pet.create(petData);
-
-    res.status(201).json(pet);
-  } catch (error) {
-    console.error('Ошибка при добавлении питомца:', error);
-    res.status(500).json({ message: 'Произошла ошибка при добавлении записи', error });
-  }
-});
+  });
 
 // UPDATE одного питомца
 petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (req, res) => {
@@ -340,7 +343,7 @@ petRouter.patch('/admin/approve/:id', verifyAccessToken, verifyAdmin, async (req
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) return res.status(404).send('Pet not found');
 
-    pet.requestStatusId = 2; 
+    pet.requestStatusId = 2;
     await pet.save();
     res.json(pet);
   } catch (error) {
@@ -354,7 +357,7 @@ petRouter.patch('/admin/reject/:id', verifyAccessToken, verifyAdmin, async (req,
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) return res.status(404).send('Pet not found');
 
-    pet.requestStatusId = 4; 
+    pet.requestStatusId = 4;
     await pet.save();
     res.json(pet);
   } catch (error) {
