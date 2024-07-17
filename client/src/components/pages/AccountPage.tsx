@@ -12,8 +12,6 @@ export default function AccountPage(): JSX.Element {
   const pets = useAppSelector((state) => state.pets.pets);
   const user = useAppSelector((state) => state.auth.user);
 
-  console.log(pets);
-
   useEffect(() => {
     if (user.roleId === 2) {
       dispatch(getPendingPetsThunk()).catch(console.log);
@@ -32,8 +30,6 @@ export default function AccountPage(): JSX.Element {
             pet.requestStatusId === 4,
         )
       : pendingPets;
-
-  console.log(userPendingPets);
 
   const foundPets = userPendingPets.filter((pet) => pet.petStatusId === 2);
   const lostPets = userPendingPets.filter((pet) => pet.petStatusId === 1);

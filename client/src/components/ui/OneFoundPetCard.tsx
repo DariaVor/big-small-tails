@@ -151,7 +151,7 @@ export default function OneFoundPetCard({
           </div>
           {pet.categoryId !== null && (
             <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
-              Категория: {getCategoryName(pet.categoryId)}
+              {getCategoryName(pet.categoryId)}
             </p>
           )}
           {pet.colorId !== null && (

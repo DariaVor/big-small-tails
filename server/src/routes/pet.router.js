@@ -76,7 +76,7 @@ petRouter.get('/lost', async (req, res) => {
 
   try {
     const { rows: pets, count: total } = await Pet.findAndCountAll({
-      where,
+      where: { petStatusId: 1, requestStatusId: 2 },
       limit: parseInt(limit, 10),
       offset: parseInt(offset, 10),
       include: [
@@ -151,7 +151,7 @@ petRouter.get('/found', async (req, res) => {
 
   try {
     const { rows: pets, count: total } = await Pet.findAndCountAll({
-      where,
+      where: { petStatusId: 2, requestStatusId: 2 },
       limit: parseInt(limit, 10),
       offset: parseInt(offset, 10),
       include: [
@@ -284,10 +284,8 @@ petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (r
       }
     }
 
-    // Обновляем данные питомца
     await Pet.update(req.body, { where: { id: req.params.id } });
 
-    // Устанавливаем requestStatusId в 1
     pet.requestStatusId = 1;
     await pet.save();
 
@@ -344,7 +342,7 @@ petRouter.patch('/admin/approve/:id', verifyAccessToken, verifyAdmin, async (req
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) return res.status(404).send('Pet not found');
 
-    pet.requestStatusId = 2; // Assuming 2 is "approved"
+    pet.requestStatusId = 2; 
     await pet.save();
     res.json(pet);
   } catch (error) {
@@ -358,7 +356,7 @@ petRouter.patch('/admin/reject/:id', verifyAccessToken, verifyAdmin, async (req,
     const pet = await Pet.findByPk(req.params.id);
     if (!pet) return res.status(404).send('Pet not found');
 
-    pet.requestStatusId = 4; // Assuming 4 is "rejected"
+    pet.requestStatusId = 4; 
     await pet.save();
     res.json(pet);
   } catch (error) {

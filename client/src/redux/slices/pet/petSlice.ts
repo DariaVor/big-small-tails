@@ -43,6 +43,9 @@ export const petsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+    .addCase(getAllPetsOfUserThunk.fulfilled, (state, action) => {
+      state.pets = action.payload;
+    })
       .addCase(getAllLostPetsThunk.fulfilled, (state, action) => {
         if (action.meta.arg.page === 1) {
           state.lostPets = action.payload.pets;
