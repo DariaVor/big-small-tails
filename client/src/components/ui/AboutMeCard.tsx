@@ -10,7 +10,7 @@ type AboutMeCardProps = {
 
 function AboutMeCard({ title, description, svgUrl, bgColor }: AboutMeCardProps): JSX.Element {
   return (
-    <div className="relative flex max-w-[24rem] flex-col overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700 shadow-2xl">
+    <div className="relative flex max-w-[24rem] flex-col overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700 shadow-2xl transition-all hover:scale-[1.05] duration-[400ms]">
       <div className="relative m-0 overflow-hidden text-gray-700 bg-transparent rounded-none shadow-none bg-clip-border">
         <Player
           src={svgUrl}

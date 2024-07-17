@@ -1,0 +1,30 @@
+@media screen and (max-width: 552px) {
+  .margin_bottom {
+    margin-bottom: 35%;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .margin_bottom {
+    margin-bottom: 45%;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .margin_bottom {
+    margin-bottom: 55%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .margin_bottom {
+    margin-bottom: 65%;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .margin_bottom {
+    margin-bottom: 75%;
+  }
+}
+
