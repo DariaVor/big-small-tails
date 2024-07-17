@@ -76,7 +76,7 @@ petRouter.get('/lost', async (req, res) => {
 
   try {
     const { rows: pets, count: total } = await Pet.findAndCountAll({
-      where: { petStatusId: 1, requestStatusId: 2 },
+      where,
       limit: parseInt(limit, 10),
       offset: parseInt(offset, 10),
       include: [
@@ -151,7 +151,7 @@ petRouter.get('/found', async (req, res) => {
 
   try {
     const { rows: pets, count: total } = await Pet.findAndCountAll({
-      where: { petStatusId: 2, requestStatusId: 2 },
+      where,
       limit: parseInt(limit, 10),
       offset: parseInt(offset, 10),
       include: [
