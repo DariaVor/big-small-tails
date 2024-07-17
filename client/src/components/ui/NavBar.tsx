@@ -28,12 +28,12 @@ export default function NavBar(): JSX.Element {
         <Link to="/">
             <img src="/images/pets.png" alt="Logo" className="h-8 w-8"/>
           </Link>
-          <Link to="/" className="text-2xl font-bold text-violet-800 font-rubik">Хвосты и хвостики</Link>
+          <Link to="/" className="text-2xl font-medium text-violet-900 font-shantell hover:text-violet-800 text-3xl">Хвосты и хвостики</Link>
         </div>
         <div className="flex items-center space-x-4">
           {navLinks.map((link) =>
             (!link.private || (link.private && user.status === 'logged')) && (
-              <Link key={link.path} to={link.path} className="text-violet-800 hover:text-violet-700 font-rubik font-medium">
+              <Link key={link.path} to={link.path} className="text-violet-900 hover:text-violet-700 font-rubik font-regular text-lg">
                 {link.label}
               </Link>
             )
