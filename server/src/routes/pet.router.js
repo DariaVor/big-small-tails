@@ -7,8 +7,6 @@ const fs = require('fs/promises');
 const { verifyAdmin } = require('../middlewares/verifyAdmin');
 const { Op } = require('sequelize');
 
-const defaultImagePath = 'public/img/paw.webp'; // Путь к дефолтному изображению в папке public/img
-
 // GET все питомцы
 petRouter.route('/').get(async (req, res) => {
   try {
@@ -227,7 +225,7 @@ petRouter.route('/add').post(upload.single('file'), verifyAccessToken, async (re
       const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
       await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
     } else {
-      imageName = 'paw.webp';
+      imageName = 'paw.svg';
     }
 
     const defaultColor = await Color.findOne({ where: { color: 'Отсутствует' } });
@@ -273,7 +271,7 @@ petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (r
       await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
       req.body.image = imageName;
 
-      if (pet.image && pet.image !== 'paw.webp') {
+      if (pet.image && pet.image !== 'paw.svg') {
         try {
           await fs.unlink(`./public/img/${pet.image}`);
         } catch (err) {
@@ -305,7 +303,7 @@ petRouter.route('/:id').delete(verifyAccessToken, async (req, res) => {
       return res.status(404).send('Питомец не найден');
     }
 
-    if (pet.image && pet.image !== 'paw.webp') {
+    if (pet.image && pet.image !== 'paw.svg') {
       try {
         await fs.unlink(`./public/img/${pet.image}`);
       } catch (err) {

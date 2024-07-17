@@ -118,7 +118,7 @@ export default function PetDetailPage(): JSX.Element {
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Контактная информация</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet?.contactInfo}</dd>
+            <dd className="mt-1 text-lg text-gray-900">+{pet?.contactInfo}</dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">

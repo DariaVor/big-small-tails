@@ -13,7 +13,7 @@ export default function HomePage(): JSX.Element {
         <h1 className="text-3xl font-bold text-center mb-4 font-rubik">
           Всероссийская система поиска пропавших питомцев
         </h1>
-        <p className="text-gray-600 text-center mb-6 font-rubik">
+        <p className="text-gray-600 text-center mb-6 font-rubik text-lg">
           Помогите питомцу вернуться домой.
         </p>
         <div className="flex justify-center space-x-4 ">

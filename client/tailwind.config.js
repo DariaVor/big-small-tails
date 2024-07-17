@@ -8,6 +8,7 @@ export default {
         rubik: ["Rubik", "sans-serif"],
         marck: ["Marck Script", "sans-serif"],
         shantell: ["Shantell Sans", "sans-serif"],
+        
       },
       // backgroundImage: {
       //   'hero-pattern': `${json}`,

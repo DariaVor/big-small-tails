@@ -25,10 +25,10 @@ export default function NavBar(): JSX.Element {
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-4">
-        <Link to="/">
+        {/* <Link to="/">
             <img src="/images/pets.png" alt="Logo" className="h-8 w-8"/>
-          </Link>
-          <Link to="/" className="text-2xl font-medium text-violet-900 font-shantell hover:text-violet-800 text-3xl">Хвосты и хвостики</Link>
+          </Link> */}
+          <Link to="/" className="text-2xl font-medium text-violet-900 font-rubik hover:text-violet-800 text-3xl">Хвосты и хвостики</Link>
         </div>
         <div className="flex items-center space-x-4">
           {navLinks.map((link) =>
