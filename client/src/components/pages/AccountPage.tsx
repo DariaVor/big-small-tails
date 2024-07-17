@@ -40,7 +40,7 @@ export default function AccountPage(): JSX.Element {
         <Link to="/lostaddpage">
           <button
             type="button"
-            className="px-6 py-3 text-lg rounded-md bg-fuchsia-700 text-white hover:bg-fuchsia-800 font-rubik"
+            className="px-6 py-3 text-lg rounded-md bg-fuchsia-700 text-white hover:bg-fuchsia-800 font-rubik transition-transform transform hover:scale-105"
           >
             Я потерял питомца
           </button>
@@ -48,7 +48,7 @@ export default function AccountPage(): JSX.Element {
         <Link to="/foundaddpage">
           <button
             type="button"
-            className="px-6 py-3 text-lg rounded-md bg-indigo-700 text-white hover:bg-indigo-800 font-rubik"
+            className="px-6 py-3 text-lg rounded-md bg-indigo-700 text-white hover:bg-indigo-800 font-rubik transition-transform transform hover:scale-105"
           >
             Я нашёл питомца
           </button>

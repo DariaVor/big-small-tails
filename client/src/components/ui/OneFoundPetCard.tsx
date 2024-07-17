@@ -118,19 +118,18 @@ export default function OneFoundPetCard({
   };
 
   return (
-    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
-      {/* <div className="md:flex"> */}
+    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg min-h-[35rem]">
         <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
           <Link to={`/pets/${pet.id}`}>
             <img
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 transform hover:scale-105"
               style={{ aspectRatio: '1 / 1' }}
               src={`/img/${pet.image}`}
               alt="Найденный питомец"
             />
           </Link>
         </div>
-        <div className="p-8">
+        <div className="p-8 relative flex flex-col justify-between flex-grow">
           {isAccountPage && user.roleId === 1 && pet.requestStatusId === 1 && (
             <div className="mb-2 uppercase tracking-wide text-sm text-indigo-700 font-semibold font-rubik">
               Ожидает одобрения
@@ -155,7 +154,7 @@ export default function OneFoundPetCard({
             </p>
           )}
           {pet.colorId !== null && (
-            <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
+            <p className="mt-2 text-gray-500 font-rubik">
               Цвет: {getColorName(pet.colorId)}
             </p>
           )}
@@ -166,11 +165,6 @@ export default function OneFoundPetCard({
           <p className="mt-2 text-gray-500 font-rubik">
             Наличие ошейника: {pet.hasCollar ? 'Присутствует' : 'Отсутствует'}
           </p>
-          {/* {pet.contactInfo && (
-            <p className="mt-2 text-gray-500 font-rubik">
-              Контактная информация: {pet.contactInfo}
-            </p>
-          )} */}
           {pet.date && (
             <p className="mt-2 text-gray-500 font-rubik">
               Дата: {new Date(pet.date).toLocaleDateString()}
@@ -182,7 +176,7 @@ export default function OneFoundPetCard({
               <button
                 type="submit"
                 onClick={() => handleApprove(pet.id)}
-                className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 font-rubik font-semibold"
+                className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 font-rubik font-semibold transition-transform transform hover:scale-105"
               >
                 Одобрить
               </button>
@@ -191,7 +185,7 @@ export default function OneFoundPetCard({
               <AppModal
                 title="Изменить информацию о питомце"
                 buttonText="Редактировать"
-                buttonVariant="bg-indigo-500 hover:bg-indigo-600 text-white font-rubik"
+                buttonVariant="bg-indigo-500 hover:bg-indigo-600 text-white font-rubik transition-transform transform hover:scale-105"
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
               >
@@ -357,7 +351,7 @@ export default function OneFoundPetCard({
               <button
                 type="submit"
                 onClick={() => handleReject(pet.id)}
-                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik"
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik transition-transform transform hover:scale-105"
               >
                 Отклонить
               </button>
@@ -366,7 +360,7 @@ export default function OneFoundPetCard({
               <button
                 type="button"
                 onClick={() => handleDelete(pet.id)}
-                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik"
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik transition-transform transform hover:scale-105"
               >
                 Удалить
               </button>
@@ -375,15 +369,13 @@ export default function OneFoundPetCard({
               <button
                 type="button"
                 onClick={() => handleDelete(pet.id)}
-                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik"
+                className="px-4 py-2 bg-rose-300 text-white rounded-lg hover:bg-rose-400 font-semibold font-rubik transition-transform transform hover:scale-105"
               >
                 Удалить
               </button>
             )}
           </div>
         </div>
-      {/* </div> */}
     </div>
   );
 }
-

@@ -67,9 +67,13 @@ export default function PetDetailPage(): JSX.Element {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 mt-8 py-8 bg-white shadow-md rounded-lg">
+    <div className="container mx-auto p-4">
+    <div className="max-w-3xl mx-auto px-4 mt-8 py-8 bg-white shadow-md rounded-lg mb-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-5">{pet?.name}</h1>
+        {pet?.name !== 'Имя отсутствует' && (
+          <h1 className="text-3xl font-bold mb-5">{pet?.name}</h1>
+        )}
+
         <div
           role="button"
           tabIndex={0}
@@ -80,7 +84,7 @@ export default function PetDetailPage(): JSX.Element {
           <img
             src={`/img/${pet?.image}`}
             alt={pet?.name}
-            className="mx-auto rounded-lg shadow-md cursor-pointer object-cover h-64 w-full sm:h-80 md:h-96 lg:h-108"
+            className="mx-auto rounded-lg shadow-md cursor-pointer object-cover h-64 w-full sm:h-80 md:h-96 lg:h-108 transition-transform duration-300 transform hover:scale-105"
           />
         </div>
       </div>
@@ -108,15 +112,21 @@ export default function PetDetailPage(): JSX.Element {
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Наличие ошейника</dt>
-            <dd className="mt-1 text-lg text-gray-900">{pet?.hasCollar ? 'Присутствует' : 'Отсутствует'}</dd>
+            <dd className="mt-1 text-lg text-gray-900">
+              {pet?.hasCollar ? 'Присутствует' : 'Отсутствует'}
+            </dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Контактная информация</dt>
             <dd className="mt-1 text-lg text-gray-900">{pet?.contactInfo}</dd>
           </div>
           <div className="py-2">
-            <dt className="text-sm font-medium text-gray-500">{pet?.PetStatus?.status === 'Найден' ? 'Дата нахождения' : 'Дата потери'}</dt>
-            <dd className="mt-1 text-lg text-gray-900">{new Date(pet?.date).toLocaleDateString('ru-RU')}</dd>
+            <dt className="text-sm font-medium text-gray-500">
+              {pet?.PetStatus?.status === 'Найден' ? 'Дата нахождения' : 'Дата потери'}
+            </dt>
+            <dd className="mt-1 text-lg text-gray-900">
+              {new Date(pet?.date).toLocaleDateString('ru-RU')}
+            </dd>
           </div>
           <div className="py-2">
             <dt className="text-sm font-medium text-gray-500">Добавлено</dt>
@@ -147,6 +157,6 @@ export default function PetDetailPage(): JSX.Element {
         </div>
       )}
     </div>
+    </div>
   );
 }
-

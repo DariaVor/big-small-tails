@@ -11,7 +11,7 @@ export default function HomePage(): JSX.Element {
     <div className="container mx-auto p-4 mt-8 fade-in">
       <div className="p-8 rounded-md mb-8 h-56">
         <h1 className="text-3xl font-bold text-center mb-4 font-rubik">
-          Всероссийская система поиска пропавших животных
+          Всероссийская система поиска пропавших питомцев
         </h1>
         <p className="text-gray-600 text-center mb-6 font-rubik">
           Помогите питомцу вернуться домой.
@@ -20,7 +20,7 @@ export default function HomePage(): JSX.Element {
           <Link to="/lostaddpage">
             <button
               type="button"
-              className="px-6 py-3 text-lg rounded-md bg-fuchsia-700 text-white hover:bg-fuchsia-800 font-rubik"
+              className="px-6 py-3 text-lg rounded-md bg-fuchsia-700 text-white hover:bg-fuchsia-800 font-rubik transition-transform transform hover:scale-105"
             >
               Я потерял питомца
             </button>
@@ -28,7 +28,7 @@ export default function HomePage(): JSX.Element {
           <Link to="/foundaddpage">
             <button
               type="button"
-              className="px-6 py-3 text-lg rounded-md bg-indigo-700 text-white hover:bg-indigo-800 font-rubik"
+              className="px-6 py-3 text-lg rounded-md bg-indigo-700 text-white hover:bg-indigo-800 font-rubik transition-transform transform hover:scale-105"
             >
               Я нашёл питомца
             </button>

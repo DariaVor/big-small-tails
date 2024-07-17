@@ -25,6 +25,7 @@ export default function Layout(): JSX.Element {
 
   return (
     <div className="min-h-screen flex flex-col">
+    {/* <div className="container mx-auto p-4"> */}
       <Loader isLoading={user.status === 'fetching'}>
         <>
           <NavBar />
