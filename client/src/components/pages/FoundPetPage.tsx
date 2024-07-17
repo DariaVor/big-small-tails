@@ -21,16 +21,26 @@ export default function FoundPetPage(): JSX.Element {
   const [hasCollar, setHasCollar] = useState<boolean | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
-    dispatch(getAllFoundPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
+    dispatch(getAllFoundPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
     dispatch(getCategoriesThunk());
     dispatch(getColorsThunk());
+
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
   }, [dispatch]);
 
   const handleSearchChange = (term: string) => {
     setSearchTerm(term);
-    dispatch(getAllFoundPetsThunk({ page: 1, limit: 12, searchTerm: term, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
+    dispatch(getAllFoundPetsThunk({ page: 1, limit: 6, searchTerm: term, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
   };
 
   const handleCategoryChange = (id: number) => {
@@ -38,7 +48,7 @@ export default function FoundPetPage(): JSX.Element {
       ? selectedCategories.filter((categoryId) => categoryId !== id)
       : [...selectedCategories, id];
     setSelectedCategories(updatedCategories);
-    dispatch(getAllFoundPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories: updatedCategories, selectedColors, hasCollar, startDate, endDate }));
+    dispatch(getAllFoundPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories: updatedCategories, selectedColors, hasCollar, startDate, endDate }));
   };
 
   const handleColorChange = (id: number) => {
@@ -46,27 +56,27 @@ export default function FoundPetPage(): JSX.Element {
       ? selectedColors.filter((colorId) => colorId !== id)
       : [...selectedColors, id];
     setSelectedColors(updatedColors);
-    dispatch(getAllFoundPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors: updatedColors, hasCollar, startDate, endDate }));
+    dispatch(getAllFoundPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors: updatedColors, hasCollar, startDate, endDate }));
   };
 
   const handleCollarChange = (value: boolean | null) => {
     setHasCollar(value);
-    dispatch(getAllFoundPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar: value, startDate, endDate }));
+    dispatch(getAllFoundPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar: value, startDate, endDate }));
   };
 
   const handleStartDateChange = (date: Date | null) => {
     setStartDate(date);
-    dispatch(getAllFoundPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate: date, endDate }));
+    dispatch(getAllFoundPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate: date, endDate }));
   };
 
   const handleEndDateChange = (date: Date | null) => {
     setEndDate(date);
-    dispatch(getAllFoundPetsThunk({ page: 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate: date }));
+    dispatch(getAllFoundPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate: date }));
   };
 
   const handleLoadMore = useCallback(() => {
     if (currentPage < totalPages && !loading) {
-      dispatch(getAllFoundPetsThunk({ page: currentPage + 1, limit: 12, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
+      dispatch(getAllFoundPetsThunk({ page: currentPage + 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
     }
   }, [currentPage, totalPages, loading, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate, dispatch]);
 
@@ -82,8 +92,8 @@ export default function FoundPetPage(): JSX.Element {
   }, [handleLoadMore, loading]);
 
   return (
-    <div className="container mx-auto p-4 flex">
-      <div className="w-64 flex-shrink-0 mr-4">
+    <div className="container mx-auto p-4 flex flex-col sm:flex-row">
+      <div className={`w-full sm:w-64 flex-shrink-0 sm:mr-4 ${isMobileView ? 'sticky top-0 z-20' : ''}`}>
         <SearchBar
           onSearchChange={handleSearchChange}
           onCategoryChange={handleCategoryChange}
@@ -98,19 +108,15 @@ export default function FoundPetPage(): JSX.Element {
         />
       </div>
       <div className="flex-1 min-h-screen">
-        {loading && currentPage === 1 ? (
-          <p>Loading...</p>
-        ) : (
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pets.length > 0 ? (
-              pets.map((pet) => (
-                <OneFoundPetCard key={pet.id} pet={pet} /*onDelete={handleDelete}*/ showButtons isAccountPage={false} />
-              ))
-            ) : (
-              <p className="text-center w-full">Ничего не найдено</p>
-            )}
-          </div>
-        )}
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {pets.length > 0 ? (
+            pets.map((pet) => (
+              <OneFoundPetCard key={pet.id} pet={pet} isAccountPage={false} />
+            ))
+          ) : (
+            <p className="text-center w-full">Ничего не найдено</p>
+          )}
+        </div>
         {loading && currentPage > 1 && (
           <div className="text-center mt-4">
             <p>Loading more...</p>

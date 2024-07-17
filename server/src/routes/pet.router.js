@@ -28,7 +28,7 @@ petRouter.route('/').get(async (req, res) => {
 petRouter.get('/lost', async (req, res) => {
   const {
     page = 1,
-    limit = 12,
+    limit = 6,
     searchTerm,
     selectedCategories,
     selectedColors,
@@ -103,7 +103,7 @@ petRouter.get('/lost', async (req, res) => {
 petRouter.get('/found', async (req, res) => {
   const {
     page = 1,
-    limit = 12,
+    limit = 6,
     searchTerm,
     selectedCategories,
     selectedColors,
