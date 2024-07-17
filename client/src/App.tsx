@@ -15,7 +15,6 @@ import ErrorPage from './components/pages/ErrorPage';
 import AccountPage from './components/pages/AccountPage';
 import BothAddPage from './components/pages/BothAddPage';
 import ContactUsPage from './components/pages/ContactUsPage';
-import MapsPage from './components/pages/MapsPage';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -39,10 +38,6 @@ function App(): JSX.Element {
           path: 'location',
           element: <LocationPage />,
         },
-        // {
-        //   path: 'maps',
-        //   element: <MapsPage />,
-        // },
         {
           path: '/pets/found',
           element: <FoundPetPage />,
