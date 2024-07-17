@@ -29,7 +29,7 @@ export default function NavBar(): JSX.Element {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <div className="flex items-center space-x-4">
           <Link to="/">
-            <img src="/images/pets.png" alt="Logo" className="h-8 w-8"/>
+            <img src="/images/logo.svg" alt="Logo" className="h-8 w-8"/>
           </Link>
           <Link to="/" className="text-2xl font-bold text-violet-800 font-rubik">Хвосты и хвостики</Link>
         </div>

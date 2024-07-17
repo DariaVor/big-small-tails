@@ -10,7 +10,7 @@ import './homePageStyles.css';
 export default function HomePage(): JSX.Element {
   return (
     <div className="container mx-auto p-4 mt-8 fade-in">
-      <div className="p-8 rounded-md mb-8 h-56 margin_bottom">
+      <div className="p-8 rounded-md h-56 m_bot">
         <h1 className="text-3xl font-bold text-center mb-4 font-rubik">
           Всероссийская система поиска пропавших животных
         </h1>
