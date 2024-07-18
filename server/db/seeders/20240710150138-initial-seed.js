@@ -3,15 +3,8 @@
 const bcrypt = require('bcrypt');
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert(
-      'Roles',
-      [
-        { role: 'user' },
-        { role: 'admin' },
-      ],
-      {},
-    );
+  async up(queryInterface) {
+    await queryInterface.bulkInsert('Roles', [{ role: 'user' }, { role: 'admin' }], {});
 
     await queryInterface.bulkInsert(
       'Users',
@@ -34,20 +27,13 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'PetStatuses',
-      [
-        { status: 'Потерян' },
-        { status: 'Найден' },
-      ],
+      [{ status: 'Потерян' }, { status: 'Найден' }],
       {},
     );
 
     await queryInterface.bulkInsert(
       'Categories',
-      [
-        { category: 'Собака' },
-        { category: 'Кот / Кошка' },
-        { category: 'Другое' },
-      ],
+      [{ category: 'Собака' }, { category: 'Кот / Кошка' }, { category: 'Другое' }],
       {},
     );
 
@@ -505,14 +491,5 @@ module.exports = {
       ],
       {},
     );
-  },
-
-  async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
   },
 };

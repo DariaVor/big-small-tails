@@ -1,4 +1,3 @@
-// services/dataService.ts
 import type { AxiosInstance } from 'axios';
 import axiosInstance from './apiInstance';
 import type { CategoryType, ColorType } from '../types/petTypes';

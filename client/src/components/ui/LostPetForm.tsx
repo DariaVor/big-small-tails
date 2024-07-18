@@ -69,7 +69,7 @@ export default function LostPetForm(): JSX.Element {
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
+  ): void => {
     const { name, value } = e.target;
     setFormState((prevState) => ({
       ...prevState,

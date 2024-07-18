@@ -14,7 +14,6 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
-// app.use('/img', express.static('public/img'));
 
 app.use('/api/auth', authRouter);
 app.use('/api/tokens', tokenRouter);

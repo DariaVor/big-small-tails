@@ -54,6 +54,7 @@ export default function Questions() :JSX.Element {
           {faqData.map((item, index) => (
             <div key={index} className="mb-4">
               <button
+              type='button'
                 onClick={() => toggleItem(index)}
                 className="flex justify-between w-full px-4 py-2 text-left rounded-lg focus:outline-none bg-violet-100 hover:bg-violet-200 transition-transform transform hover:scale-105"
               >

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import React from 'react';
 import SvgLoad from '../ui/SvgLoad';
 

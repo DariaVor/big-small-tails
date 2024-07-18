@@ -59,14 +59,6 @@ function App(): JSX.Element {
             },
           ],
         },
-        // {
-        //   path: 'lostaddpage',
-        //   element: <BothAddPage found="" />,
-        // },
-        // {
-        //   path: 'foundaddpage',
-        //   element: <BothAddPage found="found" />,
-        // },
         { path: '/pets/:id', element: <PetDetailPage /> },
         {
           path: '*',

@@ -37,7 +37,7 @@ function SearchBar({
   selectedColors,
   categories,
   colors,
-}: SearchBarProps) {
+}: SearchBarProps): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('');
   const [hasCollar, setHasCollar] = useState<boolean | null>(null);
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
@@ -55,14 +55,14 @@ function SearchBar({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const term = event.target.value;
     setSearchTerm(term);
     onSearchChange(term);
     setShowFilters(true);
   };
 
-  const handleCollarChange = (value: boolean) => {
+  const handleCollarChange = (value: boolean): void => {
     if (value === hasCollar) {
       setHasCollar(null);
       onCollarChange(null);
@@ -72,26 +72,26 @@ function SearchBar({
     }
   };
 
-  const handleDateRangeChange = (values: [number, number]) => {
+  const handleDateRangeChange = (values: [number, number]): void => {
     const [start, end] = values.map((val) => new Date(val));
     setDateRange([start, end]);
     onStartDateChange(start);
     onEndDateChange(end);
   };
 
-  const handleCategoryChange = (id: number) => {
+  const handleCategoryChange = (id: number): void => {
     onCategoryChange(id);
   };
 
-  const handleColorChange = (id: number) => {
+  const handleColorChange = (id: number): void => {
     onColorChange(id);
   };
 
-  const handleRemoveCategory = (id: number) => {
+  const handleRemoveCategory = (id: number): void => {
     onCategoryChange(id);
   };
 
-  const handleRemoveColor = (id: number) => {
+  const handleRemoveColor = (id: number): void => {
     onColorChange(id);
   };
 
@@ -123,6 +123,7 @@ function SearchBar({
         />
         {isMobileView && showFilters && (
           <button
+          type='button'
             onClick={handleClearSearch}
             className="absolute right-3 text-gray-500 hover:text-gray-700 focus:outline-none"
           >
@@ -136,6 +137,7 @@ function SearchBar({
           <div className="flex flex-wrap gap-2 mb-4 mt-4">
             {categories.map((category) => (
               <button
+              type='button'
                 key={category.id}
                 onClick={() => handleCategoryChange(category.id)}
                 className={`px-2 py-1 rounded-full ${
@@ -149,6 +151,7 @@ function SearchBar({
             ))}
             {colors.map((color) => (
               <button
+              type='button'
                 key={color.id}
                 onClick={() => handleColorChange(color.id)}
                 className={`px-2 py-1 rounded-full ${
@@ -161,6 +164,7 @@ function SearchBar({
               </button>
             ))}
             <button
+            type='button'
               onClick={() => handleCollarChange(true)}
               className={`px-2 py-1 rounded-full ${
                 hasCollar === true ? 'bg-purple-500 text-white' : 'bg-purple-100 text-purple-700'
@@ -169,6 +173,7 @@ function SearchBar({
               Есть ошейник
             </button>
             <button
+            type='button'
               onClick={() => handleCollarChange(false)}
               className={`px-2 py-1 rounded-full ${
                 hasCollar === false ? 'bg-purple-500 text-white' : 'bg-purple-100 text-purple-700'
