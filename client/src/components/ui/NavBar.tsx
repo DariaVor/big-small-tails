@@ -26,7 +26,7 @@ export default function NavBar(): JSX.Element {
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
         <div className="flex items-center space-x-4">
           <Link to="/">
             <img src="/images/logo.svg" alt="Logo" className="h-8 w-8"/>
@@ -72,7 +72,8 @@ export default function NavBar(): JSX.Element {
               ) : (
                 <Link
                   to="/login"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-800 md:p-0 dark:text-white md:dark:hover:text-violet-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  className="text-violet-900 hover:text-violet-700 font-rubik font-regular text-lg block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-800 md:p-0 dark:text-white md:dark:hover:text-violet-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  // className="bg-violet-800 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Войти
                 </Link>
