@@ -106,7 +106,7 @@ export default function OneLostPetCard({
   };
 
   return (
-    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg min-h-[35rem]">
+    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
         <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
           <Link to={`/pets/${pet.id}`}>
             <img
@@ -137,24 +137,24 @@ export default function OneLostPetCard({
             Потерян
           </div>
           {pet.categoryId !== null && (
-            <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik">
+            <p className="block mt-1 text-lg leading-tight font-medium text-black font-rubik truncate">
               {getCategoryName(pet.categoryId)}
             </p>
           )}
           {pet.colorId !== null && (
-            <p className="mt-2 text-gray-500 font-rubik">
+            <p className="mt-2 text-gray-500 font-rubik truncate">
               Цвет: {getColorName(pet.colorId)}
             </p>
           )}
           {pet.description && (
-            <p className="mt-2 text-gray-500 font-rubik">Описание: {pet.description.length > 22 ? `${pet.description.slice(0, 23)}...` : pet.description}</p>
+            <p className="mt-2 text-gray-500 font-rubik line-clamp-1">Описание: {pet.description}</p>
           )}
-          {pet.location && <p className="mt-2 text-gray-500 font-rubik">Локация: {pet.location.length > 23 ? `${pet.location.slice(0, 28)}...` : pet.location}</p>}
-          <p className="mt-2 text-gray-500 font-rubik">
+          {pet.location && <p className="mt-2 text-gray-500 font-rubik truncate">Локация: {pet.location}</p>}
+          <p className="mt-2 text-gray-500 font-rubik truncate">
             Наличие ошейника: {pet.hasCollar ? 'Присутствует' : 'Отсутствует'}
           </p>
           {pet.date && (
-            <p className="mt-2 text-gray-500 font-rubik">
+            <p className="mt-2 text-gray-500 font-rubik truncate">
               Дата: {new Date(pet.date).toLocaleDateString()}
             </p>
           )}

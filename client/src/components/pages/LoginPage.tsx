@@ -25,8 +25,8 @@ export default function LoginPage(): JSX.Element {
     await dispatch(loginThunk(formData));
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
+  const togglePasswordVisibility = (): void => {
+    void setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   return (
@@ -36,43 +36,43 @@ export default function LoginPage(): JSX.Element {
           <div className="flex flex-col border-b border-violet-700 py-2 mb-4">
             <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
               Электронная почта
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none"
+                required
+              />
             </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none"
-              required
-            />
           </div>
           <div className="flex flex-col border-b border-violet-700 py-2 mb-6 relative">
             <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
               Пароль
-            </label>
-            <div className="relative w-full">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none pr-10"
-                required
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-2 text-gray-700 focus:outline-none"
-              >
-                <img
-                  src={showPassword ? '/images/eye-close.svg' : '/images/eye-open.svg'}
-                  alt={showPassword ? 'Hide password' : 'Show password'}
-                  className="h-5 w-5"
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none pr-10"
+                  required
                 />
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 right-0 pr-2 text-gray-700 focus:outline-none"
+                >
+                  <img
+                    src={showPassword ? '/images/eye-close.svg' : '/images/eye-open.svg'}
+                    alt={showPassword ? 'Hide password' : 'Show password'}
+                    className="h-5 w-5"
+                  />
+                </button>
+              </div>
+            </label>
           </div>
           <div className="flex items-center justify-between">
             <button
