@@ -36,9 +36,6 @@ export default function HomePage(): JSX.Element {
           </Link>
         </div>
       </div>
-      {/* <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold mb-4 font-rubik">Три простых шага</h2>
-      </div> */}
       <div className="flex flex-wrap justify-center gap-6">
         {data.map((item, id) => (
           <AboutMeCard

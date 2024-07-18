@@ -3,7 +3,10 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getAllLostPetsThunk } from '../../redux/slices/pet/petThunk';
 import OneLostPetCard from '../ui/OneLostPetCard';
 import SearchBar from '../ui/SearchBar';
-import { getCategoriesThunk, getColorsThunk } from '../../redux/slices/catandcolor/catandcolorThunk';
+import {
+  getCategoriesThunk,
+  getColorsThunk,
+} from '../../redux/slices/catandcolor/catandcolorThunk';
 import type { RootState } from '../../redux/store';
 
 export default function LostPetPage(): JSX.Element {
@@ -24,11 +27,22 @@ export default function LostPetPage(): JSX.Element {
   const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
-    dispatch(getAllLostPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
-    dispatch(getCategoriesThunk());
-    dispatch(getColorsThunk());
+    void dispatch(
+      getAllLostPetsThunk({
+        page: 1,
+        limit: 6,
+        searchTerm,
+        selectedCategories,
+        selectedColors,
+        hasCollar,
+        startDate,
+        endDate,
+      }),
+    );
+    void dispatch(getCategoriesThunk());
+    void dispatch(getColorsThunk());
 
-    const handleResize = () => {
+    const handleResize = (): void => {
       setIsMobileView(window.innerWidth < 600);
     };
 
@@ -38,51 +52,142 @@ export default function LostPetPage(): JSX.Element {
     return () => window.removeEventListener('resize', handleResize);
   }, [dispatch]);
 
-  const handleSearchChange = (term: string) => {
+  const handleSearchChange = (term: string): void => {
     setSearchTerm(term);
-    dispatch(getAllLostPetsThunk({ page: 1, limit: 6, searchTerm: term, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
+    void dispatch(
+      getAllLostPetsThunk({
+        page: 1,
+        limit: 6,
+        searchTerm: term,
+        selectedCategories,
+        selectedColors,
+        hasCollar,
+        startDate,
+        endDate,
+      }),
+    );
   };
 
-  const handleCategoryChange = (id: number) => {
+  const handleCategoryChange = (id: number): void => {
     const updatedCategories = selectedCategories.includes(id)
       ? selectedCategories.filter((categoryId) => categoryId !== id)
       : [...selectedCategories, id];
     setSelectedCategories(updatedCategories);
-    dispatch(getAllLostPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories: updatedCategories, selectedColors, hasCollar, startDate, endDate }));
+    void dispatch(
+      getAllLostPetsThunk({
+        page: 1,
+        limit: 6,
+        searchTerm,
+        selectedCategories: updatedCategories,
+        selectedColors,
+        hasCollar,
+        startDate,
+        endDate,
+      }),
+    );
   };
 
-  const handleColorChange = (id: number) => {
+  const handleColorChange = (id: number): void => {
     const updatedColors = selectedColors.includes(id)
       ? selectedColors.filter((colorId) => colorId !== id)
       : [...selectedColors, id];
     setSelectedColors(updatedColors);
-    dispatch(getAllLostPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors: updatedColors, hasCollar, startDate, endDate }));
+    void dispatch(
+      getAllLostPetsThunk({
+        page: 1,
+        limit: 6,
+        searchTerm,
+        selectedCategories,
+        selectedColors: updatedColors,
+        hasCollar,
+        startDate,
+        endDate,
+      }),
+    );
   };
 
-  const handleCollarChange = (value: boolean | null) => {
+  const handleCollarChange = (value: boolean | null): void => {
     setHasCollar(value);
-    dispatch(getAllLostPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar: value, startDate, endDate }));
+    void dispatch(
+      getAllLostPetsThunk({
+        page: 1,
+        limit: 6,
+        searchTerm,
+        selectedCategories,
+        selectedColors,
+        hasCollar: value,
+        startDate,
+        endDate,
+      }),
+    );
   };
 
-  const handleStartDateChange = (date: Date | null) => {
+  const handleStartDateChange = (date: Date | null): void => {
     setStartDate(date);
-    dispatch(getAllLostPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate: date, endDate }));
+    void dispatch(
+      getAllLostPetsThunk({
+        page: 1,
+        limit: 6,
+        searchTerm,
+        selectedCategories,
+        selectedColors,
+        hasCollar,
+        startDate: date,
+        endDate,
+      }),
+    );
   };
 
-  const handleEndDateChange = (date: Date | null) => {
+  const handleEndDateChange = (date: Date | null): void => {
     setEndDate(date);
-    dispatch(getAllLostPetsThunk({ page: 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate: date }));
+    void dispatch(
+      getAllLostPetsThunk({
+        page: 1,
+        limit: 6,
+        searchTerm,
+        selectedCategories,
+        selectedColors,
+        hasCollar,
+        startDate,
+        endDate: date,
+      }),
+    );
   };
 
   const handleLoadMore = useCallback(() => {
     if (currentPage < totalPages && !loading) {
-      dispatch(getAllLostPetsThunk({ page: currentPage + 1, limit: 6, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate }));
+      dispatch(
+        getAllLostPetsThunk({
+          page: currentPage + 1,
+          limit: 6,
+          searchTerm,
+          selectedCategories,
+          selectedColors,
+          hasCollar,
+          startDate,
+          endDate,
+        }),
+      );
     }
-  }, [currentPage, totalPages, loading, searchTerm, selectedCategories, selectedColors, hasCollar, startDate, endDate, dispatch]);
+  }, [
+    currentPage,
+    totalPages,
+    loading,
+    searchTerm,
+    selectedCategories,
+    selectedColors,
+    hasCollar,
+    startDate,
+    endDate,
+    dispatch,
+  ]);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50 && !loading) {
+      if (
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50 &&
+        !loading
+      ) {
         handleLoadMore();
       }
     };
@@ -93,7 +198,9 @@ export default function LostPetPage(): JSX.Element {
 
   return (
     <div className="container mx-auto p-4 flex flex-col sm:flex-row">
-      <div className={`w-full sm:w-64 flex-shrink-0 sm:mr-4 ${isMobileView ? 'sticky top-0 z-20' : ''}`}>
+      <div
+        className={`w-full sm:w-64 flex-shrink-0 sm:mr-4 ${isMobileView ? 'sticky top-0 z-20' : ''}`}
+      >
         <SearchBar
           onSearchChange={handleSearchChange}
           onCategoryChange={handleCategoryChange}
@@ -108,11 +215,9 @@ export default function LostPetPage(): JSX.Element {
         />
       </div>
       <div className="flex-1 min-h-screen">
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {pets.length > 0 ? (
-            pets.map((pet) => (
-              <OneLostPetCard key={pet.id} pet={pet} isAccountPage={false} />
-            ))
+            pets.map((pet) => <OneLostPetCard key={pet.id} pet={pet} isAccountPage={false} />)
           ) : (
             <p className="text-center w-full">Ничего не найдено</p>
           )}
