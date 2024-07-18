@@ -57,10 +57,11 @@ export const updateOnePetThunk = createAsyncThunk(
       );
       return data;
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка';
       thunkApi.dispatch(
         setNotify({ type: 'error', message: 'Произошла ошибка при редактировании объявления' }),
       );
-      return thunkApi.rejectWithValue(error.message || 'Ошибка');
+      return thunkApi.rejectWithValue(errorMessage);
     }
   },
 );
@@ -73,8 +74,9 @@ export const deleteOnePetThunk = createAsyncThunk(
       thunkApi.dispatch(setNotify({ type: 'success', message: 'Объявление успешно удалено' }));
       return id;
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка';
       thunkApi.dispatch(setNotify({ type: 'error', message: 'Произошла ошибка при удалении' }));
-      return thunkApi.rejectWithValue(error.message || 'Ошибка');
+      return thunkApi.rejectWithValue(errorMessage);
     }
   },
 );
@@ -87,10 +89,11 @@ export const addPetThunk = createAsyncThunk(
       thunkApi.dispatch(setNotify({ type: 'success', message: 'Заявка отправлена на одобрение' }));
       return response;
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка';
       thunkApi.dispatch(
         setNotify({ type: 'error', message: 'Произошла ошибка при отправке заявки' }),
       );
-      return thunkApi.rejectWithValue(error.message || 'Ошибка');
+      return thunkApi.rejectWithValue(errorMessage);
     }
   },
 );
@@ -111,10 +114,11 @@ export const approvePetThunk = createAsyncThunk('pets/approvePet', async (id: nu
     thunkApi.dispatch(setNotify({ type: 'success', message: 'Заявка одобрена' }));
     return data;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Ошибка';
     thunkApi.dispatch(
       setNotify({ type: 'error', message: 'Произошла ошибка при одобрении заявки' }),
     );
-    return thunkApi.rejectWithValue(error.message || 'Ошибка');
+    return thunkApi.rejectWithValue(errorMessage);
   }
 });
 
@@ -124,9 +128,10 @@ export const rejectPetThunk = createAsyncThunk('pets/rejectPet', async (id: numb
     thunkApi.dispatch(setNotify({ type: 'success', message: 'Заявка отклонена' }));
     return data;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Ошибка';
     thunkApi.dispatch(
       setNotify({ type: 'error', message: 'Произошла ошибка при отклонении заявки' }),
     );
-    return thunkApi.rejectWithValue(error.message || 'Ошибка');
+    return thunkApi.rejectWithValue(errorMessage);
   }
 });

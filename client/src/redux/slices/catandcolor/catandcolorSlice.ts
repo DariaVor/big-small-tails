@@ -1,6 +1,6 @@
 // redux/slices/dataSlice.ts
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { getCategoriesThunk, getColorsThunk } from './catandcolorThunk';
 import type { CategoryType, ColorType } from '../../../types/petTypes';
 
