@@ -119,11 +119,14 @@ export const approvePetThunk = createAsyncThunk('pets/approvePet', async (id: nu
 });
 
 export const rejectPetThunk = createAsyncThunk('pets/rejectPet', async (id: number, thunkApi) => {
-try {
+  try {
     const data = await petsService.rejectPet(id);
     thunkApi.dispatch(setNotify({ type: 'success', message: 'Заявка отклонена' }));
     return data;
-} catch (error) {
-  
-}
+  } catch (error) {
+    thunkApi.dispatch(
+      setNotify({ type: 'error', message: 'Произошла ошибка при отклонении заявки' }),
+    );
+    return thunkApi.rejectWithValue(error.message || 'Ошибка');
+  }
 });
