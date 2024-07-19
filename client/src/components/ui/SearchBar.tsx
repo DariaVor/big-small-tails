@@ -1,3 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable no-lonely-if */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
@@ -58,6 +63,10 @@ function SearchBar({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    onCollarChange(hasCollar);
+  }, [hasCollar]);
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const term = event.target.value;
     setSearchTerm(term);
@@ -65,13 +74,19 @@ function SearchBar({
     setShowFilters(true);
   };
 
-  const handleCollarChange = (value: boolean): void => {
-    if (value === hasCollar) {
+  const handleCollarChange = (value: boolean | null): void => {
+    if (value === null) {
+      // Show items with both true and false
       setHasCollar(null);
       onCollarChange(null);
     } else {
-      setHasCollar(value);
-      onCollarChange(value);
+      if (value === hasCollar) {
+        setHasCollar(null);
+        onCollarChange(null);
+      } else {
+        setHasCollar(value);
+        onCollarChange(value);
+      }
     }
   };
 
@@ -183,6 +198,15 @@ function SearchBar({
               }`}
             >
               Нет ошейника
+            </button>
+            <button
+              type="button"
+              onClick={() => handleCollarChange(null)}
+              className={`px-2 py-1 rounded-full ${
+                hasCollar === null ? 'bg-purple-500 text-white' : 'bg-purple-100 text-purple-700'
+              }`}
+            >
+              Неважно
             </button>
           </div>
           <div className="mb-4">

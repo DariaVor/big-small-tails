@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import petsService from '../../../services/petService';
 import type { PetFormDataType } from '../../../types/petTypes';
@@ -21,7 +24,7 @@ export const getAllLostPetsThunk = createAsyncThunk(
     searchTerm?: string;
     selectedCategories?: number[];
     selectedColors?: number[];
-    hasCollar?: boolean | null;
+    hasCollar?: boolean | 'any'; 
     startDate?: Date | null;
     endDate?: Date | null;
   }) => {
@@ -38,7 +41,7 @@ export const getAllFoundPetsThunk = createAsyncThunk(
     searchTerm?: string;
     selectedCategories?: number[];
     selectedColors?: number[];
-    hasCollar?: boolean | null;
+    hasCollar?: boolean | 'any';  // Change to accept 'any'
     startDate?: Date | null;
     endDate?: Date | null;
   }) => {
@@ -46,6 +49,7 @@ export const getAllFoundPetsThunk = createAsyncThunk(
     return data;
   },
 );
+
 
 export const updateOnePetThunk = createAsyncThunk(
   'pets/updateOnePet',

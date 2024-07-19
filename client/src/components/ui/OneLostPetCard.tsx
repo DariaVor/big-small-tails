@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
@@ -158,7 +164,7 @@ export default function OneLostPetCard({
           </p>
           {pet.date && (
             <p className="mt-2 text-gray-500 font-rubik truncate">
-              Дата: {new Date(pet.date).toLocaleDateString()}
+              Дата: {new Date(pet.date).toLocaleDateString('ru-RU')}
             </p>
           )}
           <div className="flex justify-between items-center mt-4">

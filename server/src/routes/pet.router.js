@@ -23,7 +23,6 @@ petRouter.route('/').get(async (req, res) => {
 });
 
 // GET все потерянные питомцы
-
 petRouter.get('/lost', async (req, res) => {
   const {
     page = 1,
@@ -63,8 +62,10 @@ petRouter.get('/lost', async (req, res) => {
     where.colorId = { [Op.in]: colorsArray };
   }
 
-  if (hasCollar !== 'null') {
-    where.hasCollar = hasCollar === 'true';
+  if (hasCollar === 'true') {
+    where.hasCollar = true;
+  } else if (hasCollar === 'false') {
+    where.hasCollar = false;
   }
 
   if (startDate && endDate) {
@@ -138,9 +139,11 @@ petRouter.get('/found', async (req, res) => {
     where.colorId = { [Op.in]: colorsArray };
   }
 
-  if (hasCollar !== 'null') {
-    where.hasCollar = hasCollar === 'true';
-  }
+  if (hasCollar === 'true') {
+    where.hasCollar = true;
+  } else if (hasCollar === 'false') {
+    where.hasCollar = false;
+  } // Do nothing for 'Неважно'
 
   if (startDate && endDate) {
     where.date = {
@@ -172,6 +175,7 @@ petRouter.get('/found', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
+
 
 // GET категории
 petRouter.get('/categories', async (req, res) => {
