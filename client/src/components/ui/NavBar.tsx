@@ -79,7 +79,7 @@ export default function NavBar(): JSX.Element {
               ) : (
                 <Link
                   to="/login"
-                  className="text-violet-900 hover:text-violet-700 font-rubik font-regular text-lg block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-800 md:p-0"
+                  className="text-violet-900 hover:text-violet-700 font-rubik font-regular text-lg block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-800 lg:p-0"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Войти

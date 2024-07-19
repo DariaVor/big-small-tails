@@ -24,7 +24,6 @@ function App(): JSX.Element {
     void dispatch(checkUserThunk());
   }, [dispatch]);
 
-
   const router = createBrowserRouter([
     {
       path: '/',
@@ -39,12 +38,25 @@ function App(): JSX.Element {
           element: <LocationPage />,
         },
         {
-          path: '/pets/found',
-          element: <FoundPetPage />,
-        },
-        {
-          path: '/pets/lost',
-          element: <LostPetPage />,
+          path: 'pets',
+          children: [
+            {
+              path: 'found',
+              element: <FoundPetPage />,
+            },
+            {
+              path: 'lost',
+              element: <LostPetPage />,
+            },
+            {
+              path: ':id',
+              element: <PetDetailPage />,
+            },
+            {
+              path: '*',
+              element: <ErrorPage />, 
+            },
+          ],
         },
         {
           element: <PrivateRouter isAllowed={user.status === 'logged'} redirect="/login" />,
@@ -55,28 +67,23 @@ function App(): JSX.Element {
             },
             {
               path: 'foundaddpage',
-              element: <BothAddPage found="found"/>,
+              element: <BothAddPage found="found" />,
             },
           ],
         },
-        { path: '/pets/:id', element: <PetDetailPage /> },
         {
-          path: '*',
-          element: <ErrorPage />,
-        },
-        {
-          path: '/contact-us',
+          path: 'contact-us',
           element: <ContactUsPage />,
         },
         {
           element: <PrivateRouter isAllowed={user.status !== 'logged'} redirect="/" />,
           children: [
             {
-              path: '/register',
+              path: 'register',
               element: <RegisterPage />,
             },
             {
-              path: '/login',
+              path: 'login',
               element: <LoginPage />,
             },
           ],
@@ -85,10 +92,14 @@ function App(): JSX.Element {
           element: <PrivateRouter isAllowed={user.status === 'logged'} redirect="/login" />,
           children: [
             {
-              path: '/account',
+              path: 'account',
               element: <AccountPage />,
             },
           ],
+        },
+        {
+          path: '*',
+          element: <ErrorPage />, 
         },
       ],
     },
