@@ -10,6 +10,12 @@
   }
 }
 
+@media screen and (max-width: 390px) {
+  .m_bot {
+    margin-bottom: 45%;
+  }
+}
+
 @media screen and (max-width: 380px) {
   .m_bot {
     margin-bottom: 45%;

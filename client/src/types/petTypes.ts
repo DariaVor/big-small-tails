@@ -1,5 +1,3 @@
-import type { z } from 'zod';
-
 type PetStatus = {
     status: string;
 }

@@ -6,7 +6,7 @@ const sharp = require('sharp');
 const fs = require('fs/promises');
 const { verifyAdmin } = require('../middlewares/verifyAdmin');
 const { Op } = require('sequelize');
-const petLimiter = require('../middlewares/petLimiter');
+// const petLimiter = require('../middlewares/petLimiter');
 
 // GET все питомцы
 petRouter.route('/').get(async (req, res) => {
@@ -219,13 +219,13 @@ petRouter.route('/:id').get(async (req, res) => {
 // POST новый питомец
 petRouter
   .route('/add')
-  .post(petLimiter, upload.single('file'), verifyAccessToken, async (req, res) => {
+  .post(upload.single('file'), verifyAccessToken, async (req, res) => {
     try {
       let imageName = null;
 
       if (req.file) {
         imageName = `${Date.now()}.webp`;
-        const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
+        const outputBuffer = await sharp(req.file.buffer).rotate().webp().toBuffer();
         await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
       } else {
         imageName = 'paw.svg';
@@ -270,7 +270,7 @@ petRouter.route('/:id').patch(upload.single('file'), verifyAccessToken, async (r
 
     if (req.file) {
       const imageName = `${Date.now()}.webp`;
-      const outputBuffer = await sharp(req.file.buffer).webp().toBuffer();
+      const outputBuffer = await sharp(req.file.buffer).rotate().webp().toBuffer();
       await fs.writeFile(`./public/img/${imageName}`, outputBuffer);
       req.body.image = imageName;
 

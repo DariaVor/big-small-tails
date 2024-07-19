@@ -22,7 +22,7 @@ class PetsService {
       searchTerm: params.searchTerm || '',
       selectedCategories: params.selectedCategories?.join(',') || '',
       selectedColors: params.selectedColors?.join(',') || '',
-      hasCollar: params.hasCollar !== null ? params.hasCollar.toString() : '',
+      hasCollar: params.hasCollar !== undefined && params.hasCollar !== null ? params.hasCollar.toString() : '',
       startDate: params.startDate ? params.startDate.toISOString() : '',
       endDate: params.endDate ? params.endDate.toISOString() : ''
     };
@@ -40,7 +40,7 @@ class PetsService {
       searchTerm: params.searchTerm || '',
       selectedCategories: params.selectedCategories?.join(',') || '',
       selectedColors: params.selectedColors?.join(',') || '',
-      hasCollar: params.hasCollar !== null ? params.hasCollar.toString() : '',
+      hasCollar: params.hasCollar !== undefined && params.hasCollar !== null ? params.hasCollar.toString() : '',
       startDate: params.startDate ? params.startDate.toISOString() : '',
       endDate: params.endDate ? params.endDate.toISOString() : ''
     };

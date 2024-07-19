@@ -17,7 +17,7 @@ type PetState = {
   pets: PetType[];
   lostPets: PetType[];
   foundPets: PetType[];
-  onePet: PetType;
+  onePet: PetType | null;
   pendingPets: PetType[];
   currentPage: number;
   totalPages: number;
