@@ -17,7 +17,7 @@ export default function HomePage(): JSX.Element {
         <p className="text-gray-600 text-center mb-6 font-rubik text-lg">
           Помогите питомцу вернуться домой.
         </p>
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4 but_text">
           <Link to="/lostaddpage">
             <button
               type="button"

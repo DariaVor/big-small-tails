@@ -39,25 +39,26 @@ export default function NavBar(): JSX.Element {
         <button
           type='button'
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
           aria-controls="navbar-default"
           aria-expanded={isMenuOpen}
         >
           <span className="sr-only">Open main menu</span>
           <img
-                  src="/images/burger-menu.svg"
-                  alt="Меню"
-                  className="pt-0.5"
-                />
+            src="/images/burger-menu.svg"
+            alt="Меню"
+            className="pt-0.5"
+          />
         </button>
         <div className={`w-full lg:block lg:w-auto ${isMenuOpen ? 'block' : 'hidden'}`} id="navbar-default">
-          <ul className="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-white dark:bg-gray-800 lg:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-white">
             {navLinks.map((link) =>
               (!link.private || (link.private && user.status === 'logged')) && (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-violet-900 hover:text-violet-700 font-rubik font-regular text-lg block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-violet-800 lg:p-0 dark:text-white lg:dark:hover:text-violet-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent"
+                    className="text-violet-900 hover:text-violet-700 font-rubik font-regular text-lg block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-violet-800 lg:p-0"
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     {link.label}
                   </Link>
@@ -70,12 +71,16 @@ export default function NavBar(): JSX.Element {
                   src="/images/logout.svg"
                   alt="Выйти"
                   className={`${isMenuOpen ? 'w-5 ml-2.5 pt-1 cursor-pointer' : 'w-6 cursor-pointer'}`}
-                  onClick={handleLogout}
+                  onClick={async () => {
+                    await handleLogout();
+                    setIsMenuOpen(false);
+                  }}
                 />
               ) : (
                 <Link
                   to="/login"
                   className="text-violet-900 hover:text-violet-700 font-rubik font-regular text-lg block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-800 md:p-0"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Войти
                 </Link>
